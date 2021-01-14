@@ -1,21 +1,20 @@
 """Console script for fasten."""
-import sys
 import click
-import logging
 from fasten import fasten
+import logging
+
+logger = logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.DEBUG)
 
 
 @click.group()
 def cli():
-    pass
+    logging.info("Started")
+    logging.info("Finished")
 
 
 @cli.command()
 @click.option(
-    "-f",
-    "--forge",
-    default="pypi",
-    type=str,
+    "-f",    "--forge",    default="pypi",    type=str,
     help="Forge of the package (pypi, mvn or debian)",
 )
 @click.option(
@@ -37,7 +36,7 @@ def check(forge, version, pkg_name):
     """
     if version is None:
         version = fasten.get_pkg_version(forge, pkg_name)
-        logging.debug(f"package version: {version}")
+        logger.debug(f"package version: {version}")
     click.echo(f"Retrieving metadata: {forge}, {pkg_name}, {version}...")
     result = fasten.get_pkg_metadata(forge, pkg_name, version)
     click.echo(f"Result:\n {result}\n")
@@ -73,7 +72,3 @@ def check_all():
         )
 
     click.echo(f"Results: \n{result}\n")
-
-
-if __name__ == "__main__":
-    sys.exit(cli())  # pragma: no cover
