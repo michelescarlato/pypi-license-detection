@@ -1,20 +1,27 @@
 """Console script for fasten."""
-import click
-from fasten import fasten
 import logging
 
-logger = logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.DEBUG)
+import click
+
+from fasten import fasten
+
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s:: %(message)s", level=logging.DEBUG
+)
+logger = logging.getLogger(__name__)
 
 
 @click.group()
 def cli():
-    logging.info("Started")
-    logging.info("Finished")
+    pass
 
 
 @cli.command()
 @click.option(
-    "-f",    "--forge",    default="pypi",    type=str,
+    "-f",
+    "--forge",
+    default="pypi",
+    type=str,
     help="Forge of the package (pypi, mvn or debian)",
 )
 @click.option(
@@ -36,7 +43,7 @@ def check(forge, version, pkg_name):
     """
     if version is None:
         version = fasten.get_pkg_version(forge, pkg_name)
-        logger.debug(f"package version: {version}")
+        logger.debug("package version: %s", version)
     click.echo(f"Retrieving metadata: {forge}, {pkg_name}, {version}...")
     result = fasten.get_pkg_metadata(forge, pkg_name, version)
     click.echo(f"Result:\n {result}\n")
@@ -45,7 +52,8 @@ def check(forge, version, pkg_name):
 @cli.command()
 def check_all():
     """
-    Given the output of `requirements.txt`, FASTEN will return all metadata for each package.
+    Given the output of `requirements.txt`, FASTEN will return all metadata for
+    each package.
     """
 
     # get a list from requirements.txt

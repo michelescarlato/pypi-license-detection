@@ -17,10 +17,6 @@ repos:
   rev: 20.8b1
   hooks:
   - id: black
-    exclude: |
-      (?x)
-        # # Files in the root of the repository
-        ^setup.py|
 
 - repo: https://gitlab.com/pycqa/flake8
   rev: 3.8.3
@@ -32,16 +28,16 @@ repos:
     ]
 
 - repo: https://github.com/PyCQA/isort
-  rev: 5.5.3
+  rev: 5.7.0
   hooks:
   - id: isort
-    files: \.py$
+    args: ["--profile", "black", "--filter-files"]
 
 - repo: https://github.com/pre-commit/mirrors-mypy
   rev: v0.790
   hooks:
   - id: mypy
-    exclude: docs|tests
+    exclude: docs|tests|cli.py
     args: ["--pretty"]
 
 - repo: https://github.com/pre-commit/pygrep-hooks

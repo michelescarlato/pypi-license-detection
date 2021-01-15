@@ -1,7 +1,6 @@
 """Unit tests for the FASTEN CLI"""
 
 import pytest
-
 from click.testing import CliRunner
 
 from fasten import cli
