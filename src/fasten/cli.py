@@ -3,12 +3,13 @@ import logging
 
 import click
 
-from fasten import fasten
+from fasten.fasten import FastenPackage
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s:: %(message)s", level=logging.DEBUG
 )
 logger = logging.getLogger(__name__)
+FastenPkg = FastenPackage()
 
 
 @click.group()
@@ -41,11 +42,8 @@ def check(forge, version, pkg_name):
         version (str): Package version - Default: latest known version
         pkg_name (str): Package name
     """
-    if version is None:
-        version = fasten.get_pkg_version(forge, pkg_name)
-        logger.debug("package version: %s", version)
-    click.echo(f"Retrieving metadata: {forge}, {pkg_name}, {version}...")
-    result = fasten.get_pkg_metadata(forge, pkg_name, version)
+    logger.debug("Forge: %s, pkg name: %s, version: %s", forge, pkg_name, version)
+    result = FastenPkg.get_pkg_metadata(forge, pkg_name, version)
     click.echo(f"Result:\n {result}\n")
 
 
@@ -55,28 +53,5 @@ def check_all():
     Given the output of `requirements.txt`, FASTEN will return all metadata for
     each package.
     """
-
-    # get a list from requirements.txt
-    pkgs_list = [
-        {
-            "name": "test_pkg1",
-            "version": "version_test_pkg1",
-            "forge": "test_pkg_forge1",
-        },
-        {
-            "name": "test_pkg2",
-            "version": "version_test_pkg2",
-            "forge": "test_pkg_forge2",
-        },
-    ]
-
-    click.echo(f"Retrieving metadata for the packages: {pkgs_list}")
-
-    result = []
-    # for each pkg, run check and return its metadata.
-    for pkg in pkgs_list:
-        result.append(
-            fasten.get_pkg_metadata(pkg["forge"], pkg["name"], pkg["version"])
-        )
-
+    result = FastenPkg.get_pkglist_metadata
     click.echo(f"Results: \n{result}\n")
