@@ -1,3 +1,5 @@
+# Retrieve package name and version from requirements.txt file
+
 import re
 import json
 
@@ -6,6 +8,7 @@ class ReadRequirementsFile:
     def __init__(self, pathToFile):
         self.pathToFile = pathToFile
 
+#TODO make static method
     def readFile(self):
 
         with open(self.pathToFile, "r") as requirements:
