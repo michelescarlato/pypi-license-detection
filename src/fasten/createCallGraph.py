@@ -6,7 +6,7 @@ from pycg import formats
 class CreateCallGraph:
 
     @staticmethod
-    def createCallGraph(pkg_name, product, forge, version, timestamp):
+    def createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs):
 
         entry_point = [] # List of python files related to the current project
 
@@ -19,5 +19,9 @@ class CreateCallGraph:
 
         print(formatter.generate())
 
-        with open("CallGraph.json", "w+") as f:
+        with open("callGraphs/" + pkg_name + ".json", "w+") as f:
             f.write(json.dumps(formatter.generate()))
+
+        call_graphs.append("callGraphs/" + pkg_name + ".json") # Append path to locally created Call Graph to list of paths
+
+        return call_graphs
