@@ -11,6 +11,7 @@ class Main:
 
     parser = argparse.ArgumentParser()
     parser.add_argument("call_graph", nargs="*",help="Some path")
+#    pathsToCallGraphs = parser.parse_args()
     url = 'http://127.0.0.1:9002'
 #    forge = sys.argv[1] # mvn
 #    pkg_name = sys.argv[2] # namesss
@@ -31,6 +32,7 @@ class Main:
 
     print(pathsToCallGraphs)
 
-    CreateCallGraph().createCallGraph(pkg_name, product, forge, version, timestamp)
+    call_graphs = CreateCallGraph().createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs)
+    print(call_graphs)
 
-    StitchCallGraph().stitchCallGraph(pathsToCallGraphs.call_graph)
+#    StitchCallGraph().stitchCallGraph(pathsToCallGraphs.call_graph)
