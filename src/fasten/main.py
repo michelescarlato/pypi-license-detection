@@ -10,12 +10,8 @@ from fasten import FastenPackage
 class Main:
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("call_graph", nargs="*",help="Some path")
-#    pathsToCallGraphs = parser.parse_args()
-    url = 'http://127.0.0.1:9002'
-#    forge = sys.argv[1] # mvn
-#    pkg_name = sys.argv[2] # namesss
-#    pkg_version = sys.argv[3] # 0.1.0
+    parser.add_argument("call_graph", nargs="*",help="Paths to Call Graph files")
+    url = 'http://127.0.0.1:9002' # URL to the FASTEN API
     product = "fasten-pypi-plugin" # Package name
     forge = "local" # Source the product was downloaded from
     pkg_name = "fasten-pypi-plugin" # Package containing the code to be analyzed
@@ -23,7 +19,7 @@ class Main:
     timestamp = "42" # Timestamp of the package's version
     pathToFile = '../../requirements.txt' # 'fasten-pypi-plugin/requirements.txt'
     packages = ReadRequirementsFile(pathToFile)
-    pkgs= packages.readFile() # read requirements.txt
+    pkgs = packages.readFile() # read requirements.txt
 #    package = FastenPackage(url, forge, pkg_name, pkg_version)
 #    result = package.get_pkg_metadata()
 #    print(result)
