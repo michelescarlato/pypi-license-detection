@@ -11,7 +11,7 @@ class Main:
 
     parser = argparse.ArgumentParser()
     parser.add_argument("call_graph", nargs="*",help="Paths to Call Graph files")
-    url = 'http://127.0.0.1:9002' # URL to the FASTEN API
+    url = 'http://127.0.0.1:9080' # URL to the FASTEN API
     product = "fasten-pypi-plugin" # Package name
     forge = "local" # Source the product was downloaded from
     pkg_name = "fasten-pypi-plugin" # Package containing the code to be analyzed

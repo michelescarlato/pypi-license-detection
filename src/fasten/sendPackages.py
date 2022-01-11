@@ -16,7 +16,7 @@ class SendPackages:
 
         for package in pkgs:
 
-            URL = url + "/mvn/packages/" + package + "/" + pkgs[package] + "/callgraph"
+            URL = url + "/api/pypi/packages/" + package + "/" + pkgs[package] + "/callgraph"
 
             try:
                 response = requests.get(url=URL) # get Call Graph for specified package
