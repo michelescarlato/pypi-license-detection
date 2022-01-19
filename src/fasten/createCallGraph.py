@@ -6,11 +6,11 @@ from pycg import formats
 class CreateCallGraph:
 
     @staticmethod
-    def createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs):
+    def createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs, pathToProject):
 
         entry_point = [] # List of python files related to the current project
 
-        for file_path in Path("./fasten-pypi-plugin").glob("**/*.py"): # Path needs to be changed
+        for file_path in Path(pathToProject).glob("**/*.py"):
             entry_point.append(str(file_path))
 
         cg = CallGraphGenerator(entry_point, pkg_name)
