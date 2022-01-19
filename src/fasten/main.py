@@ -21,15 +21,20 @@ class Main:
     pathToProject = "./" # Path to project to be analyzed
     packages = ReadRequirementsFile(pathToFile)
     pkgs = packages.readFile() # read requirements.txt
+
+# TODO: Enable plugin to receive Call Graphs and metadata information from FASTEN as soon as the pypi-API is ready
 #    package = FastenPackage(url, forge, pkg_name, pkg_version)
 #    result = package.get_pkg_metadata()
 #    print(result)
-    call_graphs = ReceiveCallGraphs.receiveCallGraphs(pkgs, url)
+#    call_graphs = ReceiveCallGraphs.receiveCallGraphs(pkgs, url)
+#    call_graphs = CreateCallGraph().createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs, pathToProject)
+#    pathsToCallGraphs = parser.parse_args(call_graphs)
+
+    call_graphs = []
+    call_graphs.append("./callGraphs/python-webservice.json")
+    call_graphs.append("./callGraphs/fasten-pypi-plugin.json")
     pathsToCallGraphs = parser.parse_args(call_graphs)
 
-    print(pathsToCallGraphs)
-
     call_graphs = CreateCallGraph().createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs, pathToProject)
-    print(call_graphs)
 
 #    StitchCallGraph().stitchCallGraph(pathsToCallGraphs.call_graph)
