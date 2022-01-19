@@ -2,7 +2,7 @@ import argparse
 import sys
 from readRequirementsFile import ReadRequirementsFile
 from createCallGraph import CreateCallGraph
-from sendPackages import SendPackages
+from receiveCallGraphs import ReceiveCallGraphs
 from stitchCallGraph import StitchCallGraph
 from fasten import FastenPackage
 
@@ -24,7 +24,7 @@ class Main:
 #    package = FastenPackage(url, forge, pkg_name, pkg_version)
 #    result = package.get_pkg_metadata()
 #    print(result)
-    call_graphs = SendPackages.sendPackages(pkgs, url)
+    call_graphs = ReceiveCallGraphs.receiveCallGraphs(pkgs, url)
     pathsToCallGraphs = parser.parse_args(call_graphs)
 
     print(pathsToCallGraphs)
