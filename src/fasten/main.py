@@ -18,6 +18,7 @@ class Main:
     version = "1.0" # Version of the product
     timestamp = "42" # Timestamp of the package's version
     pathToFile = '../../requirements.txt' # 'fasten-pypi-plugin/requirements.txt'
+    pathToProject = "./" # Path to project to be analyzed
     packages = ReadRequirementsFile(pathToFile)
     pkgs = packages.readFile() # read requirements.txt
 #    package = FastenPackage(url, forge, pkg_name, pkg_version)
@@ -28,7 +29,7 @@ class Main:
 
     print(pathsToCallGraphs)
 
-    call_graphs = CreateCallGraph().createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs)
+    call_graphs = CreateCallGraph().createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs, pathToProject)
     print(call_graphs)
 
 #    StitchCallGraph().stitchCallGraph(pathsToCallGraphs.call_graph)
