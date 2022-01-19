@@ -5,10 +5,10 @@ import json
 import time
 import requests
 
-class SendPackages:
+class ReceiveCallGraphs:
 
     @staticmethod
-    def sendPackages(pkgs, url):
+    def receiveCallGraphs(pkgs, url):
 
         print("Read Call Graphs from FASTEN:")
         pkgs = json.loads(pkgs)
