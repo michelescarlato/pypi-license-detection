@@ -21,13 +21,15 @@ class Main:
     pathToProject = "./" # Path to project to be analyzed
     packages = ReadRequirementsFile(pathToFile)
     pkgs = packages.readFile() # read requirements.txt
+    max_iter = -1 # Maximum number of iterations through source code (from pycg).
+    operation = "call-graph" # or key-error for key error detection on dictionaries (from pycg).
 
 # TODO: Enable plugin to receive Call Graphs and metadata information from FASTEN as soon as the pypi-API is ready
 #    package = FastenPackage(url, forge, pkg_name, pkg_version)
 #    result = package.get_pkg_metadata()
 #    print(result)
 #    call_graphs = ReceiveCallGraphs.receiveCallGraphs(pkgs, url)
-#    call_graphs = CreateCallGraph().createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs, pathToProject)
+#    call_graphs = CreateCallGraph().createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs, pathToProject, max_iter, operation)
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
 
     call_graphs = []
@@ -35,6 +37,6 @@ class Main:
     call_graphs.append("./callGraphs/fasten-pypi-plugin.json")
     pathsToCallGraphs = parser.parse_args(call_graphs)
 
-    call_graphs = CreateCallGraph().createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs, pathToProject)
+    call_graphs = CreateCallGraph().createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs, pathToProject, max_iter, operation)
 
 #    StitchCallGraph().stitchCallGraph(pathsToCallGraphs.call_graph)
