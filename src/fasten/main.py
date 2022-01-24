@@ -39,4 +39,4 @@ class Main:
 
     call_graphs = CreateCallGraph().createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs, pathToProject, max_iter, operation)
 
-#    StitchCallGraph().stitchCallGraph(pathsToCallGraphs.call_graph)
+    StitchCallGraph().stitchCallGraph(pathsToCallGraphs.call_graph)
