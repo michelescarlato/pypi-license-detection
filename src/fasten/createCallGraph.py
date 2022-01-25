@@ -6,11 +6,11 @@ from pycg import formats
 class CreateCallGraph:
 
     @staticmethod
-    def createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs, pathToProject, max_iter, operation):
+    def createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs, project_path, max_iter, operation):
 
         entry_point = [] # List of python files related to the current project
 
-        for file_path in Path(pathToProject).glob("**/*.py"):
+        for file_path in Path(project_path).glob("**/*.py"):
             entry_point.append(str(file_path))
 
         cg = CallGraphGenerator(entry_point, pkg_name, max_iter, operation)
