@@ -5,13 +5,13 @@ import json
 
 class ReadRequirementsFile:
 
-    def __init__(self, pathToFile):
-        self.pathToFile = pathToFile
+    def __init__(self, requirements):
+        self.requirements = requirements
 
 #TODO make static method
     def readFile(self):
 
-        with open(self.pathToFile, "r") as requirements:
+        with open(self.requirements, "r") as requirements:
 
             pkgs = { }
             for x in requirements:

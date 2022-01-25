@@ -17,9 +17,9 @@ class Main:
     pkg_name = "fasten-pypi-plugin" # Package containing the code to be analyzed
     version = "1.0" # Version of the product
     timestamp = "42" # Timestamp of the package's version
-    pathToFile = '../../requirements.txt' # 'fasten-pypi-plugin/requirements.txt'
-    pathToProject = "./" # Path to project to be analyzed
-    packages = ReadRequirementsFile(pathToFile)
+    requirements = '../../requirements.txt' # Path to the requirements.txt file of the project to be analyzed
+    project_path = "./" # Path to project to be analyzed
+    packages = ReadRequirementsFile(requirements)
     pkgs = packages.readFile() # read requirements.txt
     max_iter = -1 # Maximum number of iterations through source code (from pycg).
     operation = "call-graph" # or key-error for key error detection on dictionaries (from pycg).
@@ -29,7 +29,7 @@ class Main:
 #    result = package.get_pkg_metadata()
 #    print(result)
 #    call_graphs = ReceiveCallGraphs.receiveCallGraphs(pkgs, url)
-#    call_graphs = CreateCallGraph().createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs, pathToProject, max_iter, operation)
+#    call_graphs = CreateCallGraph().createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs, project_path, max_iter, operation)
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
 
     call_graphs = []
@@ -37,6 +37,6 @@ class Main:
     call_graphs.append("./callGraphs/fasten-pypi-plugin.json")
     pathsToCallGraphs = parser.parse_args(call_graphs)
 
-    call_graphs = CreateCallGraph().createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs, pathToProject, max_iter, operation)
+    call_graphs = CreateCallGraph().createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs, project_path, max_iter, operation)
 
     StitchCallGraph().stitchCallGraph(pathsToCallGraphs.call_graph)
