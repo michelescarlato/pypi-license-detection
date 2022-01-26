@@ -30,13 +30,13 @@ class Main:
 #    result = package.get_pkg_metadata()
 #    print(result)
 #    call_graphs = ReceiveCallGraphs.receiveCallGraphs(pkgs, url)
-#    call_graphs = CreateCallGraph().createCallGraph(args.pkg_name, args.product, forge, args.version, args.timestamp, call_graphs, args.project_path, max_iter, operation)
+#    call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
 
     call_graphs = []
     call_graphs.append("./callGraphs/cryptography-3.4.7.json")
     call_graphs.append("./callGraphs/fabric-2.6.0.json")
 
-    call_graphs = CreateCallGraph().createCallGraph(args.pkg_name, args.product, forge, args.version, args.timestamp, call_graphs, args.project_path, max_iter, operation)
+    call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
 
     StitchCallGraph().stitchCallGraph(call_graphs)
