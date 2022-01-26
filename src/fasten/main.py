@@ -20,10 +20,10 @@ class Main:
 
     url = 'http://127.0.0.1:9080' # URL to the FASTEN API
     forge = "local" # Source the product was downloaded from
-    packages = ReadRequirementsFile(args.requirements)
-    pkgs = packages.readFile() # read requirements.txt
     max_iter = -1 # Maximum number of iterations through source code (from pycg).
     operation = "call-graph" # or key-error for key error detection on dictionaries (from pycg).
+
+    pkgs = ReadRequirementsFile.readFile(args.requirements) # Read requirements.txt
 
 # TODO: Enable plugin to receive Call Graphs and metadata information from FASTEN as soon as the pypi-API is ready
 #    package = FastenPackage(url, forge, pkg_name, pkg_version)
