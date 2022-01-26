@@ -33,8 +33,8 @@ class Main:
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
 
     call_graphs = []
-    call_graphs.append("./callGraphs/python-webservice.json")
-    call_graphs.append("./callGraphs/fasten-pypi-plugin.json")
+    call_graphs.append("./callGraphs/cryptography-3.4.7.json")
+    call_graphs.append("./callGraphs/fabric-2.6.0.json")
     pathsToCallGraphs = parser.parse_args(call_graphs)
 
     call_graphs = CreateCallGraph().createCallGraph(pkg_name, product, forge, version, timestamp, call_graphs, project_path, max_iter, operation)
