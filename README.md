@@ -39,9 +39,15 @@ To get this plugin running:
 	 sudo pypi-Plugin-venv/bin/python3.9 setup.py install
 	 ```
 
-6. Run the pypi-plugin from inside the `fasten-pypi-plugin/src/fasten`-folder:
-   ```
-	 python3 main.py
-	 ```
+6. Run the pypi-plugin from inside the `fasten-pypi-plugin/src/fasten`-folder to create a Call Graph for the plugin itself:
+	```
+	python3 main.py
+		--product fasten-pypi-plugin \
+		--pkg_name fasten-pypi-plugin \
+		--project_path ./ \
+		--timestamp 42 \
+		--version 1.0 \
+		--requirements ../../requirements.txt 
+	```
 
 7. The Call-Graphs can be found inside the `fasten-pypi-plugin/src/fasten/callGraphs`-folder.
