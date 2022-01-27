@@ -41,13 +41,13 @@ To get this plugin running:
 
 6. Run the pypi-plugin from inside the `fasten-pypi-plugin/src/fasten`-folder to create a Call Graph for the plugin itself:
 	```
-	python3 main.py
+	python3 main.py \
 		--product fasten-pypi-plugin \
 		--pkg_name fasten-pypi-plugin \
 		--project_path ./ \
 		--timestamp 42 \
 		--version 1.0 \
-		--requirements ../../requirements.txt 
+		--requirements ../../requirements.txt
 	```
 
 7. The Call-Graphs can be found inside the `fasten-pypi-plugin/src/fasten/callGraphs`-folder.
