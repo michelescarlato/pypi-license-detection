@@ -1,4 +1,4 @@
-# Send package name and version to FASTEN and receive Call Graph for it
+# Send package name and version to FASTEN and receive a Call Graph for it.
 
 import re
 import json
