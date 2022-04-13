@@ -23,8 +23,6 @@ class CreateCallGraph:
         formatter = formats.Fasten(cg, args.pkg_name, args.product, forge, args.version, args.timestamp)
         print("Call Graph formatted.")
 
-        print(formatter.generate())
-
         with open("callGraphs/" + args.pkg_name + ".json", "w+") as f:
             f.write(json.dumps(formatter.generate()))
 
