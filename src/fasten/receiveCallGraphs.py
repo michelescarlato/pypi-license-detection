@@ -28,9 +28,12 @@ class ReceiveCallGraphs:
                         f.write(json.dumps(call_graph)) # save Call Graph in a file
 
                     call_graphs.append("callGraphs/" + package + ".json") # append Call Graph file location to list
+
+                    print(package + ":" + pkgs[package] + ": Call Graph received.")
+
 #                    call_graphs.append(call_graph) # append Call Graph to list
                 elif response.status_code == 500:
-                    print("Call Graph for package " + package + " not available!")
+                    print(package + ":" + pkgs[package] + ": Call Graph not available!")
                 else:
                     print("something went wrong")
 

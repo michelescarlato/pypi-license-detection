@@ -13,9 +13,15 @@ class CreateCallGraph:
         for file_path in Path(args.project_path).glob("**/*.py"):
             entry_point.append(str(file_path))
 
+        print("Creating Call Graph for " + args.product + "...")
         cg = CallGraphGenerator(entry_point, args.pkg_name, max_iter, operation)
+        print("Call Graph created.")
+        print("Analyze Call Graph...")
         cg.analyze()
+        print("Call Graph analyzed.")
+        print("Format Call Graph...")
         formatter = formats.Fasten(cg, args.pkg_name, args.product, forge, args.version, args.timestamp)
+        print("Call Graph formatted.")
 
         print(formatter.generate())
 
@@ -23,5 +29,7 @@ class CreateCallGraph:
             f.write(json.dumps(formatter.generate()))
 
         call_graphs.append("callGraphs/" + args.pkg_name + ".json") # Append path to locally created Call Graph to list of paths
+
+        print("Call graph written in file " + "callGraphs/" + args.pkg_name + ".json")
 
         return call_graphs
