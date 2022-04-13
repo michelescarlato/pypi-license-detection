@@ -3,6 +3,8 @@ A Python plugin that can be used to analyze and report issues about a module dep
 
 To get this plugin running:
 
+**Steps 1 to 3 are optional as the pypi-plugin takes its information from the fasten server by default.**
+
 1. Run the [docker-python-pipeline](https://github.com/fasten-project/fasten-docker-deployment) first:
 	```
 	sudo docker-compose --profile python up -d
