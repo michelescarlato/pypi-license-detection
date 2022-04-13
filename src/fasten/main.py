@@ -18,10 +18,11 @@ class Main:
     parser.add_argument("--requirements", type=str, help="Path to the requirements file")
     args = parser.parse_args()
 
-    url = 'http://127.0.0.1:9080' # URL to the FASTEN API
+    url = 'https://api.fasten-project.eu/api/pypi/' # URL to the FASTEN API
     forge = "local" # Source the product was downloaded from
     max_iter = -1 # Maximum number of iterations through source code (from pycg).
     operation = "call-graph" # or key-error for key error detection on dictionaries (from pycg).
+    call_graphs = []
 
     pkgs = ReadRequirementsFile.readFile(args.requirements) # Read requirements.txt
 
@@ -29,14 +30,8 @@ class Main:
 #    package = FastenPackage(url, forge, pkg_name, pkg_version)
 #    result = package.get_pkg_metadata()
 #    print(result)
-#    call_graphs = ReceiveCallGraphs.receiveCallGraphs(pkgs, url)
-#    call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
-#    pathsToCallGraphs = parser.parse_args(call_graphs)
-
-    call_graphs = []
-    call_graphs.append("./callGraphs/cryptography-3.4.7.json")
-    call_graphs.append("./callGraphs/fabric-2.6.0.json")
-
+    call_graphs = ReceiveCallGraphs.receiveCallGraphs(pkgs, url)
     call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
+#    pathsToCallGraphs = parser.parse_args(call_graphs)
 
     StitchCallGraph().stitchCallGraph(call_graphs)

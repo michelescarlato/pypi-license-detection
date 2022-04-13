@@ -16,7 +16,7 @@ class ReceiveCallGraphs:
 
         for package in pkgs:
 
-            URL = url + "/api/pypi/packages/" + package + "/" + pkgs[package] + "/rcg"
+            URL = url + "packages/" + package + "/" + pkgs[package] + "/rcg"
 
             try:
                 response = requests.get(url=URL) # get Call Graph for specified package
