@@ -4,6 +4,7 @@ from readRequirementsFile import ReadRequirementsFile
 from checkPackageAvailability import CheckPackageAvailability
 from createCallGraph import CreateCallGraph
 from receiveCallGraphs import ReceiveCallGraphs
+from requestFasten import RequestFasten
 from stitchCallGraph import StitchCallGraph
 from fasten import FastenPackage
 
@@ -26,16 +27,16 @@ class Main:
     max_iter = -1 # Maximum number of iterations through source code (from pycg).
     operation = "call-graph" # or key-error for key error detection on dictionaries (from pycg).
     call_graphs = []
+    vulnerabilities = []
 
     pkgs = ReadRequirementsFile.readFile(args.requirements) # Read requirements.txt
     pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(pkgs, url) # Check if packages are known by FASTEN
 
-# TODO: Enable plugin to receive Call Graphs and metadata information from FASTEN as soon as the pypi-API is ready
-#    package = FastenPackage(url, forge, pkg_name, pkg_version)
-#    result = package.get_pkg_metadata()
-#    print(result)
-    call_graphs = ReceiveCallGraphs.receiveCallGraphs(pkgs, url)
+
+    call_graphs = RequestFasten.requestFasten(pkgs, url, "rcg")
     call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
+    vulnerabilities = RequestFasten.requestFasten(pkgs, url, "vulnerabilities")
+
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
 
     StitchCallGraph().stitchCallGraph(args, call_graphs)
