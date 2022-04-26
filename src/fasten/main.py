@@ -16,6 +16,8 @@ class Main:
     parser.add_argument("--timestamp", type=int, help="Timestamp of the package's version")
     parser.add_argument("--version", type=str, help="Version of the product")
     parser.add_argument("--requirements", type=str, help="Path to the requirements file")
+    parser.add_argument("--cg_path", type=str, help="Path to the Call Graphs to be stored")
+    parser.add_argument("--scg_path", type=str, help="Path to the Stitched Call Graph to be stored")
     args = parser.parse_args()
 
     url = 'https://api.fasten-project.eu/api/pypi/' # URL to the FASTEN API
