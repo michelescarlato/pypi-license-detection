@@ -1,4 +1,4 @@
-# Stitch Call Graphs together.
+# Stitch Call Graphs togehter
 
 import json
 from stitcher.stitcher import Stitcher
