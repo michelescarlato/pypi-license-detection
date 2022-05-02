@@ -1,10 +1,8 @@
 import argparse
-#import sys
 from fasten.readRequirementsFile import ReadRequirementsFile
 from fasten.createCallGraph import CreateCallGraph
 from fasten.receiveCallGraphs import ReceiveCallGraphs
 from fasten.stitchCallGraph import StitchCallGraph
-#from fasten import FastenPackage
 
 
 def main():
