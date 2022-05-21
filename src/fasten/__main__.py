@@ -1,8 +1,8 @@
 import argparse
-from fasten.readRequirementsFile import ReadRequirementsFile
-from fasten.createCallGraph import CreateCallGraph
-from fasten.receiveCallGraphs import ReceiveCallGraphs
-from fasten.stitchCallGraph import StitchCallGraph
+from readRequirementsFile import ReadRequirementsFile
+from createCallGraph import CreateCallGraph
+from receiveCallGraphs import ReceiveCallGraphs
+from stitchCallGraph import StitchCallGraph
 
 
 def main():
@@ -25,7 +25,7 @@ def main():
     call_graphs = []
 
     pkgs = ReadRequirementsFile.readFile(args.requirements) # Read requirements.txt
-
+    print(pkgs)
 # TODO: Enable plugin to receive Call Graphs and metadata information from FASTEN as soon as the pypi-API is ready
 #    package = FastenPackage(url, forge, pkg_name, pkg_version)
 #    result = package.get_pkg_metadata()
