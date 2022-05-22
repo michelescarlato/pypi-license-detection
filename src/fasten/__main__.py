@@ -17,6 +17,7 @@ def main():
     parser.add_argument("--cg_path", type=str, help="Path where the Call Graphs will be stored")
     parser.add_argument("--scg_path", type=str, help="Path where the Stitched Call Graph will be stored")
     args = parser.parse_args()
+    print(args)
 
     url = 'https://api.fasten-project.eu/api/pypi/' # URL to the FASTEN API
     forge = "local" # Source the product was downloaded from
@@ -31,7 +32,7 @@ def main():
 #    result = package.get_pkg_metadata()
 #    print(result)
     call_graphs = ReceiveCallGraphs.receiveCallGraphs(args, pkgs, url)
-    call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
+    #call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
 
     StitchCallGraph().stitchCallGraph(args, call_graphs)
