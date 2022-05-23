@@ -10,7 +10,7 @@ Therefore, it is recommended by the [official python documentation](https://docs
 1. Make sure that you have the packages [`pycg`](https://github.com/vitsalis/pycg) and [`pycg-stitch`](https://github.com/fasten-project/pycg-stitch) installed.  
    To install them run the following inside the pycg / pycg-stitch folder:
     ```
-    python3 setup.py install
+    pip install pycg pycg-stitch requests 
     ```
 
 2. To install the `pypi-plugin` on your system run the following command inside the pypi-plugin folder:

@@ -4,6 +4,9 @@ import re
 import json
 import time
 import requests
+from createCallGraph import CreateCallGraph
+from pycg.pycg import CallGraphGenerator
+from pathlib import Path
 
 class ReceiveCallGraphs:
 
@@ -34,6 +37,15 @@ class ReceiveCallGraphs:
 #                    call_graphs.append(call_graph) # append Call Graph to list
                 elif response.status_code == 500:
                     print(package + ":" + pkgs[package] + ": Call Graph not available!")
+                    print("Proceeding with call graph generation...")
+
+                    # Here we need to create the call graph locally
+                    entry_point = []  # List of python files related to the current project
+
+                    for file_path in Path(args.project_path).glob("**/*.py"):
+                        entry_point.append(str(file_path))
+                    cg = CallGraphGenerator(entry_point, args.pkg_name, max_iter, operation)
+
                 else:
                     print("something went wrong")
 
