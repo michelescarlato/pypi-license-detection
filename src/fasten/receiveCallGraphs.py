@@ -13,11 +13,6 @@ class ReceiveCallGraphs:
     @staticmethod
     def receiveCallGraphs(args, pkgs, url):
 
-        forge = "local"  # Source the product was downloaded from
-        max_iter = -1  # Maximum number of iterations through source code (from pycg).
-        operation = "call-graph"  # or key-error for key error detection on dictionaries (from pycg).
-
-
         print("Read Call Graphs from FASTEN:")
         pkgs = json.loads(pkgs)
         call_graphs = []
