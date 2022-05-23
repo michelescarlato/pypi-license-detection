@@ -1,0 +1,5 @@
+pycg
+pycg-stitch
+requests
+flask
+pkginfo

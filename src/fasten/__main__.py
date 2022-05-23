@@ -6,15 +6,14 @@ from receiveCallGraphs import ReceiveCallGraphs
 from stitchCallGraph import StitchCallGraph
 
 
-from fasten.readRequirementsFile import ReadRequirementsFile
-from fasten.createCallGraph import CreateCallGraph
-from fasten.receiveCallGraphs import ReceiveCallGraphs
-from fasten.stitchCallGraph import StitchCallGraph
-
+import entrypoint
 
 
 def main():
 
+    print(entrypoint.run_pip("requirements.txt", True))
+    print("############################################")
+    print("############################################")
     parser = argparse.ArgumentParser(prog='PyPI-plugin')
     parser.add_argument("--product", type=str, help="Package name") # pypiPlugin-test-online
     parser.add_argument("--pkg_name", type=str, help="Package containing the code to be analyzed") # pypiPlugin-test-online
