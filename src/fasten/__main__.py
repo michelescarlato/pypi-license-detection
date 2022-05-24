@@ -11,7 +11,9 @@ import entrypoint
 
 def main():
 
-    print(entrypoint.run_pip("requirements.txt", True))
+    package_list = entrypoint.run_pip("requirements.txt", True)
+    for i in package_list[1]:
+        print(i)
     print("############################################")
     print("############################################")
     parser = argparse.ArgumentParser(prog='PyPI-plugin')
