@@ -5,6 +5,7 @@ from createCallGraph import CreateCallGraph
 from receiveCallGraphs import ReceiveCallGraphs
 from stitchCallGraph import StitchCallGraph
 from executePypiResolver import ExecutePypiResolver
+from pypiPluginUtils import PypiPluginUtils
 
 
 import entrypoint
@@ -23,7 +24,7 @@ def main():
     parser.add_argument("--fasten_data", type=str, help="Path where the Call Graphs will be stored")
     parser.add_argument("--scg_path", type=str, help="Path where the Stitched Call Graph will be stored")
     args = parser.parse_args()
-
+    PypiPluginUtils.DirectoryCheck(args.fasten_data, args.scg_path)
     ExecutePypiResolver.executePypiResolver(args.requirements)
 
     '''
