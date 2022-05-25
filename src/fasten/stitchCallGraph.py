@@ -1,4 +1,4 @@
-# Stitch Call Graphs togehter
+# Stitch Call Graphs together.
 
 import json
 from stitcher.stitcher import Stitcher
@@ -10,11 +10,14 @@ class StitchCallGraph:
 
         print("Stitch Call Graphs")
 
-        stitcher = Stitcher(call_graphs)
+        stitcher = Stitcher(call_graphs, "simple")
         stitcher.stitch()
         output = json.dumps(stitcher.output())
-#        print(output)
+        stitched_call_graph = args.scg_path + args.product + ".json"
 
         with open(args.scg_path + args.product + ".json", "w+") as f:
             f.write(json.dumps(output))
-        print('Saved Stiched Call Graph in: ' + args.scg_path + args.product)
+        print('Saved Stiched Call Graph in: ' + stitched_call_graph)
+#        print('Saved Stiched Call Graph in: ' + args.scg_path + args.product)
+
+        return stitched_call_graph
