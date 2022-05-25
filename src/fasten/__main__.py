@@ -4,6 +4,7 @@ from readRequirementsFile import ReadRequirementsFile
 from createCallGraph import CreateCallGraph
 from receiveCallGraphs import ReceiveCallGraphs
 from stitchCallGraph import StitchCallGraph
+from executePypiResolver import ExecutePypiResolver
 
 
 import entrypoint
@@ -11,11 +12,7 @@ import entrypoint
 
 def main():
 
-    package_list = entrypoint.run_pip("requirements.txt", True)
-    for i in package_list[1]:
-        print(i)
-    print("############################################")
-    print("############################################")
+
     parser = argparse.ArgumentParser(prog='PyPI-plugin')
     parser.add_argument("--product", type=str, help="Package name") # pypiPlugin-test-online
     parser.add_argument("--pkg_name", type=str, help="Package containing the code to be analyzed") # pypiPlugin-test-online
@@ -27,7 +24,9 @@ def main():
     parser.add_argument("--scg_path", type=str, help="Path where the Stitched Call Graph will be stored")
     args = parser.parse_args()
 
+    ExecutePypiResolver.executePypiResolver(args.requirements)
 
+    '''
     url = 'https://api.fasten-project.eu/api/pypi/' # URL to the FASTEN API
     forge = "local" # Source the product was downloaded from
     max_iter = -1 # Maximum number of iterations through source code (from pycg).
@@ -46,6 +45,6 @@ def main():
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
 
     StitchCallGraph().stitchCallGraph(args, call_graphs)
-
+    '''
 if __name__ == "__main__":
     main()
