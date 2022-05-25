@@ -23,7 +23,7 @@ def main():
     parser.add_argument("--timestamp", type=int, help="Timestamp of the package's version") # 42
     parser.add_argument("--version", type=str, help="Version of the product") # 1.0
     parser.add_argument("--requirements", type=str, help="Path to the requirements file") # /mnt/stuff/projects/work/pypi-plugin/requirements.txt
-    parser.add_argument("--cg_path", type=str, help="Path where the Call Graphs will be stored")
+    parser.add_argument("--fasten_data", type=str, help="Path where the Call Graphs will be stored")
     parser.add_argument("--scg_path", type=str, help="Path where the Stitched Call Graph will be stored")
     args = parser.parse_args()
 
