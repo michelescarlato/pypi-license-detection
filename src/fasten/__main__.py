@@ -7,10 +7,6 @@ from stitchCallGraph import StitchCallGraph
 from executePypiResolver import ExecutePypiResolver
 from pypiPluginUtils import PypiPluginUtils
 
-
-import entrypoint
-
-
 def main():
 
 
@@ -25,9 +21,8 @@ def main():
     parser.add_argument("--scg_path", type=str, help="Path where the Stitched Call Graph will be stored")
     args = parser.parse_args()
     PypiPluginUtils.DirectoryCheck(args.fasten_data, args.scg_path)
-    ExecutePypiResolver.executePypiResolver(args.requirements)
+    DependenciesTree = ExecutePypiResolver.executePypiResolver(args.requirements)
 
-    '''
     url = 'https://api.fasten-project.eu/api/pypi/' # URL to the FASTEN API
     forge = "local" # Source the product was downloaded from
     max_iter = -1 # Maximum number of iterations through source code (from pycg).
@@ -40,12 +35,12 @@ def main():
 #    package = FastenPackage(url, forge, pkg_name, pkg_version)
 #    result = package.get_pkg_metadata()
 #    print(result)
-    call_graphs = ReceiveCallGraphs.receiveCallGraphs(args, pkgs, url)
+    call_graphs = ReceiveCallGraphs.receiveCallGraphs(DependenciesTree, pkgs, url)
 
     call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
 
     StitchCallGraph().stitchCallGraph(args, call_graphs)
-    '''
+
 if __name__ == "__main__":
     main()

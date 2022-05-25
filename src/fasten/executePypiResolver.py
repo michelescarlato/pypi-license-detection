@@ -22,4 +22,4 @@ class ExecutePypiResolver:
 
         if (len(filename)) > 0:
             print("The new " + filename + " has been created successfully")
-        return
+        return filename
