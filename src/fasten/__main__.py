@@ -32,13 +32,13 @@ def main():
     call_graphs = []
     vulnerabilities = []
 
-    pkgs = ReadRequirementsFile.readFile(args.requirements) # Read requirements.txt
+    pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
     pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(pkgs, url) # Check if packages are known by FASTEN
 
 
-    call_graphs = RequestFasten.requestFasten(DependenciesTree, pkgs, url, "rcg")
+    call_graphs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
     call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
-    vulnerabilities = RequestFasten.requestFasten(pkgs, url, "vulnerabilities")
+    vulnerabilities = RequestFasten.requestFasten(args, pkgs, url, "vulnerabilities")
 
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
 
