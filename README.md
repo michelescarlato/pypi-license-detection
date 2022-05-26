@@ -61,15 +61,15 @@ These steps are optional as the pypi-plugin takes its information from the faste
 
 8. You can also run the pypi-plugin from inside the `fasten-pypi-plugin/src/fasten`-folder for development or testing purposes:
     ```
-    python3 main.py \
-    	--product fasten-pypi-plugin \
-    	--pkg_name fasten-pypi-plugin \
-    	--project_path ./ \
-    	--timestamp 42 \
-    	--version 1.0 \
-    	--requirements ../../requirements.txt \
-    	--cg_path callGraphs/ \
-    	--scg_path callGraphs/
+    python3 __main__.py \
+            --product fasten-pypi-plugin \
+            --pkg_name fasten-pypi-plugin \
+            --project_path ./ \
+            --timestamp 42 \
+            --version 1.0 \
+            --requirements ../../requirements.txt \
+            --fasten_data callGraphs/ \
+            --scg_path callGraphs/
     ```
 
 1. The Call-Graphs can be found inside the `fasten-pypi-plugin/src/fasten/callGraphs`-folder.

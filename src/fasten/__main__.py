@@ -3,7 +3,7 @@ from fasten.readRequirementsFile import ReadRequirementsFile
 from fasten.checkPackageAvailability import CheckPackageAvailability
 from fasten.createCallGraph import CreateCallGraph
 from fasten.requestFasten import RequestFasten
-from fasten.stitchCallGraph import StitchCallGraph
+from fasten.stitchCallGraphs import StitchCallGraphs
 from fasten.createAdjacencyList import CreateAdjacencyList
 from fasten.enrichCallGraph import EnrichCallGraph
 from fasten.stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
