@@ -7,6 +7,7 @@ from fasten.stitchCallGraph import StitchCallGraph
 from fasten.createAdjacencyList import CreateAdjacencyList
 from fasten.enrichCallGraph import EnrichCallGraph
 from fasten.stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
+from fasten.createDirectories import CreateDirectories
 
 
 def main():
@@ -28,6 +29,8 @@ def main():
     operation = "call-graph" # or key-error for key error detection on dictionaries (from pycg).
     call_graphs = []
     vulnerabilities = []
+
+    CreateDirectories.DirectoryCheck(args.fasten_data, args.scg_path) # Create directories to store the Call Graphs and the Stitched Call Graph
 
     pkgs = ReadRequirementsFile.readFile(args.requirements) # Read requirements.txt
     pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(pkgs, url) # Check if packages are known by FASTEN
