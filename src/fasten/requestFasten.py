@@ -7,7 +7,7 @@ import requests
 class RequestFasten:
 
     @staticmethod
-    def requestFasten(pkgs, url, path):
+    def requestFasten(args, pkgs, url, path):
 
         print("Receive " + path + " from FASTEN:")
         pkgs = json.loads(pkgs)
@@ -23,11 +23,11 @@ class RequestFasten:
                 if response.status_code == 200:
 
                     metadata_JSON = response.json() # save in JSON format
-                    with open("fastenData/" + package + "." + path + ".json", "w") as f:
+                    with open(args.fasten_data + package + "." + path + ".json", "w") as f:
                         f.write(json.dumps(metadata_JSON)) # save Call Graph or metadata in a file
 
                     print(type(metadata_JSON))
-                    metadata_JSON_File_Locations.append("fastenData/" + package + "." + path + ".json") # append Call Graph or metadata file location to a list
+                    metadata_JSON_File_Locations.append(args.fasten_data + package + "." + path + ".json") # append Call Graph or metadata file location to a list
 
                     print(package + ":" + pkgs[package] + ": " + path + " received.")
 

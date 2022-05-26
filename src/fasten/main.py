@@ -18,8 +18,8 @@ class Main:
     parser.add_argument("--timestamp", type=int, help="Timestamp of the package's version")
     parser.add_argument("--version", type=str, help="Version of the product")
     parser.add_argument("--requirements", type=str, help="Path to the requirements file")
-    parser.add_argument("--cg_path", type=str, help="Path to the Call Graphs to be stored")
-    parser.add_argument("--scg_path", type=str, help="Path to the Stitched Call Graph to be stored")
+    parser.add_argument("--fasten_data", type=str, help="Path to the folder where the received FASTEN data will be stored")
+    parser.add_argument("--scg_path", type=str, help="Path to the folder where the Stitched Call Graph will be stored")
     args = parser.parse_args()
 
     url = 'https://api.fasten-project.eu/api/pypi/' # URL to the FASTEN API
@@ -33,9 +33,9 @@ class Main:
     pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(pkgs, url) # Check if packages are known by FASTEN
 
 
-    call_graphs = RequestFasten.requestFasten(pkgs, url, "rcg")
+    call_graphs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
     call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
-    vulnerabilities = RequestFasten.requestFasten(pkgs, url, "vulnerabilities")
+    vulnerabilities = RequestFasten.requestFasten(args, pkgs, url, "vulnerabilities")
 
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
 
