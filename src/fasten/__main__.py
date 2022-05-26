@@ -1,22 +1,22 @@
 import argparse
-from readRequirementsFile import ReadRequirementsFile
-from checkPackageAvailability import CheckPackageAvailability
-from createCallGraph import CreateCallGraph
-from requestFasten import RequestFasten
-from stitchCallGraph import StitchCallGraph
-from enrichCallGraph import EnrichCallGraph
-from stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
+from fasten.readRequirementsFile import ReadRequirementsFile
+from fasten.checkPackageAvailability import CheckPackageAvailability
+from fasten.createCallGraph import CreateCallGraph
+from fasten.requestFasten import RequestFasten
+from fasten.stitchCallGraph import StitchCallGraph
+from fasten.enrichCallGraph import EnrichCallGraph
+from fasten.stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
 
 
-class Main:
+def main():
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--product", type=str, help="Package name")
-    parser.add_argument("--pkg_name", type=str, help="Package containing the code to be analyzed")
-    parser.add_argument("--project_path", type=str, help="Path to package to be analyzed")
-    parser.add_argument("--timestamp", type=int, help="Timestamp of the package's version")
-    parser.add_argument("--version", type=str, help="Version of the product")
-    parser.add_argument("--requirements", type=str, help="Path to the requirements file")
+    parser = argparse.ArgumentParser(prog='PyPI-plugin')
+    parser.add_argument("--product", type=str, help="Package name") # pypiPlugin-test-online
+    parser.add_argument("--pkg_name", type=str, help="Package containing the code to be analyzed") # pypiPlugin-test-online
+    parser.add_argument("--project_path", type=str, help="Path to package to be analyzed") # /mnt/stuff/projects/work/pypi-plugin/src/fasten/
+    parser.add_argument("--timestamp", type=int, help="Timestamp of the package's version") # 42
+    parser.add_argument("--version", type=str, help="Version of the product") # 1.0
+    parser.add_argument("--requirements", type=str, help="Path to the requirements file") # /mnt/stuff/projects/work/pypi-plugin/requirements.txt
     parser.add_argument("--fasten_data", type=str, help="Path to the folder where the received FASTEN data will be stored")
     parser.add_argument("--scg_path", type=str, help="Path to the folder where the Stitched Call Graph will be stored")
     args = parser.parse_args()
@@ -41,3 +41,6 @@ class Main:
     stitched_call_graph = StitchCallGraph().stitchCallGraph(args, call_graphs)
     EnrichCallGraph().enrichCallGraph(pkgs, stitched_call_graph)
     StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
+
+if __name__ == "__main__":
+    main()
