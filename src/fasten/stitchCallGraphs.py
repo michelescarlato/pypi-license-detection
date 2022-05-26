@@ -3,10 +3,10 @@
 import json
 from stitcher.stitcher import Stitcher
 
-class StitchCallGraph:
+class StitchCallGraphs:
 
     @staticmethod
-    def stitchCallGraph(args, call_graphs):
+    def stitchCallGraphs(args, call_graphs):
 
         print("Stitch Call Graphs")
 

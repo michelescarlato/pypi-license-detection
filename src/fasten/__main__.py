@@ -3,7 +3,7 @@ from fasten.readRequirementsFile import ReadRequirementsFile
 from fasten.checkPackageAvailability import CheckPackageAvailability
 from fasten.createCallGraph import CreateCallGraph
 from fasten.requestFasten import RequestFasten
-from fasten.stitchCallGraph import StitchCallGraph
+from fasten.stitchCallGraphs import StitchCallGraphs
 from fasten.createAdjacencyList import CreateAdjacencyList
 from fasten.enrichCallGraph import EnrichCallGraph
 from fasten.stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
@@ -42,7 +42,7 @@ def main():
 
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
 
-    stitched_call_graph = StitchCallGraph().stitchCallGraph(args, call_graphs)
+    stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, call_graphs)
 
     adjList = CreateAdjacencyList
     adjList.createAdjacencyList("./StitchedCallGraph/testGraph.json")
