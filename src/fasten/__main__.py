@@ -1,13 +1,13 @@
 import argparse
-from fasten.readRequirementsFile import ReadRequirementsFile
-from fasten.checkPackageAvailability import CheckPackageAvailability
-from fasten.createCallGraph import CreateCallGraph
-from fasten.requestFasten import RequestFasten
-from fasten.stitchCallGraphs import StitchCallGraphs
-from fasten.createAdjacencyList import CreateAdjacencyList
-from fasten.enrichCallGraph import EnrichCallGraph
-from fasten.stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
-from fasten.createDirectories import CreateDirectories
+from readRequirementsFile import ReadRequirementsFile
+from checkPackageAvailability import CheckPackageAvailability
+from createCallGraph import CreateCallGraph
+from requestFasten import RequestFasten
+from stitchCallGraphs import StitchCallGraphs
+from createAdjacencyList import CreateAdjacencyList
+from enrichCallGraph import EnrichCallGraph
+from stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
+from createDirectories import CreateDirectories
 
 
 def main():
