@@ -8,6 +8,7 @@ from createAdjacencyList import CreateAdjacencyList
 from enrichCallGraph import EnrichCallGraph
 from stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
 from createDirectories import CreateDirectories
+from executePypiResolver import ExecutePypiResolver
 
 
 def main():
@@ -31,8 +32,9 @@ def main():
     vulnerabilities = []
 
     CreateDirectories.DirectoryCheck(args.fasten_data, args.scg_path) # Create directories to store the Call Graphs and the Stitched Call Graph
+    DependenciesTree = ExecutePypiResolver.executePypiResolver(args.requirements)
 
-    pkgs = ReadRequirementsFile.readFile(args.requirements) # Read requirements.txt
+    pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
     pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(pkgs, url) # Check if packages are known by FASTEN
 
 
