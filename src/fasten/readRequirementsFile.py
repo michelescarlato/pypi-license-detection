@@ -13,6 +13,7 @@ class ReadRequirementsFile:
             pkgs = { }
             for x in requirements:
                 name = "".join(re.findall(r".+(?===)", x))
+                name = name.lower()
                 version = "".join(re.findall(r"(?<===).+", x))
                 pkgs[name] = version
 
