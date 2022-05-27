@@ -1,4 +1,6 @@
 import argparse
+import json
+
 from readRequirementsFile import ReadRequirementsFile
 from checkPackageAvailability import CheckPackageAvailability
 from createCallGraph import CreateCallGraph
@@ -9,6 +11,7 @@ from enrichCallGraph import EnrichCallGraph
 from stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
 from createDirectories import CreateDirectories
 from executePypiResolver import ExecutePypiResolver
+from receiveCallGraphs import ReceiveCallGraphs
 
 
 def main():
@@ -34,12 +37,17 @@ def main():
     CreateDirectories.DirectoryCheck(args.fasten_data, args.scg_path) # Create directories to store the Call Graphs and the Stitched Call Graph
     DependenciesTree = ExecutePypiResolver.executePypiResolver(args.requirements)
 
-    pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
-    pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(pkgs, url) # Check if packages are known by FASTEN
+    all_pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
+    pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, url) # Check if packages are known by FASTEN
 
 
     call_graphs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
+    print("Received call graphs:")
+    print(call_graphs)
+
     call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
+    print("Generated call graphs")
+    print(call_graphs)
     vulnerabilities = RequestFasten.requestFasten(args, pkgs, url, "vulnerabilities")
 
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
@@ -48,6 +56,27 @@ def main():
 
     adjList = CreateAdjacencyList
     adjList.createAdjacencyList("./StitchedCallGraph/testGraph.json")
+
+    # Michele work - after dependencies tree resolution using pypi-resolver.
+    pkgs = json.loads(pkgs)
+    print(str(len(pkgs))+" known packages from fasten are:")
+    print(pkgs)
+    unknown_pkgs = json.loads(unknown_pkgs)
+    print(str(len(unknown_pkgs)) + " unknown packages from fasten are:")
+    print(unknown_pkgs)
+
+    call_graphs, known_call_graphs, unknown_call_graphs = ReceiveCallGraphs.receiveCallGraphs(all_pkgs,url)
+    print(str(len(known_call_graphs)) + " known call graphs received from fasten are:")
+    print(known_call_graphs)
+    #print(len(known_call_graphs.keys()))
+
+    print(str(len(unknown_call_graphs)) + " unknown call graphs. Proceeding with local graph generation:")
+    print(unknown_call_graphs)
+    print(type(unknown_call_graphs))
+    #print(len(unknown_call_graphs.keys()))
+
+    # Here goes the local call graph generation for the unknown_call_graphs
+
 
 #    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
 
