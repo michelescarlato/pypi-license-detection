@@ -4,47 +4,33 @@ import re
 import json
 import time
 import requests
+from gitHubParsingUtils import *
 
-
-class ReceiveCallGraphs:
+class ReceiveLocallyLicensesInformation:
 
     @staticmethod
-    def receiveCallGraphs(pkgs, url):
+    def receiveLocallyLicensesInformation(pkgs):
 
-        print("Read Call Graphs from FASTEN:")
-        pkgs = json.loads(pkgs)
-        call_graphs = []
-        known_call_graphs = {}
-        unknown_call_graphs = {}
-        connectivity_issues = {}
-
+        print("Querying PyPI.org APIs for license information:")
+        #pkgs = json.loads(pkgs)
+        licenses = {}
+        print(pkgs)
         for package in pkgs:
-
-            URL = url + "packages/" + package + "/" + pkgs[package] + "/rcg"
+            URL = "https://pypi.org/" + "pypi/" + package + "/" + pkgs[package] + "/json"
             print(URL)
-
+            packageVersion = pkgs[package]
             try:
                 response = requests.get(url=URL)  # get Call Graph for specified package
-
                 if response.status_code == 200:
-
-                    call_graph = response.json()  # save Call Graph as JSON format
-                    with open("callGraphs/" + package + ".json", "w") as f:
-                        f.write(json.dumps(call_graph))  # save Call Graph in a file
-
-                    call_graphs.append("callGraphs/" + package + ".json")  # append Call Graph file location to list
-
-                    print(package + ":" + pkgs[package] + ": Call Graph received.")
-                    known_call_graphs[package] = pkgs[package]
-
-                #                    call_graphs.append(call_graph) # append Call Graph to list
-                elif response.status_code == 500:
-                    print(package + ":" + pkgs[package] + ": Call Graph not available!")
-                    unknown_call_graphs[package] = pkgs[package]
-                else:
-                    connectivity_issues[package] = pkgs[package]
-                    print("something went wrong")
-
+                    jsonResponse = response.json()  # save Call Graph as JSON format
+                    license = (jsonResponse["info"]["license"])
+                    # here a call to the LCV endpoint convertToSPDX endpoint should be performed
+                    if len(license) == 0 :
+                        GitHubURL = retrieveGitHubUrl(jsonResponse, package)
+                        print("URL Retrieved:")
+                        print(GitHubURL)
+                    if len(license) > 0:
+                        licenses[package] = license
             except requests.exceptions.ReadTimeout:
                 print('Connection timeout: ReadTimeout')
             except requests.exceptions.ConnectTimeout:
@@ -52,5 +38,4 @@ class ReceiveCallGraphs:
             except requests.exceptions.ConnectionError:
                 print('Connection timeout: ConnectError')
                 time.sleep(30)
-
-        return call_graphs, known_call_graphs, unknown_call_graphs, connectivity_issues
+        return licenses
