@@ -16,6 +16,7 @@ class ReceiveCallGraphs:
         call_graphs = []
         known_call_graphs = {}
         unknown_call_graphs = {}
+        connectivity_issues = {}
 
         for package in pkgs:
 
@@ -41,6 +42,7 @@ class ReceiveCallGraphs:
                     print(package + ":" + pkgs[package] + ": Call Graph not available!")
                     unknown_call_graphs[package] = pkgs[package]
                 else:
+                    connectivity_issues[package] = pkgs[package]
                     print("something went wrong")
 
             except requests.exceptions.ReadTimeout:
@@ -51,4 +53,4 @@ class ReceiveCallGraphs:
                 print('Connection timeout: ConnectError')
                 time.sleep(30)
 
-        return call_graphs, known_call_graphs, unknown_call_graphs
+        return call_graphs, known_call_graphs, unknown_call_graphs, connectivity_issues
