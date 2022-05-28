@@ -4,19 +4,22 @@ import json
 import time
 import requests
 
-class RequestFasten:
+class RequestFastenKnownAndUnknownLists:
 
     @staticmethod
-    def requestFasten(args, pkgs, url, path):
+    def requestFastenKnownAndUnknownLists(args, pkgs, url, path):
 
         print("Receive " + path + " from FASTEN:")
         pkgs = json.loads(pkgs)
         metadata_JSON_File_Locations = [] # Call Graphs and metadata file location
+        known_pkg_metadata = {}
+        unknown_pkg_metadata = {}
+        connectivity_issues = {}
 
         for package in pkgs:
 
             URL = url + "packages/" + package + "/" + pkgs[package] + "/" + path
-            print(URL)
+            #print(URL)
             try:
                 response = requests.get(url=URL) # get Call Graph or metadata for specified package
 
@@ -30,11 +33,14 @@ class RequestFasten:
                     metadata_JSON_File_Locations.append(args.fasten_data + package + "." + path + ".json") # append Call Graph or metadata file location to a list
 
                     print(package + ":" + pkgs[package] + ": " + path + " received.")
+                    known_pkg_metadata[package] = pkgs[package]
 
                 elif response.status_code == 500:
                     print(package + ":" + pkgs[package] + ": " + path + " not available!")
+                    unknown_pkg_metadata[package] = pkgs[package]
                 else:
                     print("something went wrong")
+                    connectivity_issues[package] = pkgs[package]
 
             except requests.exceptions.ReadTimeout:
                 print('Connection timeout: ReadTimeout')
@@ -44,4 +50,4 @@ class RequestFasten:
                 print('Connection timeout: ConnectError')
                 time.sleep(30)
 
-        return metadata_JSON_File_Locations
+        return metadata_JSON_File_Locations, known_pkg_metadata, unknown_pkg_metadata, connectivity_issues
