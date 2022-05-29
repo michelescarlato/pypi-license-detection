@@ -109,7 +109,8 @@ def main():
 
     # implementing local retrieval for license information
     licenses = ReceiveLocallyLicensesInformation.receiveLocallyLicensesInformation(unknown_pkgs)
-
+    print("License information retrieved: ")
+    print(licenses)
 #    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
 
 if __name__ == "__main__":
