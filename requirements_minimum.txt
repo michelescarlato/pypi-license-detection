@@ -1,3 +1,5 @@
+#not spdx from pypi
+aiosignal==1.2.0
 setuptools==62.3.2
 pyte==0.8.1
 pytz==2022.1
