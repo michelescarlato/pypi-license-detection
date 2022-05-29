@@ -1,3 +1,4 @@
+setuptools==62.3.2
 pyte==0.8.1
 pytz==2022.1
 #pycg==0.0.5
