@@ -8,8 +8,19 @@ import re
 
 def retrieveGitHubUrl(jsonResponse, packageName):
     global url
+    url = ""
     response = json.dumps(jsonResponse)
     data = json.loads(response)
+    #JSONKeysList = ['home_page']
+
+    if packageName in data['info']['home_page']:
+        if "https://github.com/" in data['info']['home_page']:
+            url = data['info']['home_page']
+            return url
+    if packageName in data['info']['project_urls']['Homepage']:
+        if "https://github.com/" in data['info']['home_page']:
+            url = data['info']['home_page']
+            return url
     iterdict(data, packageName)
     return url
 
