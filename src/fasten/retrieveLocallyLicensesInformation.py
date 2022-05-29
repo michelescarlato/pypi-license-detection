@@ -18,19 +18,25 @@ class ReceiveLocallyLicensesInformation:
             packageName = package
             licenses[i]['packageName'] = packageName
             licenses[i]['packageVersion'] = packageVersion
-            PyPILicense,jsonResponse = retrieveLicenseInformationFromPyPI(packageName, packageVersion)
+            PyPILicense, PyPILicenseSPDX, jsonResponse = retrieveLicenseInformationFromPyPI(packageName, packageVersion)
             if len(PyPILicense) > 0:
                 licenses[i]['PyPILicense'] = PyPILicense
+            if len(PyPILicenseSPDX) > 0:
+                licenses[i]['PyPILicenseSPDX'] = PyPILicenseSPDX
             #if len(PyPILicense) == 0:
             GitHubURL = retrieveGitHubUrl(jsonResponse, package)
-            print("URL Retrieved:")
+            print("GitHub URL Retrieved:")
             print(GitHubURL)
             if len(GitHubURL) > 0:
                 GitHubAPIurl = RetrieveGitHubAPIurl(GitHubURL)
                 if len(GitHubURL) > 0:
-                    GitHubLicense = RetrieveLicenseFromGitHub(GitHubAPIurl)
-                    if GitHubLicense is not None:
-                        if len(GitHubLicense) > 0:
+                    print(GitHubURL)
+                    GitHubLicense, GitHubLicenseSPDX  = RetrieveLicenseFromGitHub(GitHubAPIurl)
+                    if GitHubLicense != "":
+                        if GitHubLicense is not None:
                             licenses[i]['GitHubLicense'] = GitHubLicense
+                    if GitHubLicenseSPDX != "":
+                        if GitHubLicenseSPDX is not None:
+                            licenses[i]['GitHubLicenseSPDX'] = GitHubLicenseSPDX
             i+=1
         return licenses
