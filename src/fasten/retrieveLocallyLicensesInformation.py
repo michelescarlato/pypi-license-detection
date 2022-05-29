@@ -1,41 +1,36 @@
 # Send package name and version to FASTEN and receive a Call Graph for it.
 
-import re
-import json
-import time
-import requests
-from gitHubParsingUtils import *
+from gitHubAndPyPIParsingUtils import *
 
 class ReceiveLocallyLicensesInformation:
 
     @staticmethod
+    # add the source (e.g. GitHub or PyPI) to the dict!
     def receiveLocallyLicensesInformation(pkgs):
+        print("Retrieval of license information:")
 
-        print("Querying PyPI.org APIs for license information:")
-        #pkgs = json.loads(pkgs)
+        #licenses = {0: {'packageName' : '', 'PyPILicense' : '', 'GitHubLicense' : ''}}
         licenses = {}
-        print(pkgs)
+        i = 1
         for package in pkgs:
-            URL = "https://pypi.org/" + "pypi/" + package + "/" + pkgs[package] + "/json"
-            print(URL)
+            licenses[i] = {}
             packageVersion = pkgs[package]
-            try:
-                response = requests.get(url=URL)  # get Call Graph for specified package
-                if response.status_code == 200:
-                    jsonResponse = response.json()  # save Call Graph as JSON format
-                    license = (jsonResponse["info"]["license"])
-                    # here a call to the LCV endpoint convertToSPDX endpoint should be performed
-                    if len(license) == 0 :
-                        GitHubURL = retrieveGitHubUrl(jsonResponse, package)
-                        print("URL Retrieved:")
-                        print(GitHubURL)
-                    if len(license) > 0:
-                        licenses[package] = license
-            except requests.exceptions.ReadTimeout:
-                print('Connection timeout: ReadTimeout')
-            except requests.exceptions.ConnectTimeout:
-                print('Connection timeout: ConnectTimeout')
-            except requests.exceptions.ConnectionError:
-                print('Connection timeout: ConnectError')
-                time.sleep(30)
+            packageName = package
+            licenses[i]['packageName'] = packageName
+            licenses[i]['packageVersion'] = packageVersion
+            PyPILicense,jsonResponse = retrieveLicenseInformationFromPyPI(packageName, packageVersion)
+            if len(PyPILicense) > 0:
+                licenses[i]['PyPILicense'] = PyPILicense
+            #if len(PyPILicense) == 0:
+            GitHubURL = retrieveGitHubUrl(jsonResponse, package)
+            print("URL Retrieved:")
+            print(GitHubURL)
+            if len(GitHubURL) > 0:
+                GitHubAPIurl = RetrieveGitHubAPIurl(GitHubURL)
+                if len(GitHubURL) > 0:
+                    GitHubLicense = RetrieveLicenseFromGitHub(GitHubAPIurl)
+                    if GitHubLicense is not None:
+                        if len(GitHubLicense) > 0:
+                            licenses[i]['GitHubLicense'] = GitHubLicense
+            i+=1
         return licenses
