@@ -14,6 +14,7 @@ from executePypiResolver import ExecutePypiResolver
 #from receiveCallGraphs import ReceiveCallGraphs
 from requestFastenKnownAndUnknownLists import RequestFastenKnownAndUnknownLists
 from retrieveLocallyLicensesInformation import ReceiveLocallyLicensesInformation
+from executeCallGraphGenerator import ExecuteCallGraphGenerator
 
 def main():
 
@@ -49,6 +50,7 @@ def main():
     call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
     print("Generated call graphs")
     print(call_graphs)
+    
     vulnerabilities = RequestFasten.requestFasten(args, all_pkgs, url, "vulnerabilities")
     print(vulnerabilities)
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
@@ -57,7 +59,8 @@ def main():
 
     adjList = CreateAdjacencyList
     adjList.createAdjacencyList("./StitchedCallGraph/testGraph.json")
-
+    
+    '''
     # Michele work - after dependencies tree resolution using pypi-resolver.
 
     ################################ CALL GRAPHS #############################
@@ -76,7 +79,9 @@ def main():
     print(unknown_call_graphs)
     #print(type(unknown_call_graphs))
     #print(len(unknown_call_graphs.keys()))
+    ExecuteCallGraphGenerator.executeCallGraphGenerator(unknown_call_graphs)
 
+    '''
     ################################## VULNERABILITIES ##############################################à
     print("VULNERABILITIES Retrieval:")
     vulnerabilities_location, known_vulnerabilities, unknown_vulnerabilities, vulnerabilities_connectivity_issues = RequestFastenKnownAndUnknownLists.requestFastenKnownAndUnknownLists(
@@ -102,7 +107,7 @@ def main():
     known_pkgs = json.loads(pkgs)
     print(str(len(known_pkgs)) + " [Licensing] known packages from fasten are:")
     print(known_pkgs)
-    '''
+    
     unknown_pkgs = json.loads(unknown_pkgs)
     print(str(len(unknown_pkgs)) + " [Licensing] unknown packages from fasten are:")
     print(unknown_pkgs)
@@ -112,6 +117,6 @@ def main():
     print("License information retrieved: ")
     print(licenses)
 #    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
-
+'''
 if __name__ == "__main__":
     main()
