@@ -15,10 +15,11 @@ def retrieveGitHubUrl(jsonResponse, packageName):
         if "https://github.com/" in data['info']['home_page']:
             url = data['info']['home_page']
             return url
-    if packageName in data['info']['project_urls']['Homepage']:
-        if "https://github.com/" in data['info']['home_page']:
-            url = data['info']['home_page']
-            return url
+    if 'Homepage' in data['info']['project_urls']:
+        if packageName in data['info']['project_urls']['Homepage']:
+            if "https://github.com/" in data['info']['project_urls']['Homepage']:
+                url = data['info']['home_page']
+                return url
     iterdict(data, packageName)
     return url
 
