@@ -1,6 +1,6 @@
 import argparse
 import json
-
+import time
 from readRequirementsFile import ReadRequirementsFile
 from checkPackageAvailability import CheckPackageAvailability
 from createCallGraph import CreateCallGraph
@@ -38,7 +38,7 @@ def main():
 
     CreateDirectories.DirectoryCheck(args.fasten_data, args.scg_path) # Create directories to store the Call Graphs and the Stitched Call Graph
     DependenciesTree = ExecutePypiResolver.executePypiResolver(args.requirements)
-
+    time.sleep(10)
     all_pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
     pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, url) # Check if packages are known by FASTEN
 
