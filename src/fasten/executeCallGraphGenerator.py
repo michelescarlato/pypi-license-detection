@@ -35,12 +35,23 @@ def executeSingleCallGraphGeneration(coord, packageName, packageVersion, directo
     # wait for the call graph to be generated
     print("Waiting for call graph generation at: ")
     print(CallGraphPathLocal)
+    timer = 1
     while not os.path.exists(CallGraphPathLocal):
         time.sleep(1)
+        timer += 1
+        if timer > 30:
+            print(""+str(timer)+" seconds without call graph generation passed.")
+            break
+        #print(timer)
+        #if timer > 5:
+         #   print ("timer is higher than 5")
+          #  break
+    #if timer < 5:
     if os.path.isfile(CallGraphPathLocal):
         print("Call graph generated at: "+CallGraphPathLocal)
         pass
     else:
-        raise ValueError("%s isn't a file!" % CallGraphPathLocal)
-    #time.sleep(300)
+        print("%s has not been generated!" % CallGraphPathLocal)
+            #print("%s isn't a file!" % CallGraphPathLocal)
+        #time.sleep(300)
 
