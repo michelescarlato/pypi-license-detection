@@ -14,7 +14,7 @@ from executePypiResolver import ExecutePypiResolver
 #from receiveCallGraphs import ReceiveCallGraphs
 from requestFastenKnownAndUnknownLists import RequestFastenKnownAndUnknownLists
 from retrieveLocallyLicensesInformation import ReceiveLocallyLicensesInformation
-from executeCallGraphGenerator import ExecuteCallGraphGenerator
+from executeCallGraphGenerator import executeCallGraphGenerator, deleteCallGraphsDir
 
 def main():
 
@@ -64,6 +64,8 @@ def main():
     # Michele work - after dependencies tree resolution using pypi-resolver.
 
     ################################ CALL GRAPHS #############################
+    CallGraphsDirLocal = "directoryName"
+    deleteCallGraphsDir(CallGraphsDirLocal)
     print("CALL GRAPHS Retrieval:")
     call_graphs_location, known_call_graphs, unknown_call_graphs, call_graphs_connectivity_issues = RequestFastenKnownAndUnknownLists.requestFastenKnownAndUnknownLists(args, all_pkgs, url, "rcg")
     print(str(len(known_call_graphs)) + " call graphs related queries had connectivity issues. Queries performed for these packages :")
@@ -79,7 +81,7 @@ def main():
     print(unknown_call_graphs)
     #print(type(unknown_call_graphs))
     #print(len(unknown_call_graphs.keys()))
-    ExecuteCallGraphGenerator.executeCallGraphGenerator(unknown_call_graphs)
+    executeCallGraphGenerator(unknown_call_graphs)#,CallGraphsDirLocal)
 
     '''
     ################################## VULNERABILITIES ##############################################à
