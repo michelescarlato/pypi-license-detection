@@ -36,9 +36,9 @@ def main():
     pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(pkgs, url) # Check if packages are known by FASTEN
 
 
-    call_graphs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
+    call_graphs, cg_pkgs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
     call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
-    vulnerabilities = RequestFasten.requestFasten(args, pkgs, url, "vulnerabilities")
+    vulnerabilities, vul_pkgs = RequestFasten.requestFasten(args, pkgs, url, "vulnerabilities")
 
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
 
@@ -48,6 +48,10 @@ def main():
     adjList.createAdjacencyList(stitched_call_graph)
 
 #    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
+
+    for package in vul_pkgs:
+        print("The package " + package + ":" + vul_pkgs[package] + " is vulnerable!")
+        print("Vulnerabilities can be found in " + args.fasten_data + package + "." + "vulnerabilities.json")
 
 if __name__ == "__main__":
     main()
