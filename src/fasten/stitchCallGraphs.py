@@ -17,6 +17,6 @@ class StitchCallGraphs:
 
         with open(args.scg_path + args.product + ".json", "w+") as f:
             f.write(output)
-        print('Saved Stiched Call Graph in: ' + args.scg_path + args.product)
+        print('Saved Stitched Call Graph in: ' + args.scg_path + args.product + ".json")
 
         return stitched_call_graph
