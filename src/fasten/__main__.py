@@ -45,7 +45,7 @@ def main():
     stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, call_graphs)
 
     adjList = CreateAdjacencyList
-    adjList.createAdjacencyList("./StitchedCallGraph/testGraph.json")
+    adjList.createAdjacencyList(stitched_call_graph)
 
 #    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
 
