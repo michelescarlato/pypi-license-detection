@@ -38,7 +38,7 @@ def main():
 
     CreateDirectories.DirectoryCheck(args.fasten_data, args.scg_path) # Create directories to store the Call Graphs and the Stitched Call Graph
     DependenciesTree = ExecutePypiResolver.executePypiResolver(args.requirements)
-    time.sleep(10)
+    time.sleep(20)
     all_pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
     pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, url) # Check if packages are known by FASTEN
 
@@ -54,13 +54,11 @@ def main():
     vulnerabilities = RequestFasten.requestFasten(args, all_pkgs, url, "vulnerabilities")
     print(vulnerabilities)
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
-
-    stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, call_graphs)
-
-    adjList = CreateAdjacencyList
-    adjList.createAdjacencyList("./StitchedCallGraph/testGraph.json")
-    
     '''
+
+
+    
+
     # Michele work - after dependencies tree resolution using pypi-resolver.
 
     ################################ CALL GRAPHS #############################
@@ -81,8 +79,13 @@ def main():
     print(unknown_call_graphs)
     #print(type(unknown_call_graphs))
     #print(len(unknown_call_graphs.keys()))
-    executeCallGraphGenerator(unknown_call_graphs)#,CallGraphsDirLocal)
+    CallGraphPaths = executeCallGraphGenerator(unknown_call_graphs, args.fasten_data)#,CallGraphsDirLocal)
+    print(CallGraphPaths)
+    # Martin stitch call graph approach
+    stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, CallGraphPaths)# call_graphs)
 
+    adjList = CreateAdjacencyList
+    adjList.createAdjacencyList("./callGraphs/fasten-pypi-plugin.json")
     '''
     ################################## VULNERABILITIES ##############################################à
     print("VULNERABILITIES Retrieval:")
