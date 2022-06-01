@@ -1,4 +1,5 @@
 import pypiResolver
+import time
 import os
 
 class ExecutePypiResolver:
@@ -22,4 +23,5 @@ class ExecutePypiResolver:
 
         if (len(filename)) > 0:
             print("The new " + filename + " has been created successfully")
+            time.sleep(20)
         return filename
