@@ -11,8 +11,10 @@ def deleteCallGraphsDir(CallGraphsDirLocal):
     else:
         print("The directory " + CallGraphsDirLocal + " does not exist!")
 
-def executeCallGraphGenerator(unknown_call_graphs):
+def executeCallGraphGenerator(unknown_call_graphs, callGraphFastenPath):
     CallGraphsDirLocal = "directoryName"
+    global CallGraphPaths
+    CallGraphPaths = []
     for key in unknown_call_graphs:
         print(key, unknown_call_graphs[key])
         packageName = key
@@ -24,11 +26,11 @@ def executeCallGraphGenerator(unknown_call_graphs):
               "requires_dist": []}
 
         CallGraphPathLocal = CallGraphsDirLocal + "/" + "callgraphs"+ "/" + packageName[0] + "/" + packageName + "/" + packageVersion + "/" + "cg.json"
-        executeSingleCallGraphGeneration(coord, packageName, packageVersion, CallGraphsDirLocal, CallGraphPathLocal)
+        executeSingleCallGraphGeneration(coord, packageName, packageVersion, CallGraphsDirLocal, CallGraphPathLocal, callGraphFastenPath)
+    return CallGraphPaths
 
 
-
-def executeSingleCallGraphGeneration(coord, packageName, packageVersion, directoryName, CallGraphPathLocal):
+def executeSingleCallGraphGeneration(coord, packageName, packageVersion, directoryName, CallGraphPathLocal,callGraphFastenPath):
 
     generator = CallGraphGenerator(directoryName, coord)
     print(generator.generate())
@@ -36,6 +38,8 @@ def executeSingleCallGraphGeneration(coord, packageName, packageVersion, directo
     print("Waiting for call graph generation at: ")
     print(CallGraphPathLocal)
     timer = 1
+    global CallGraphPaths
+    CallGraphPaths = []
     while not os.path.exists(CallGraphPathLocal):
         time.sleep(1)
         timer += 1
@@ -49,6 +53,10 @@ def executeSingleCallGraphGeneration(coord, packageName, packageVersion, directo
     #if timer < 5:
     if os.path.isfile(CallGraphPathLocal):
         print("Call graph generated at: "+CallGraphPathLocal)
+        CallGraphPathLocalRenamed = CallGraphPathLocal.replace("cg.json", packageName+"-"+packageVersion+".json")
+        os.rename(CallGraphPathLocal, CallGraphPathLocalRenamed)
+        shutil.copy(CallGraphPathLocalRenamed, callGraphFastenPath )
+        CallGraphPaths.append(callGraphFastenPath+"/"+packageName+"-"+packageVersion+".json")
         pass
     else:
         print("%s has not been generated!" % CallGraphPathLocal)
