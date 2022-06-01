@@ -81,8 +81,10 @@ def main():
     #print(len(unknown_call_graphs.keys()))
     CallGraphPaths = executeCallGraphGenerator(unknown_call_graphs, args.fasten_data)#,CallGraphsDirLocal)
     print(CallGraphPaths)
+    # merging lists of retrieved and generated call graphs location
+    call_graphs_list =  CallGraphPaths + call_graphs
     # Martin stitch call graph approach
-    stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, CallGraphPaths)# call_graphs)
+    stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, call_graphs_list)
 
     adjList = CreateAdjacencyList
     adjList.createAdjacencyList("./callGraphs/fasten-pypi-plugin.json")
