@@ -1,3 +1,4 @@
+import shutil
 import os
 
 class CreateDirectories:
@@ -8,8 +9,13 @@ class CreateDirectories:
         dirs_to_check = [cg_path,scg_path]
 
         for directory in dirs_to_check:
-            isExist = os.path.exists(directory)
-            if not isExist:
-              os.makedirs(directory)
-              print("The directory '"+directory+"' was not existent and has been created!")
+            isdir = os.path.isdir(directory)
+            if isdir is True:
+                shutil.rmtree(directory)
+                print("The directory '" + directory + "' deleted.")
+                os.makedirs(directory)
+                print("The directory '"+directory+"' has been created.")
+            if isdir is False:
+                os.makedirs(directory)
+                print("The directory '" + directory + "' has been created.")
         return
