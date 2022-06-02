@@ -29,17 +29,22 @@ class RequestFasten:
                 if response.status_code == 200:
 
                     metadata_JSON = response.json() # save in JSON format
-                    with open(args.fasten_data + package + "." + path + ".json", "w") as f:
-                        f.write(json.dumps(metadata_JSON)) # save Call Graph or metadata in a file
 
-                    if path == "rcg":
-                        cg_pkgs[package] = pkgs[package]
-                    if path == "vulnerabilities":
-                        vul_pkgs[package] = pkgs[package]
+                    if metadata_JSON:
+                        if path == "rcg":
+                            cg_pkgs[package] = pkgs[package]
+                        if path == "vulnerabilities":
+                            vul_pkgs[package] = pkgs[package]
 
-                    metadata_JSON_File_Locations.append(args.fasten_data + package + "." + path + ".json") # append Call Graph or metadata file location to a list
+                        with open(args.fasten_data + package + "." + path + ".json", "w") as f:
+                            f.write(json.dumps(metadata_JSON)) # save Call Graph or metadata in a file
 
-                    print(package + ":" + pkgs[package] + ": " + path + " received.")
+                        metadata_JSON_File_Locations.append(args.fasten_data + package + "." + path + ".json") # append Call Graph or metadata file location to a list
+
+                        print(package + ":" + pkgs[package] + ": " + path + " received.")
+
+#                    else:
+#                        print("Vulnerabilities are empty!")
 
                 elif response.status_code == 500:
                     print(package + ":" + pkgs[package] + ": " + path + " not available!")
