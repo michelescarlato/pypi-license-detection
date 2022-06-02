@@ -16,7 +16,8 @@ from requestFastenKnownAndUnknownLists import RequestFastenKnownAndUnknownLists
 from retrieveLocallyLicensesInformation import ReceiveLocallyLicensesInformation
 from executeCallGraphGenerator import executeCallGraphGenerator, deleteCallGraphsDir
 from collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetrievedCallGraphs
-from licenseComplianceVerification import licenseComplianceVerification
+#from licenseComplianceVerification import licenseComplianceVerification
+from licenseComplianceVerification import generateInboundLicenses, licenseComplianceVerification, parseLCVAssessmentResponse#, provideReport
 def main():
 
     parser = argparse.ArgumentParser(prog='PyPI-plugin')
@@ -28,7 +29,7 @@ def main():
     parser.add_argument("--requirements", type=str, help="Path to the requirements file") # /mnt/stuff/projects/work/pypi-plugin/requirements.txt
     parser.add_argument("--fasten_data", type=str, help="Path to the folder where the received FASTEN data will be stored")
     parser.add_argument("--scg_path", type=str, help="Path to the folder where the Stitched Call Graph will be stored")
-    parser.add_argument("--spdx-license", type=str, help="SPDX id of the license declared for this project")
+    parser.add_argument("--spdx_license", type=str, help="SPDX id of the license declared for this project")
     args = parser.parse_args()
 
     url = 'https://api.fasten-project.eu/api/pypi/' # URL to the FASTEN API
@@ -46,23 +47,26 @@ def main():
     all_pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
     pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, url) # Check if packages are known by FASTEN
 
-    '''
-    call_graphs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
-    print("Received call graphs:")
-    print(call_graphs)
+    ######################### LICENSES #############################################
 
-    call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
-    print("Generated call graphs")
-    print(call_graphs)
-    
-    vulnerabilities = RequestFasten.requestFasten(args, all_pkgs, url, "vulnerabilities")
-    print(vulnerabilities)
-#    pathsToCallGraphs = parser.parse_args(call_graphs)
-    '''
+    # waiting for a licensing endpoint in the REST APIs - meanwhile parsing the metadata field can be a possible solution
+
+    known_pkgs = json.loads(pkgs)
+    unknown_pkgs = json.loads(unknown_pkgs)
+
+    # implementing local retrieval for license information
+    licenses = ReceiveLocallyLicensesInformation.receiveLocallyLicensesInformation(unknown_pkgs, LCVurl)
+    InboundLicenses = generateInboundLicenses(licenses, LCVurl)
+    OutboundLicense = args.spdx_license
+    LCVAssessmentResponse = licenseComplianceVerification(InboundLicenses, OutboundLicense, LCVurl)
+    LicenseReport = parseLCVAssessmentResponse(LCVAssessmentResponse, licenses)
+    print(LicenseReport)
+
+    #provideReport(LicenseReport, licenses)
 
 
-    
 
+'''
     # Michele work - after dependencies tree resolution using pypi-resolver.
 
     ################################ CALL GRAPHS #############################
@@ -73,43 +77,8 @@ def main():
 
     adjList = CreateAdjacencyList
     adjList.createAdjacencyList(stitched_call_graph)#"./callGraphs/fasten-pypi-plugin.json")
-    '''
-    ################################## VULNERABILITIES ##############################################à
-    print("VULNERABILITIES Retrieval:")
-    vulnerabilities_location, known_vulnerabilities, unknown_vulnerabilities, vulnerabilities_connectivity_issues = RequestFastenKnownAndUnknownLists.requestFastenKnownAndUnknownLists(
-        args, all_pkgs, url, "vulnerabilities")
-    # Here goes the local call graph generation for the unknown_call_graphs
-    print(str(len(vulnerabilities_connectivity_issues)) + " vulnerabilities related queries had connectivity issues. Queries performed for these packages :")
-    print(vulnerabilities_connectivity_issues)
-
-    print(str(len(known_vulnerabilities)) + " known vulnerabilities received from fasten are:")
-    print(known_vulnerabilities)
-    print("Vulnerabilities location:")
-    print(vulnerabilities_location)
-    # print(len(known_call_graphs.keys()))
-
-    print(str(len(unknown_vulnerabilities)) + " unknown vulnerabilities. Proceeding with vulnerabilities retrieval:")
-    print(unknown_vulnerabilities)
-
 '''
 
-    ######################### LICENSES #############################################
-
-    # waiting for a licensing endpoint in the REST APIs - meanwhile parsing the metadata field can be a possible solution
-
-    known_pkgs = json.loads(pkgs)
-    print(str(len(known_pkgs)) + " [Licensing] known packages from fasten are:")
-    print(known_pkgs)
-    
-    unknown_pkgs = json.loads(unknown_pkgs)
-    print(str(len(unknown_pkgs)) + " [Licensing] unknown packages from fasten are:")
-    print(unknown_pkgs)
-
-    # implementing local retrieval for license information
-    licenses = ReceiveLocallyLicensesInformation.receiveLocallyLicensesInformation(unknown_pkgs)
-    print("License information retrieved: ")
-    print(licenses)
-    LCVResponse = licenseComplianceVerification(licenses)
 
 #    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
 
