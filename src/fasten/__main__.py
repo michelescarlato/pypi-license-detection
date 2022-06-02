@@ -16,7 +16,7 @@ from requestFastenKnownAndUnknownLists import RequestFastenKnownAndUnknownLists
 from retrieveLocallyLicensesInformation import ReceiveLocallyLicensesInformation
 from executeCallGraphGenerator import executeCallGraphGenerator, deleteCallGraphsDir
 from collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetrievedCallGraphs
-
+from licenseComplianceVerification import licenseComplianceVerification
 def main():
 
     parser = argparse.ArgumentParser(prog='PyPI-plugin')
@@ -28,9 +28,12 @@ def main():
     parser.add_argument("--requirements", type=str, help="Path to the requirements file") # /mnt/stuff/projects/work/pypi-plugin/requirements.txt
     parser.add_argument("--fasten_data", type=str, help="Path to the folder where the received FASTEN data will be stored")
     parser.add_argument("--scg_path", type=str, help="Path to the folder where the Stitched Call Graph will be stored")
+    parser.add_argument("--spdx-license", type=str, help="SPDX id of the license declared for this project")
     args = parser.parse_args()
 
     url = 'https://api.fasten-project.eu/api/pypi/' # URL to the FASTEN API
+    LCVurl = 'https://lima.ewi.tudelft.nl/lcv/'
+
     forge = "local" # Source the product was downloaded from
     max_iter = -1 # Maximum number of iterations through source code (from pycg).
     operation = "call-graph" # or key-error for key error detection on dictionaries (from pycg).
@@ -88,6 +91,7 @@ def main():
     print(str(len(unknown_vulnerabilities)) + " unknown vulnerabilities. Proceeding with vulnerabilities retrieval:")
     print(unknown_vulnerabilities)
 
+'''
 
     ######################### LICENSES #############################################
 
@@ -105,7 +109,9 @@ def main():
     licenses = ReceiveLocallyLicensesInformation.receiveLocallyLicensesInformation(unknown_pkgs)
     print("License information retrieved: ")
     print(licenses)
+    LCVResponse = licenseComplianceVerification(licenses)
+
 #    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
-'''
+
 if __name__ == "__main__":
     main()
