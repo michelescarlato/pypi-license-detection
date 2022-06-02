@@ -62,11 +62,11 @@ def RetrieveLicenseFromGitHub(GitHubAPIurl, LCVurl):
             # here a call to the LCV endpoint convertToSPDX endpoint should be performed
             if len(GitHubLicense) > 0:
                 # check if the retrieved license is an SPDX id
-                IsSPDX = IsAnSPDX(GitHubLicense)
+                IsSPDX = IsAnSPDX(GitHubLicense, LCVurl)
                 if IsSPDX == False:
                     print("converting to SPDX")
                     SPDXConversion = ConvertToSPDX(GitHubLicense, LCVurl)
-                    IsSPDX = IsAnSPDX(SPDXConversion)
+                    IsSPDX = IsAnSPDX(SPDXConversion, LCVurl)
                     if IsSPDX == True:
                         GitHubLicenseSPDX = SPDXConversion
     except requests.exceptions.ReadTimeout:
@@ -131,11 +131,11 @@ def retrieveLicenseInformationFromPyPI(packageName, packageVersion, LCVurl):
             # here a call to the LCV endpoint convertToSPDX endpoint should be performed
             if len(PyPILicense) > 0:
                 # check if the retrieved license is an SPDX id
-                IsSPDX = IsAnSPDX(PyPILicense)
+                IsSPDX = IsAnSPDX(PyPILicense, LCVurl)
                 if IsSPDX == False:
                     print("converting to SPDX")
                     SPDXConversion = ConvertToSPDX(PyPILicense, LCVurl)
-                    IsSPDX = IsAnSPDX(SPDXConversion)
+                    IsSPDX = IsAnSPDX(SPDXConversion, LCVurl)
                     if IsSPDX == True:
                         PyPILicenseSPDX = SPDXConversion
     except requests.exceptions.ReadTimeout:
