@@ -15,6 +15,7 @@ from executePypiResolver import ExecutePypiResolver
 from requestFastenKnownAndUnknownLists import RequestFastenKnownAndUnknownLists
 from retrieveLocallyLicensesInformation import ReceiveLocallyLicensesInformation
 from executeCallGraphGenerator import executeCallGraphGenerator, deleteCallGraphsDir
+from collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetrievedCallGraphs
 
 def main():
 
@@ -62,32 +63,13 @@ def main():
     # Michele work - after dependencies tree resolution using pypi-resolver.
 
     ################################ CALL GRAPHS #############################
-    CallGraphsDirLocal = "directoryName"
-    deleteCallGraphsDir(CallGraphsDirLocal)
-    print("CALL GRAPHS Retrieval:")
-    call_graphs_location, known_call_graphs, unknown_call_graphs, call_graphs_connectivity_issues = RequestFastenKnownAndUnknownLists.requestFastenKnownAndUnknownLists(args, all_pkgs, url, "rcg")
-    print(str(len(known_call_graphs)) + " call graphs related queries had connectivity issues. Queries performed for these packages :")
-    print(known_call_graphs)
-
-    print(str(len(known_call_graphs)) + " known call graphs received from fasten are:")
-    print(known_call_graphs)
-    print("Call graphs location:")
-    print(call_graphs_location)
-    #print(len(known_call_graphs.keys()))
-
-    print(str(len(unknown_call_graphs)) + " unknown call graphs. Proceeding with local graph generation:")
-    print(unknown_call_graphs)
-    #print(type(unknown_call_graphs))
-    #print(len(unknown_call_graphs.keys()))
-    CallGraphPaths = executeCallGraphGenerator(unknown_call_graphs, args.fasten_data)#,CallGraphsDirLocal)
-    print(CallGraphPaths)
-    # merging lists of retrieved and generated call graphs location
-    call_graphs_list =  CallGraphPaths + call_graphs
+    call_graphs_list = collectingGeneratedAndRetrievedCallGraphs(args, all_pkgs, url)
     # Martin stitch call graph approach
     stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, call_graphs_list)
 
+
     adjList = CreateAdjacencyList
-    adjList.createAdjacencyList("./callGraphs/fasten-pypi-plugin.json")
+    adjList.createAdjacencyList(stitched_call_graph)#"./callGraphs/fasten-pypi-plugin.json")
     '''
     ################################## VULNERABILITIES ##############################################à
     print("VULNERABILITIES Retrieval:")
