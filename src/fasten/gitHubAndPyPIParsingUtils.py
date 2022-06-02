@@ -46,7 +46,7 @@ def RetrieveGitHubAPIurl(GitHubURL):
     GitHubAPIurl = "https://api.github.com/repos/" + owner + "/" + repo + "/license"
     return GitHubAPIurl
 
-def RetrieveLicenseFromGitHub(GitHubAPIurl):
+def RetrieveLicenseFromGitHub(GitHubAPIurl, LCVurl):
     print(GitHubAPIurl)
     GitHubLicense = ""
     GitHubLicenseSPDX = ""
@@ -65,7 +65,7 @@ def RetrieveLicenseFromGitHub(GitHubAPIurl):
                 IsSPDX = IsAnSPDX(GitHubLicense)
                 if IsSPDX == False:
                     print("converting to SPDX")
-                    SPDXConversion = ConvertToSPDX(GitHubLicense)
+                    SPDXConversion = ConvertToSPDX(GitHubLicense, LCVurl)
                     IsSPDX = IsAnSPDX(SPDXConversion)
                     if IsSPDX == True:
                         GitHubLicenseSPDX = SPDXConversion
@@ -81,9 +81,9 @@ def RetrieveLicenseFromGitHub(GitHubAPIurl):
     #else:
      #   return
 
-def IsAnSPDX(License):
+def IsAnSPDX(License, LCVurl):
     LCVIsAnSPDXJsonResponse = None
-    LCVIsAnSPDXurl = "https://lima.ewi.tudelft.nl/lcv/IsAnSPDX?SPDXid=" + License
+    LCVIsAnSPDXurl = LCVurl + "IsAnSPDX?SPDXid=" + License
     print(LCVIsAnSPDXurl)
     try:
         response = requests.get(url=LCVIsAnSPDXurl)  # get Call Graph for specified package
@@ -100,8 +100,8 @@ def IsAnSPDX(License):
         time.sleep(30)
     return LCVIsAnSPDXJsonResponse
 
-def ConvertToSPDX(License):
-    LCVConvertToSPDXurl = "https://lima.ewi.tudelft.nl/lcv/ConvertToSPDX?VerboseLicense=" + License
+def ConvertToSPDX(License, LCVurl):
+    LCVConvertToSPDXurl = LCVurl + "ConvertToSPDX?VerboseLicense=" + License
     try:
         response = requests.get(url=LCVConvertToSPDXurl)  # get Call Graph for specified package
         if response.status_code == 200:
@@ -117,7 +117,7 @@ def ConvertToSPDX(License):
         time.sleep(30)
     return LCVConvertToSPDXJsonResponse
 
-def retrieveLicenseInformationFromPyPI(packageName, packageVersion):
+def retrieveLicenseInformationFromPyPI(packageName, packageVersion, LCVurl):
     print("Querying PyPI.org APIs for license information:")
     #pkgs = json.loads(pkgs)
     URL = "https://pypi.org/" + "pypi/" + packageName + "/" + packageVersion + "/json"
@@ -134,7 +134,7 @@ def retrieveLicenseInformationFromPyPI(packageName, packageVersion):
                 IsSPDX = IsAnSPDX(PyPILicense)
                 if IsSPDX == False:
                     print("converting to SPDX")
-                    SPDXConversion = ConvertToSPDX(PyPILicense)
+                    SPDXConversion = ConvertToSPDX(PyPILicense, LCVurl)
                     IsSPDX = IsAnSPDX(SPDXConversion)
                     if IsSPDX == True:
                         PyPILicenseSPDX = SPDXConversion
