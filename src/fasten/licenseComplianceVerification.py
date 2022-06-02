@@ -52,7 +52,7 @@ def parseLCVAssessmentResponse(LCVAssessmentResponseList, licenses):
                 packageVersion = licenses[i].get("packageVersion")
                 if licenses[i].get("PyPILicenseSPDX") == InboundNotCompatibleLicense:
                     outputPackageInformationNotCompatibleInboundLicensePyPI = "License " + InboundNotCompatibleLicense + \
-                        " declared in PyPI found in " + packageName + " v. " + packageVersion + "."
+                        ", declared in PyPI, found in " + packageName + " v. " + packageVersion + "."
                     assessment.append(outputPackageInformationNotCompatibleInboundLicensePyPI)
                 if licenses[i].get("GitHubLicense") == InboundNotCompatibleLicense:
                     outputPackageInformationNotCompatibleInboundLicenseGitHub = "License " + InboundNotCompatibleLicense + \
