@@ -5,6 +5,7 @@ from fasten.createCallGraph import CreateCallGraph
 from fasten.requestFasten import RequestFasten
 from fasten.stitchCallGraphs import StitchCallGraphs
 from fasten.createAdjacencyList import CreateAdjacencyList
+from fasten.depthFirstSearch import DepthFirstSearch
 from fasten.enrichCallGraph import EnrichCallGraph
 from fasten.stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
 from fasten.createDirectories import CreateDirectories
@@ -46,6 +47,8 @@ def main():
 
     adjList = CreateAdjacencyList
     adjList.createAdjacencyList(stitched_call_graph)
+
+    DepthFirstSearch.depthFirstSearch(adjList, 0)
 
 #    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
 
