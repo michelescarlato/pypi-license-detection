@@ -62,7 +62,12 @@ def main():
     LicenseReport = parseLCVAssessmentResponse(LCVAssessmentResponse, licenses)
     print(LicenseReport)
 
+    call_graphs, cg_pkgs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
+    call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
+    vulnerabilities, vul_pkgs = RequestFasten.requestFasten(args, pkgs, url, "vulnerabilities")
+
     #provideReport(LicenseReport, licenses)
+
 
 
 
@@ -76,11 +81,18 @@ def main():
 
 
     adjList = CreateAdjacencyList
-    adjList.createAdjacencyList(stitched_call_graph)#"./callGraphs/fasten-pypi-plugin.json")
-'''
+
+    adjList.createAdjacencyList(stitched_call_graph)
+
+    # adjList.createAdjacencyList(stitched_call_graph)#"./callGraphs/fasten-pypi-plugin.json")
+
 
 
 #    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
+
+    for package in vul_pkgs:
+        print("The package " + package + ":" + vul_pkgs[package] + " is vulnerable!")
+        print("Vulnerabilities can be found in " + args.fasten_data + package + "." + "vulnerabilities.json")
 
 if __name__ == "__main__":
     main()

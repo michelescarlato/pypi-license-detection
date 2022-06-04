@@ -9,9 +9,15 @@ class RequestFasten:
     @staticmethod
     def requestFasten(args, pkgs, url, path):
 
-        print("Receive " + path + " from FASTEN:")
+        if path == "rcg":
+            print("Receive Call Graph from FASTEN:")
+        if path == "vulnerabilities":
+            print("Receive vulnerabilities from FASTEN:")
+
         pkgs = json.loads(pkgs)
         metadata_JSON_File_Locations = [] # Call Graphs and metadata file location
+        cg_pkgs = { }
+        vul_pkgs = { }
 
         for package in pkgs:
 
@@ -23,18 +29,27 @@ class RequestFasten:
                 if response.status_code == 200:
 
                     metadata_JSON = response.json() # save in JSON format
-                    with open(args.fasten_data + package + "." + path + ".json", "w") as f:
-                        f.write(json.dumps(metadata_JSON)) # save Call Graph or metadata in a file
 
-                    print(type(metadata_JSON))
-                    metadata_JSON_File_Locations.append(args.fasten_data + package + "." + path + ".json") # append Call Graph or metadata file location to a list
+                    if metadata_JSON:
+                        if path == "rcg":
+                            cg_pkgs[package] = pkgs[package]
+                        if path == "vulnerabilities":
+                            vul_pkgs[package] = pkgs[package]
 
-                    print(package + ":" + pkgs[package] + ": " + path + " received.")
+                        with open(args.fasten_data + package + "." + path + ".json", "w") as f:
+                            f.write(json.dumps(metadata_JSON)) # save Call Graph or metadata in a file
+
+                        metadata_JSON_File_Locations.append(args.fasten_data + package + "." + path + ".json") # append Call Graph or metadata file location to a list
+
+                        print(package + ":" + pkgs[package] + ": " + path + " received.")
+
+#                    else:
+#                        print("Vulnerabilities are empty!")
 
                 elif response.status_code == 500:
                     print(package + ":" + pkgs[package] + ": " + path + " not available!")
                 else:
-                    print("something went wrong")
+                    print("Something went wrong for the package " + package + ":" + pkgs[package] + " on the server side!")
 
             except requests.exceptions.ReadTimeout:
                 print('Connection timeout: ReadTimeout')
@@ -44,4 +59,7 @@ class RequestFasten:
                 print('Connection timeout: ConnectError')
                 time.sleep(30)
 
-        return metadata_JSON_File_Locations
+        if path == "rcg":
+            return metadata_JSON_File_Locations, cg_pkgs
+        if path == "vulnerabilities":
+            return metadata_JSON_File_Locations, vul_pkgs

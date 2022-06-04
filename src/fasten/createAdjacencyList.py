@@ -9,19 +9,19 @@ class CreateAdjacencyList:
     def createAdjacencyList(cls, stitched_call_graph):
 
 #       Read the list of calls from Stitched Call Graph.
-        print("Read the list of calls from the Stitched Call Graph:")
+        print("Read the list of calls from the Stitched Call Graph...")
         with open(stitched_call_graph) as f:
             scg = json.loads(f.read())
 
         cls.verticesPair = scg["edges"]
         cls.edges = len(scg["edges"])
-        print("Vertices pairs:")
-        print(cls.verticesPair)
-        print("Number of Edges:")
-        print(cls.edges)
-        print("Number of Vertices:")
+#        print("Vertices pairs:")
+#        print(cls.verticesPair)
+#        print("Number of Edges:")
+#        print(cls.edges)
+#        print("Number of Vertices:")
         cls.vertices = cls.getNumberOfVertices() + 1
-        print(cls.vertices)
+#        print(cls.vertices)
 
         cls.graph = [None] * cls.vertices
         cls.addEdges()
@@ -49,18 +49,18 @@ class CreateAdjacencyList:
         cls.adj = {}
 
         for i in range(cls.vertices): # 0 -> 13
-            print(str(i) + ":", end="")
+#            print(str(i) + ":", end="")
             temp = cls.graph[i]
             cls.adj[i] = []
 
             while temp:
                 cls.adj[i].append(int("{}".format(temp.vertex)))
-                print(" {}".format(temp.vertex), end="")
+#                print(" {}".format(temp.vertex), end="")
                 temp = temp.next
-            print("")
+#            print("")
 
-        print(cls.adj)
-        print(cls.graph[0])
+#        print(cls.adj)
+#        print(cls.graph[0])
 
 
 #   Get number of vertices existent in the Stitched Call Graph.
@@ -92,7 +92,7 @@ class CreateAdjacencyList:
 #   Return adjacency list:
     @classmethod
     def getAdjacencyList(cls, vertex):
-        print(cls.adj[vertex])
+#        print(cls.adj[vertex])
         return  cls.adj[vertex]
 
 
