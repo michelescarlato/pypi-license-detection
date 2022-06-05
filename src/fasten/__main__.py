@@ -13,6 +13,7 @@ from createDirectories import CreateDirectories
 from executePypiResolver import ExecutePypiResolver
 #from receiveCallGraphs import ReceiveCallGraphs
 from requestFastenKnownAndUnknownLists import RequestFastenKnownAndUnknownLists
+from requestFastenKnownAndUnknownListsMockup import RequestFastenKnownAndUnknownListsMockup
 from retrieveLocallyLicensesInformation import ReceiveLocallyLicensesInformation
 from executeCallGraphGenerator import executeCallGraphGenerator, deleteCallGraphsDir
 from collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetrievedCallGraphs
@@ -54,45 +55,68 @@ def main():
     known_pkgs = json.loads(pkgs)
     unknown_pkgs = json.loads(unknown_pkgs)
 
+    #metadata_JSON_File_Locations,known_pkg_metadata, unknown_pkg_metadata, connectivity_issues = RequestFastenKnownAndUnknownLists.requestFastenKnownAndUnknownLists(args, all_pkgs, url, "metadata")
+
+    #using mockup
+    licenses_retrieved_from_fasten, metadata_JSON_File_Locations, known_pkgs_metadata, unknown_pkgs_metadata, connectivity_issues, index = RequestFastenKnownAndUnknownListsMockup.requestFastenKnownAndUnknownListsMockup(args, all_pkgs, url, "metadata", LCVurl)
+    print(licenses_retrieved_from_fasten)
+    print(index)
+    print("known_pkg_metadata:")
+    print(known_pkgs_metadata)
+    print("Unknown_pkg_metadata:")
+    print(unknown_pkgs_metadata)
+
     # implementing local retrieval for license information
-    licenses = ReceiveLocallyLicensesInformation.receiveLocallyLicensesInformation(unknown_pkgs, LCVurl)
+    licenses_retrieved_locally = ReceiveLocallyLicensesInformation.receiveLocallyLicensesInformation(unknown_pkgs, LCVurl, index)
+    print(licenses_retrieved_locally)
+
+    print("Merged licenses dictionaries")
+    licenses_unified = {**licenses_retrieved_from_fasten, **licenses_retrieved_locally}
+    print(licenses_unified)
+
+
+    '''
     InboundLicenses = generateInboundLicenses(licenses, LCVurl)
     OutboundLicense = args.spdx_license
     LCVAssessmentResponse = licenseComplianceVerification(InboundLicenses, OutboundLicense, LCVurl)
     LicenseReport = parseLCVAssessmentResponse(LCVAssessmentResponse, licenses)
-    print(LicenseReport)
+    print(licenses)
 
-    call_graphs, cg_pkgs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
-    call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
+    #call_graphs, cg_pkgs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
+    #call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
+
+    print("Requesting vulnerabilities:")
     vulnerabilities, vul_pkgs = RequestFasten.requestFasten(args, pkgs, url, "vulnerabilities")
-
+    print("Requested vulnerabilities.")
     #provideReport(LicenseReport, licenses)
-
-
-
-
-'''
+    '''
     # Michele work - after dependencies tree resolution using pypi-resolver.
 
+    '''
     ################################ CALL GRAPHS #############################
+    print("Generating call_graphs_list:")
     call_graphs_list = collectingGeneratedAndRetrievedCallGraphs(args, all_pkgs, url)
     # Martin stitch call graph approach
+    print("Stitching the call graph:")
     stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, call_graphs_list)
 
 
     adjList = CreateAdjacencyList
 
+    print("Creating adjacency list:")
     adjList.createAdjacencyList(stitched_call_graph)
 
     # adjList.createAdjacencyList(stitched_call_graph)#"./callGraphs/fasten-pypi-plugin.json")
+'''
 
-
-
+'''
 #    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
 
     for package in vul_pkgs:
         print("The package " + package + ":" + vul_pkgs[package] + " is vulnerable!")
         print("Vulnerabilities can be found in " + args.fasten_data + package + "." + "vulnerabilities.json")
 
+    print(LicenseReport)
+'''
 if __name__ == "__main__":
     main()
