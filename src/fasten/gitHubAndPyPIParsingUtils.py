@@ -69,6 +69,8 @@ def RetrieveLicenseFromGitHub(GitHubAPIurl, LCVurl):
                     IsSPDX = IsAnSPDX(SPDXConversion, LCVurl)
                     if IsSPDX == True:
                         GitHubLicenseSPDX = SPDXConversion
+                else :
+                    GitHubLicenseSPDX = GitHubLicense
     except requests.exceptions.ReadTimeout:
         print('Connection timeout: ReadTimeout')
     except requests.exceptions.ConnectTimeout:
