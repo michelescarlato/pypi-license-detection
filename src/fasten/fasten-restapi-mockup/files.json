@@ -1,0 +1,2 @@
+[ { "id": 18857523 , "package_version_id": 580839, "path": "requests/compat.py", "checksum": "", "created_at": "", "metadata": " {\"licenses\": [{\"key\": \"apache-2.0\", \"spdx_license_key\": \"Apache-2.0\"}, {\"key\": \"apache-2.0\", \"spdx_license_key\": \"Apache-2.0\"}]}" },
+{ "id": 18857526, "package_version_id": 580839, "path": "requests/packages/urllib3/filepost.py", "checksum": "", "created_at": "", "metadata": " {\"licenses\": [{\"key\": \"apache-2.0\", \"spdx_license_key\": \"Apache-2.0\"}, {\"key\": \"apache-2.0\", \"spdx_license_key\": \"Apache-2.0\"}]}" }]
