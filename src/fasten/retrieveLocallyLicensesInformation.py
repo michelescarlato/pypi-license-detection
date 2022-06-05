@@ -6,12 +6,11 @@ class ReceiveLocallyLicensesInformation:
 
     @staticmethod
     # add the source (e.g. GitHub or PyPI) to the dict!
-    def receiveLocallyLicensesInformation(pkgs, LCVurl):
+    def receiveLocallyLicensesInformation(pkgs, LCVurl, i):
         print("Retrieval of license information:")
 
         #licenses = {0: {'packageName' : '', 'PyPILicense' : '', 'GitHubLicense' : ''}}
         licenses = {}
-        i = 1
         for package in pkgs:
             licenses[i] = {}
             packageVersion = pkgs[package]
@@ -31,7 +30,7 @@ class ReceiveLocallyLicensesInformation:
                 GitHubAPIurl = RetrieveGitHubAPIurl(GitHubURL)
                 if len(GitHubURL) > 0:
                     print(GitHubURL)
-                    GitHubLicense, GitHubLicenseSPDX  = RetrieveLicenseFromGitHub(GitHubAPIurl, LCVurl)
+                    GitHubLicense, GitHubLicenseSPDX = RetrieveLicenseFromGitHub(GitHubAPIurl, LCVurl)
                     if GitHubLicense != "":
                         if GitHubLicense is not None:
                             licenses[i]['GitHubLicense'] = GitHubLicense
