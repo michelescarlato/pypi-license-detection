@@ -67,7 +67,7 @@ def main():
     print(unknown_pkgs_metadata)
 
     # implementing local retrieval for license information
-    licenses_retrieved_locally = ReceiveLocallyLicensesInformation.receiveLocallyLicensesInformation(unknown_pkgs, LCVurl, index)
+    licenses_retrieved_locally = ReceiveLocallyLicensesInformation.receiveLocallyLicensesInformation(unknown_pkgs_metadata, LCVurl, index)
     print(licenses_retrieved_locally)
 
     print("Merged licenses dictionaries")
