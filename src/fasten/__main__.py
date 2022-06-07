@@ -19,6 +19,8 @@ from executeCallGraphGenerator import executeCallGraphGenerator, deleteCallGraph
 from collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetrievedCallGraphs
 #from licenseComplianceVerification import licenseComplianceVerification
 from licenseComplianceVerification import generateInboundLicenses, licenseComplianceVerification, parseLCVAssessmentResponse#, provideReport
+from licensesApplicationToTheStitchedCallGraph import licensesApplicationToTheStitchedCallGraph
+
 def main():
 
     parser = argparse.ArgumentParser(prog='PyPI-plugin')
@@ -69,14 +71,14 @@ def main():
 
     # implementing local retrieval for license information
 
-    '''
+
     licenses_retrieved_locally = ReceiveLocallyLicensesInformation.receiveLocallyLicensesInformation(unknown_pkgs_metadata, LCVurl, index)
     print(licenses_retrieved_locally)
 
     print("Merged licenses dictionaries")
     licenses_unified = {**licenses_retrieved_from_fasten, **licenses_retrieved_locally}
     print(licenses_unified)
-    '''
+
     licenses_retrieved_from_fasten_at_files_level, known_pkgs_metadata_at_files_level, unknown_pkgs_metadata_at_files_level, connectivity_issues_at_files_level, index = RequestFastenKnownAndUnknownListsMockup.requestFastenKnownAndUnknownListsMockup(
         args, all_pkgs, url, "files", LCVurl)
     print(licenses_retrieved_from_fasten_at_files_level)
@@ -84,6 +86,10 @@ def main():
     print(unknown_pkgs_metadata_at_files_level)
     print(connectivity_issues_at_files_level)
 
+    stitched_call_graph = "StitchedCallGraph/fasten-pypi-plugin.json"
+    callablesReportedForLicenseViolation = licensesApplicationToTheStitchedCallGraph(stitched_call_graph,
+                                                                                     licenses_retrieved_from_fasten_at_files_level,
+                                                                                     licenses_retrieved_locally)
 
     '''
     InboundLicenses = generateInboundLicenses(licenses, LCVurl)
@@ -109,17 +115,19 @@ def main():
     # Martin stitch call graph approach
     print("Stitching the call graph:")
     stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, call_graphs_list)
+    '''
 
-
+    '''
+    
     adjList = CreateAdjacencyList
 
     print("Creating adjacency list:")
     adjList.createAdjacencyList(stitched_call_graph)
-
+    
     # adjList.createAdjacencyList(stitched_call_graph)#"./callGraphs/fasten-pypi-plugin.json")
-'''
 
-'''
+
+
 #    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
 
     for package in vul_pkgs:
