@@ -22,10 +22,11 @@ def licensesApplicationToTheStitchedCallGraph(stitched_call_graph, licenses_retr
                 print(element + "found in " + str(data["nodes"][i]["URI"]))
                 for j in licenses_retrieved_locally:
                     if element in licenses_retrieved_locally[j]["packageName"]:
-                        if licenses_retrieved_locally[j].has_key(["PyPILicenseSPDX"]):
+                        if "PyPILicenseSPDX" in licenses_retrieved_locally[j]:
                             callablesEnrichedWithLicenseInformation[i]["PyPILicenseSPDX"] = licenses_retrieved_locally[j]["PyPILicenseSPDX"]
-                        if licenses_retrieved_locally[j].has_key(["GitHubLicenseSPDX"]):
-                            callablesEnrichedWithLicenseInformation[i]["GitHubLicenseSPDX"] = licenses_retrieved_locally[j]["GitHubLicenseSPDX"]
+                        else:
+                            if "GitHubLicenseSPDX" in licenses_retrieved_locally[j]:
+                                callablesEnrichedWithLicenseInformation[i]["GitHubLicenseSPDX"] = licenses_retrieved_locally[j]["GitHubLicenseSPDX"]
     print("callablesEnrichedWithLicenseInformation:")
     print(callablesEnrichedWithLicenseInformation)
     return callablesEnrichedWithLicenseInformation
