@@ -13,17 +13,17 @@ class CreateAdjacencyList:
         with open(stitched_call_graph) as f:
             scg = json.loads(f.read())
 
-        cls.verticesPair = scg["edges"]
+        cls.nodesPair = scg["edges"]
         cls.edges = len(scg["edges"])
-#        print("Vertices pairs:")
-#        print(cls.verticesPair)
+#        print("Nodes pairs:")
+#        print(cls.nodesPair)
 #        print("Number of Edges:")
 #        print(cls.edges)
-#        print("Number of Vertices:")
-        cls.vertices = cls.getNumberOfVertices() + 1
-#        print(cls.vertices)
+#        print("Number of Nodes:")
+        cls.nodes = cls.getNumberOfNodes() + 1
+#        print(cls.nodes)
 
-        cls.graph = [None] * cls.vertices
+        cls.graph = [None] * cls.nodes
         cls.addEdges()
         cls.print_agraph()
 
@@ -32,14 +32,14 @@ class CreateAdjacencyList:
     @classmethod
     def addEdges(cls):
 
-        for pair in cls.verticesPair:
+        for pair in cls.nodesPair:
 
-            vertex = AdjNode(pair[0])
-            vertex.next = cls.graph[pair[1]]
-            cls.graph[pair[1]] = vertex
-            vertex = AdjNode(pair[1])
-            vertex.next = cls.graph[pair[0]]
-            cls.graph[pair[0]] = vertex
+            node = AdjNode(pair[0])
+            node.next = cls.graph[pair[1]]
+            cls.graph[pair[1]] = node
+            node = AdjNode(pair[1])
+            node.next = cls.graph[pair[0]]
+            cls.graph[pair[0]] = node
 
 
 #   Print adjacency list.
@@ -48,14 +48,14 @@ class CreateAdjacencyList:
 
         cls.adj = {}
 
-        for i in range(cls.vertices): # 0 -> 13
+        for i in range(cls.nodes): # 0 -> 13
 #            print(str(i) + ":", end="")
             temp = cls.graph[i]
             cls.adj[i] = []
 
             while temp:
-                cls.adj[i].append(int("{}".format(temp.vertex)))
-#                print(" {}".format(temp.vertex), end="")
+                cls.adj[i].append(int("{}".format(temp.node)))
+#                print(" {}".format(temp.node), end="")
                 temp = temp.next
 #            print("")
 
@@ -63,24 +63,24 @@ class CreateAdjacencyList:
 #        print(cls.graph[0])
 
 
-#   Get number of vertices existent in the Stitched Call Graph.
+#   Get number of nodes existent in the Stitched Call Graph.
     @classmethod
-    def getNumberOfVertices(cls):
+    def getNumberOfNodes(cls):
 
-        vertices = 0
+        nodes = 0
 
-        for pair in cls.verticesPair:
-            if pair[0] > vertices:
-                vertices = pair[0]
-            if pair[1] > vertices:
-                vertices = pair[1]
-        return vertices
+        for pair in cls.nodesPair:
+            if pair[0] > nodes:
+                nodes = pair[0]
+            if pair[1] > nodes:
+                nodes = pair[1]
+        return nodes
 
 
-#   Return number of vertices.
+#   Return number of nodes.
     @classmethod
-    def getVertices(cls):
-        return  cls.vertices
+    def getNodes(cls):
+        return  cls.nodes
 
 
 #   Return number of edges.
@@ -91,14 +91,14 @@ class CreateAdjacencyList:
 
 #   Return adjacency list:
     @classmethod
-    def getAdjacencyList(cls, vertex):
-#        print(cls.adj[vertex])
-        return  cls.adj[vertex]
+    def getAdjacencyList(cls, node):
+#        print(cls.adj[node])
+        return  cls.adj[node]
 
 
 class AdjNode:
 
     def __init__(self, value):
 
-        self.vertex = value
+        self.node = value
         self.next = None
