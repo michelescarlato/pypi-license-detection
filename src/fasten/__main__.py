@@ -20,6 +20,7 @@ from collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetr
 #from licenseComplianceVerification import licenseComplianceVerification
 from licenseComplianceVerification import generateInboundLicenses, licenseComplianceVerification, parseLCVAssessmentResponse#, provideReport
 from licensesApplicationToTheStitchedCallGraph import licensesApplicationToTheStitchedCallGraph
+from requestFastenLicenseInformation import RequestFastenLicenseInformation
 
 def main():
 
@@ -48,17 +49,26 @@ def main():
     DependenciesTree = ExecutePypiResolver.executePypiResolver(args.requirements)
     time.sleep(20)
     all_pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
-    pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, url) # Check if packages are known by FASTEN
+    #pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, url) # Check if packages are known by FASTEN
 
     ######################### LICENSES #############################################
 
     # waiting for a licensing endpoint in the REST APIs - meanwhile parsing the metadata field can be a possible solution
 
-    known_pkgs = json.loads(pkgs)
-    unknown_pkgs = json.loads(unknown_pkgs)
+    #known_pkgs = json.loads(pkgs)
+    #unknown_pkgs = json.loads(unknown_pkgs)
 
-    #metadata_JSON_File_Locations,known_pkg_metadata, unknown_pkg_metadata, connectivity_issues = RequestFastenKnownAndUnknownLists.requestFastenKnownAndUnknownLists(args, all_pkgs, url, "metadata")
+    metadata_JSON_File_Locations, known_pkgs_metadata, unknown_pkgs_metadata, connectivity_issues, licenses_retrieved_from_fasten,index = RequestFastenLicenseInformation.requestFastenLicenseInformation(args, all_pkgs, url, LCVurl)
+    print("known_pkg_metadata:")
+    print(known_pkgs_metadata)
+    print("unknown_pkg_metadata:")
+    print(unknown_pkgs_metadata)
+    print("licenses:")
+    print(licenses_retrieved_from_fasten)
+    print("index:")
+    print(index)
 
+    '''
     #using mockup
     licenses_retrieved_from_fasten, known_pkgs_metadata, unknown_pkgs_metadata, connectivity_issues, index = RequestFastenKnownAndUnknownListsMockup.requestFastenKnownAndUnknownListsMockup(args, all_pkgs, url, "metadata", LCVurl)
     print(licenses_retrieved_from_fasten)
@@ -67,7 +77,7 @@ def main():
     print(known_pkgs_metadata)
     print("Unknown_pkg_metadata:")
     print(unknown_pkgs_metadata)
-
+    '''
 
     # implementing local retrieval for license information
 
@@ -86,12 +96,14 @@ def main():
     print(unknown_pkgs_metadata_at_files_level)
     print(connectivity_issues_at_files_level)
 
+
+    '''
     stitched_call_graph = "StitchedCallGraph/fasten-pypi-plugin.json"
     callablesReportedForLicenseViolation = licensesApplicationToTheStitchedCallGraph(stitched_call_graph,
                                                                                      licenses_retrieved_from_fasten_at_files_level,
                                                                                      licenses_retrieved_locally)
-
-    '''
+    
+    
     InboundLicenses = generateInboundLicenses(licenses, LCVurl)
     OutboundLicense = args.spdx_license
     LCVAssessmentResponse = licenseComplianceVerification(InboundLicenses, OutboundLicense, LCVurl)
@@ -105,19 +117,17 @@ def main():
     vulnerabilities, vul_pkgs = RequestFasten.requestFasten(args, pkgs, url, "vulnerabilities")
     print("Requested vulnerabilities.")
     #provideReport(LicenseReport, licenses)
-    '''
+    
     # Michele work - after dependencies tree resolution using pypi-resolver.
 
-    '''
+    
     ################################ CALL GRAPHS #############################
     print("Generating call_graphs_list:")
     call_graphs_list = collectingGeneratedAndRetrievedCallGraphs(args, all_pkgs, url)
     # Martin stitch call graph approach
     print("Stitching the call graph:")
     stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, call_graphs_list)
-    '''
-
-    '''
+    
     
     adjList = CreateAdjacencyList
 
@@ -135,6 +145,6 @@ def main():
         print("Vulnerabilities can be found in " + args.fasten_data + package + "." + "vulnerabilities.json")
 
     print(LicenseReport)
-'''
+    '''
 if __name__ == "__main__":
     main()
