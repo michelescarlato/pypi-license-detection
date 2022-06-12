@@ -19,7 +19,7 @@ class RequestFastenKnownAndUnknownLists:
         for package in pkgs:
 
             URL = url + "packages/" + package + "/" + pkgs[package] + "/" + path
-            #print(URL)
+            print(URL)
             try:
                 response = requests.get(url=URL) # get Call Graph or metadata for specified package
 
@@ -30,16 +30,19 @@ class RequestFastenKnownAndUnknownLists:
                         f.write(json.dumps(metadata_JSON)) # save Call Graph or metadata in a file
 
                     print(type(metadata_JSON))
+                    #look for license
+
                     metadata_JSON_File_Locations.append(args.fasten_data + package + "." + path + ".json") # append Call Graph or metadata file location to a list
 
                     print(package + ":" + pkgs[package] + ": " + path + " received.")
                     known_pkg_metadata[package] = pkgs[package]
 
-                elif response.status_code == 500:
+                elif response.status_code == 404:
                     print(package + ":" + pkgs[package] + ": " + path + " not available!")
                     unknown_pkg_metadata[package] = pkgs[package]
                 else:
-                    print("something went wrong")
+                    print("Querying " + package + ":" + pkgs[package] + ": " + path + " something went wrong.")
+                    print(response.status_code)
                     connectivity_issues[package] = pkgs[package]
 
             except requests.exceptions.ReadTimeout:
