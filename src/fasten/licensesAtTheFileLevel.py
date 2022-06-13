@@ -4,7 +4,7 @@ import requests
 from gitHubAndPyPIParsingUtils import IsAnSPDX, ConvertToSPDX
 
 
-def licensesAtTheFileLevel_ApplicationToTheStitchedCallGraph(args, pkgs, url, LCVurl):
+def licensesAtTheFileLevel(args, pkgs, url):
 
         print("Receive metadata from FASTEN:")
         pkgs = json.loads(pkgs)
@@ -18,8 +18,8 @@ def licensesAtTheFileLevel_ApplicationToTheStitchedCallGraph(args, pkgs, url, LC
         for package in pkgs:
             packageName = package
             packageVersion = pkgs[package]
-
-            URL = url + "packages/" + package + "/" + pkgs[package] + "/metadata"
+            licenses[packageName] = {}
+            URL = url + "packages/" + package + "/" + pkgs[package] + "/files"
             print(URL)
             try:
                 response = requests.get(url=URL) # get Call Graph or metadata for specified package
@@ -27,83 +27,60 @@ def licensesAtTheFileLevel_ApplicationToTheStitchedCallGraph(args, pkgs, url, LC
                 if response.status_code == 200:
 
                     metadata_JSON = response.json() # save in JSON format
-                    with open(args.fasten_data + package + ".metadata.json", "w") as f:
+                    with open(args.fasten_data + package + ".files.json", "w") as f:
                         f.write(json.dumps(metadata_JSON)) # save Call Graph or metadata in a file
 
                     #print(type(metadata_JSON))
                     #look for licenses
-                    if "licenses" in metadata_JSON["metadata"]:
-                        licensesFasten = metadata_JSON["metadata"]["licenses"]
-                        if len(licensesFasten) > 0:
-                            print("License available for " + package + " from FASTEN server. ")
-                            print(licensesFasten)
-                            licenses[i] = {}
-                            for element in licensesFasten:
-                                print(element)
-                                if element["source"] == "GITHUB":
-                                    IsSPDX = IsAnSPDX(str(element["name"]), LCVurl)
-                                    if IsSPDX is not True:
-                                        License = ConvertToSPDX(str(element["name"]), LCVurl)
-                                        if IsAnSPDX(License, LCVurl):
-                                            LicenseSPDX = License
-                                        else:
-                                            licenses[i]['packageName'] = packageName
-                                            licenses[i]['packageVersion'] = packageVersion
-                                            licenses[i]['GitHubLicense'] = str(element["name"])
-                                            pass
+                    for l in metadata_JSON:
+                        print(l["metadata"])
+                        if l["metadata"] is not None:
+                            if "licenses" in l["metadata"]:
+                                licensesFasten = l["metadata"]["licenses"]
+                                if len(licensesFasten) > 0:
+                                    print("License available for " + package + " from FASTEN server. ")
+                                    print(licensesFasten)
 
-                                        if "LicenseSPDX" in locals():
-                                            # add to licenses the license under the GitHubSPDX key
-                                            licenses[i]['packageName'] = packageName
-                                            licenses[i]['packageVersion'] = packageVersion
-                                            licenses[i]['GitHubLicenseSPDX'] = LicenseSPDX
-                                            pass
-                                    else:
-                                        License = str(element["name"])
-                                        licenses[i]['packageName'] = packageName
-                                        licenses[i]['packageVersion'] = packageVersion
-                                        licenses[i]['GitHubLicenseSPDX'] = License
-                                        pass
-                                        # add to licenses the license under the GitHubSPDX key
-                                if element["source"] == "PYPI":
-                                    IsSPDX = IsAnSPDX(str(element["name"]), LCVurl)
-                                    if IsSPDX is not True:
-                                        License = ConvertToSPDX(str(element["name"]), LCVurl)
-                                        if IsAnSPDX(License, LCVurl):
-                                            LicenseSPDX = License
-                                        else:
-                                            licenses[i]['packageName'] = packageName
-                                            licenses[i]['packageVersion'] = packageVersion
-                                            licenses[i]['PyPI_not_SPDX'] = str(element["name"])
-                                            pass
-
-                                    if "LicenseSPDX" in locals():
-                                        # add to licenses the license under the GitHubSPDX key
-                                        licenses[i]['packageName'] = packageName
-                                        licenses[i]['packageVersion'] = packageVersion
-                                        licenses[i]['PyPILicenseSPDX'] = LicenseSPDX
-                                        pass
-                                    else:
-                                        License = str(element["name"])
-                                        licenses[i]['packageName'] = packageName
-                                        licenses[i]['packageVersion'] = packageVersion
-                                        licenses[i]['PyPILicenseSPDX'] = License
-                                        pass
-
-                                known_pkg_metadata[package] = pkgs[package]
-                                i += 1
-
-                            i += 1
+                                    for element in licensesFasten:
+                                        print(element)
+                                        if "spdx_license_key" in element:
+                                            print("element[spdx_license_key]:")
+                                            print(element["spdx_license_key"])
+                                            print("PackageName:"+packageName)
+                                            print("file index:" + str(i))
+                                            if i == 0:
+                                                licenses[packageName][i] = {}
+                                                licenses[packageName][i]["packageName"] = packageName
+                                                licenses[packageName][i]["packageVersion"] = packageVersion
+                                                licenses[packageName][i]["path"] = l["path"]
+                                                licenses[packageName][i]["spdx_license_key"] = element[
+                                                    "spdx_license_key"]
+                                                i += 1
+                                            if i > 0:
+                                                if (licenses[packageName][i-1]["path"] == l["path"] ):
+                                                    if (licenses[packageName][i - 1]["spdx_license_key"] != element["spdx_license_key"]):
+                                                        licenses[packageName][i] = {}
+                                                        licenses[packageName][i]["packageName"] = packageName
+                                                        licenses[packageName][i]["packageVersion"] = packageVersion
+                                                        licenses[packageName][i]["path"] = l["path"]
+                                                        licenses[packageName][i]["spdx_license_key"] = element["spdx_license_key"]
+                                                        i += 1
+                                                else:
+                                                    licenses[packageName][i] = {}
+                                                    licenses[packageName][i]["packageName"] = packageName
+                                                    licenses[packageName][i]["packageVersion"] = packageVersion
+                                                    licenses[packageName][i]["path"] = l["path"]
+                                                    licenses[packageName][i]["spdx_license_key"] = element["spdx_license_key"]
+                                                    i += 1
+                                    known_pkg_metadata[package] = pkgs[package]
                         else:
-                            print("Empty licenses for " + package + " from FASTEN server. ")
-                    else:
-                        print("License unavailable for " + package + " from FASTEN server. ")
+                            print("License unavailable for " + package + " from FASTEN server. ")
+            
+                            metadata_JSON_File_Locations.append(args.fasten_data + package + ".metadata.json") # append Call Graph or metadata file location to a list
 
-                    metadata_JSON_File_Locations.append(args.fasten_data + package + ".metadata.json") # append Call Graph or metadata file location to a list
-
-                    print(package + ":" + pkgs[package] + ": metadata received.")
-                    known_pkg_metadata[package] = pkgs[package]
-
+                            print(package + ":" + pkgs[package] + ": metadata received.")
+                            known_pkg_metadata[package] = pkgs[package]
+            
                 elif response.status_code == 404:
                     print(package + ":" + pkgs[package] + ": metadata not available!")
                     unknown_pkg_metadata[package] = pkgs[package]
@@ -119,5 +96,4 @@ def licensesAtTheFileLevel_ApplicationToTheStitchedCallGraph(args, pkgs, url, LC
             except requests.exceptions.ConnectionError:
                 print('Connection timeout: ConnectError')
                 time.sleep(30)
-
-        return metadata_JSON_File_Locations, known_pkg_metadata, unknown_pkg_metadata, connectivity_issues, licenses, i
+        return metadata_JSON_File_Locations, known_pkg_metadata, unknown_pkg_metadata, connectivity_issues, licenses
