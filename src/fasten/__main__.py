@@ -50,8 +50,12 @@ def main():
 
     adjList = CreateAdjacencyList
     adjList.createAdjacencyList(stitched_call_graph)
+    list_of_nodes = [False] * adjList.getNodes()
 
-    list_of_nodes = DepthFirstSearch.depthFirstSearch(adjList, 0)
+    # Run a depth first search for each entry point to create a list of all called nodes.
+    for x in entry_points:
+        list_of_nodes = DepthFirstSearch.depthFirstSearch(adjList, int(x), list_of_nodes)
+
 
     OptimizeStitchedCallGraph.optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes)
 #    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
