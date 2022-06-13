@@ -21,6 +21,8 @@ from collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetr
 from licenseComplianceVerification import generateInboundLicenses, licenseComplianceVerification, parseLCVAssessmentResponse#, provideReport
 from licensesApplicationToTheStitchedCallGraph import licensesApplicationToTheStitchedCallGraph
 from requestFastenLicenseInformation import RequestFastenLicenseInformation
+from licensesAtTheFileLevel import licensesAtTheFileLevel
+
 
 def main():
 
@@ -58,6 +60,8 @@ def main():
     #known_pkgs = json.loads(pkgs)
     #unknown_pkgs = json.loads(unknown_pkgs)
 
+
+    '''
     metadata_JSON_File_Locations, known_pkgs_metadata, unknown_pkgs_metadata, connectivity_issues, licenses_retrieved_from_fasten,index = RequestFastenLicenseInformation.requestFastenLicenseInformation(args, all_pkgs, url, LCVurl)
     print("known_pkg_metadata:")
     print(known_pkgs_metadata)
@@ -67,7 +71,7 @@ def main():
     print(licenses_retrieved_from_fasten)
     print("index:")
     print(index)
-
+    '''
     '''
     #using mockup
     licenses_retrieved_from_fasten, known_pkgs_metadata, unknown_pkgs_metadata, connectivity_issues, index = RequestFastenKnownAndUnknownListsMockup.requestFastenKnownAndUnknownListsMockup(args, all_pkgs, url, "metadata", LCVurl)
@@ -81,20 +85,21 @@ def main():
 
     # implementing local retrieval for license information
 
-
+    '''
     licenses_retrieved_locally = ReceiveLocallyLicensesInformation.receiveLocallyLicensesInformation(unknown_pkgs_metadata, LCVurl, index)
     print(licenses_retrieved_locally)
 
     print("Merged licenses dictionaries")
     licenses_unified = {**licenses_retrieved_from_fasten, **licenses_retrieved_locally}
     print(licenses_unified)
-
-    licenses_retrieved_from_fasten_at_files_level, known_pkgs_metadata_at_files_level, unknown_pkgs_metadata_at_files_level, connectivity_issues_at_files_level, index = RequestFastenKnownAndUnknownListsMockup.requestFastenKnownAndUnknownListsMockup(
-        args, all_pkgs, url, "files", LCVurl)
+    '''
+    licenses_retrieved_from_fasten_at_files_level, known_pkgs_metadata_at_files_level, unknown_pkgs_metadata_at_files_level, connectivity_issues_at_files_level, licenses_at_the_file_level = licensesAtTheFileLevel(
+        args, all_pkgs, url)
     print(licenses_retrieved_from_fasten_at_files_level)
     print(known_pkgs_metadata_at_files_level)
     print(unknown_pkgs_metadata_at_files_level)
     print(connectivity_issues_at_files_level)
+    print(licenses_at_the_file_level)
 
 
     '''
