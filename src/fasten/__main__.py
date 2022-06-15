@@ -43,6 +43,10 @@ def main():
     pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(pkgs, url) # Check if packages are known by FASTEN
 
 
+    ################################ CALL GRAPHS - Michele - Retrieve and Generation in one function ##################
+    # uncomment to use it 
+    #call_graphs = collectingGeneratedAndRetrievedCallGraphs(args, all_pkgs, url)
+    
     call_graphs, cg_pkgs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
     call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
     vulnerabilities, vul_pkgs = RequestFasten.requestFasten(args, pkgs, url, "vulnerabilities")
