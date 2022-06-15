@@ -1,0 +1,12 @@
+py==1.11.0
+importlib-metadata==4.11.4
+pluggy==0.13.1
+pyparsing==3.0.9
+more-itertools==8.13.0
+Click==7.0
+pytest==5.0.0
+attrs==21.4.0
+wcwidth==0.2.5
+atomicwrites==1.4.0
+packaging==21.3
+zipp==3.8.0

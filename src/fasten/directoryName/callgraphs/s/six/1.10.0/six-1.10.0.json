@@ -1,0 +1,1 @@
+{"product": "six", "forge": "PyPI", "generator": "PyCG", "depset": [], "version": "1.10.0", "timestamp": "2000", "modules": {"internal": {}, "external": {}}, "graph": {"internalCalls": [], "externalCalls": [], "resolvedCalls": []}, "nodes": 0, "metadata": {"loc": -1, "time_elapsed": 0.13, "max_rss": 20172, "num_files": -1}, "sourcePath": "directoryName/sources/s/six/1.10.0"}
