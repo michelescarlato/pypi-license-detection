@@ -17,7 +17,6 @@ class FindEntrypoints:
             scg = json.load(scg_file)
 
         for node in scg["nodes"]:
-
             product = "".join(re.findall(rf"\!({args.product})\$", scg["nodes"][node]["URI"]))
             if product == args.product:
                 entry_points.append(node)

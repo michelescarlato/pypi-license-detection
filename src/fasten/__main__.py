@@ -60,7 +60,8 @@ def main():
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
 
     stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, call_graphs)
-    '''
+    print("stitched_call_graph before entry_points:")
+    print(stitched_call_graph)
     entry_points = FindEntrypoints.findEntrypoints(args, stitched_call_graph)
 
     adjList = CreateAdjacencyList
@@ -71,7 +72,10 @@ def main():
     for x in entry_points:
         list_of_nodes = DepthFirstSearch.depthFirstSearch(adjList, int(x), list_of_nodes)
 
-    list_of_nodes = DepthFirstSearch.depthFirstSearch(adjList, 0, list_of_nodes)
+    #list_of_nodes = DepthFirstSearch.depthFirstSearch(adjList, 0, list_of_nodes)
+
+    print("stitched_call_graph before optimizing:")
+    print(stitched_call_graph)
 
     OptimizeStitchedCallGraph.optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes)
 #    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
@@ -79,6 +83,7 @@ def main():
     for package in vul_pkgs:
         print("The package " + package + ":" + vul_pkgs[package] + " is vulnerable!")
         print("Vulnerabilities can be found in " + args.fasten_data + package + "." + "vulnerabilities.json")
-    '''
+
+
 if __name__ == "__main__":
     main()
