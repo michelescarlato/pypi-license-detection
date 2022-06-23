@@ -14,7 +14,7 @@ from enrichCallGraph import EnrichCallGraph
 from stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
 from createDirectories import CreateDirectories
 from collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetrievedCallGraphs
-
+import os, shutil
 
 
 def main():
@@ -37,6 +37,13 @@ def main():
     call_graphs = []
     vulnerabilities = []
 
+    dirs_to_delete = [args.fasten_data, args.scg_path ]
+    for dir in dirs_to_delete :
+        isExist = os.path.exists(dir)
+        if isExist:
+            print("removing: " + dir)
+            shutil.rmtree(dir)
+
     CreateDirectories.DirectoryCheck(args.fasten_data, args.scg_path) # Create directories to store the Call Graphs and the Stitched Call Graph
     DependenciesTree = ExecutePypiResolver.executePypiResolver(args.requirements)
     time.sleep(20)
@@ -48,8 +55,8 @@ def main():
 
     ################################ CALL GRAPHS - Michele - Retrieve and Generation in one function ##################
     call_graphs = collectingGeneratedAndRetrievedCallGraphs(args, all_pkgs, url)
-    print("call_graphs")
-    print(call_graphs)
+    #print("call_graphs")
+    #print(call_graphs)
 
 
     #call_graphs, cg_pkgs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
