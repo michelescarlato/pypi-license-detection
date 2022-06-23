@@ -18,7 +18,7 @@ class RequestFastenKnownAndUnknownLists:
         for package in pkgs:
 
             URL = url + "packages/" + package + "/" + pkgs[package] + "/" + path
-            print(URL)
+            #print(URL)
             try:
                 response = requests.get(url=URL) # get Call Graph or metadata for specified package
 
@@ -28,8 +28,6 @@ class RequestFastenKnownAndUnknownLists:
                     with open(args.fasten_data + package + "." + path + ".json", "w") as f:
                         f.write(json.dumps(metadata_JSON)) # save Call Graph or metadata in a file
 
-                    print(type(metadata_JSON))
-                    #look for license
 
                     metadata_JSON_File_Locations.append(args.fasten_data + package + "." + path + ".json") # append Call Graph or metadata file location to a list
 
