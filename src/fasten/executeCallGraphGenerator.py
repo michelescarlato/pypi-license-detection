@@ -12,11 +12,16 @@ def deleteCallGraphsDir(CallGraphsDirLocal):
         print("The directory " + CallGraphsDirLocal + " does not exist!")
 
 def executeCallGraphGenerator(unknown_call_graphs, callGraphFastenPath):
-    CallGraphsDirLocal = "directoryName"
+    CallGraphsDirLocal = "cg_sources_dir"
+
+    isExist = os.path.exists(CallGraphsDirLocal)
+    if isExist:
+        shutil.rmtree(CallGraphsDirLocal)
+
     global CallGraphPaths
     CallGraphPaths = []
     for key in unknown_call_graphs:
-        print(key, unknown_call_graphs[key])
+        #print(key, unknown_call_graphs[key])
         packageName = key
         packageVersion = unknown_call_graphs[key]
 
@@ -33,18 +38,22 @@ def executeCallGraphGenerator(unknown_call_graphs, callGraphFastenPath):
 def executeSingleCallGraphGeneration(coord, packageName, packageVersion, directoryName, CallGraphPathLocal,callGraphFastenPath):
 
     generator = CallGraphGenerator(directoryName, coord)
-    print(generator.generate())
     # wait for the call graph to be generated
-    print("Waiting for call graph generation at: ")
-    print(CallGraphPathLocal)
+    #print("Waiting for call graph generation at: ")
+    #print(CallGraphPathLocal)
     timer = 1
     global CallGraphPaths
     CallGraphPaths = []
     while not os.path.exists(CallGraphPathLocal):
         time.sleep(1)
         timer += 1
-        if timer > 30:
-            print(""+str(timer)+" seconds without call graph generation passed.")
+        if timer > 60:
+            print("" + str(timer) + " seconds without call graph generation passed.")
+            # print the status
+            dict = generator.generate()
+            print(dict.get("Status"))
+            #print(dict)
+            #print(generator.generate())
             break
     if os.path.isfile(CallGraphPathLocal):
         print("Call graph generated at: "+CallGraphPathLocal)
