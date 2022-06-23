@@ -1,18 +1,20 @@
 import argparse
 import time
-from fasten.executePypiResolver import ExecutePypiResolver
-from fasten.readRequirementsFile import ReadRequirementsFile
-from fasten.checkPackageAvailability import CheckPackageAvailability
-from fasten.createCallGraph import CreateCallGraph
-from fasten.requestFasten import RequestFasten
-from fasten.stitchCallGraphs import StitchCallGraphs
-from fasten.findEntrypoints import FindEntrypoints
-from fasten.createAdjacencyList import CreateAdjacencyList
-from fasten.depthFirstSearch import DepthFirstSearch
-from fasten.optimizeStitchedCallGraph import OptimizeStitchedCallGraph
-from fasten.enrichCallGraph import EnrichCallGraph
-from fasten.stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
-from fasten.createDirectories import CreateDirectories
+from executePypiResolver import ExecutePypiResolver
+from readRequirementsFile import ReadRequirementsFile
+from checkPackageAvailability import CheckPackageAvailability
+from createCallGraph import CreateCallGraph
+from requestFasten import RequestFasten
+from stitchCallGraphs import StitchCallGraphs
+from findEntrypoints import FindEntrypoints
+from createAdjacencyList import CreateAdjacencyList
+from depthFirstSearch import DepthFirstSearch
+from optimizeStitchedCallGraph import OptimizeStitchedCallGraph
+from enrichCallGraph import EnrichCallGraph
+from stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
+from createDirectories import CreateDirectories
+from collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetrievedCallGraphs
+
 
 
 def main():
@@ -44,9 +46,14 @@ def main():
     pkgs = ReadRequirementsFile.readFile(args.requirements) # Read requirements.txt
     pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(pkgs, url) # Check if packages are known by FASTEN
 
+    ################################ CALL GRAPHS - Michele - Retrieve and Generation in one function ##################
+    call_graphs = collectingGeneratedAndRetrievedCallGraphs(args, all_pkgs, url)
+    print("call_graphs")
+    print(call_graphs)
 
-    call_graphs, cg_pkgs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
-    call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
+
+    #call_graphs, cg_pkgs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
+    #call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
     vulnerabilities, vul_pkgs = RequestFasten.requestFasten(args, pkgs, url, "vulnerabilities")
 
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
