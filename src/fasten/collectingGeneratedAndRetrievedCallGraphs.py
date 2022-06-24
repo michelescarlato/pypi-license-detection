@@ -12,11 +12,11 @@ def collectingGeneratedAndRetrievedCallGraphs(args, all_pkgs, url):
     GeneratedCallGraphPaths_broken = executeCallGraphGenerator(unknown_call_graphs_and_connectivity_issues, args.fasten_data)#,CallGraphsDirLocal)
     # merging lists of retrieved and generated call graphs location
 
-    mypath = args.fasten_data
-    GeneratedCallGraphPaths = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+    cg_path = args.fasten_data
+    GeneratedCallGraphPaths = [f for f in listdir(cg_path) if isfile(join(cg_path, f))]
     GeneratedCallGraphPaths_mod = []
-    for element in GeneratedCallGraphPaths:
-        element = mypath + "/" + element
-        GeneratedCallGraphPaths_mod.append(element)
+    for cg in GeneratedCallGraphPaths:
+        cg = cg_path + "/" + cg
+        GeneratedCallGraphPaths_mod.append(cg)
     CallGraphsList = GeneratedCallGraphPaths_mod + ReceivedCallGraphsLocation
     return CallGraphsList
