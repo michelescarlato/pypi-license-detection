@@ -1,18 +1,18 @@
 import argparse
 import time
-from fasten.executePypiResolver import ExecutePypiResolver
-from fasten.readRequirementsFile import ReadRequirementsFile
-from fasten.checkPackageAvailability import CheckPackageAvailability
-from fasten.createCallGraph import CreateCallGraph
-from fasten.requestFasten import RequestFasten
-from fasten.stitchCallGraphs import StitchCallGraphs
-from fasten.findEntrypoints import FindEntrypoints
-from fasten.createAdjacencyList import CreateAdjacencyList
-from fasten.depthFirstSearch import DepthFirstSearch
-from fasten.optimizeStitchedCallGraph import OptimizeStitchedCallGraph
-from fasten.enrichCallGraph import EnrichCallGraph
-from fasten.stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
-from fasten.createDirectories import CreateDirectories
+from executePypiResolver import ExecutePypiResolver
+from readRequirementsFile import ReadRequirementsFile
+from checkPackageAvailability import CheckPackageAvailability
+from createCallGraph import CreateCallGraph
+from requestFasten import RequestFasten
+from stitchCallGraphs import StitchCallGraphs
+from findEntrypoints import FindEntrypoints
+from createAdjacencyList import CreateAdjacencyList
+from depthFirstSearch import DepthFirstSearch
+from optimizeStitchedCallGraph import OptimizeStitchedCallGraph
+from enrichCallGraph import EnrichCallGraph
+from stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
+from createDirectories import CreateDirectories
 
 
 def main():
@@ -40,10 +40,6 @@ def main():
     time.sleep(20)
     all_pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
     pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, url) # Check if packages are known by FASTEN
-
-    pkgs = ReadRequirementsFile.readFile(args.requirements) # Read requirements.txt
-    pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(pkgs, url) # Check if packages are known by FASTEN
-
 
     call_graphs, cg_pkgs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
     call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
