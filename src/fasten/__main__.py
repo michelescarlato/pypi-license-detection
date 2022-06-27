@@ -49,10 +49,8 @@ def main():
     time.sleep(20)
     all_pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
     pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, url) # Check if packages are known by FASTEN
-
-    pkgs = ReadRequirementsFile.readFile(args.requirements) # Read requirements.txt
-    pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(pkgs, url) # Check if packages are known by FASTEN
-
+   
+    
     ################################ CALL GRAPHS - Michele - Retrieve and Generation in one function ##################
     call_graphs = collectingGeneratedAndRetrievedCallGraphs(args, all_pkgs, url)
     #print("call_graphs")
