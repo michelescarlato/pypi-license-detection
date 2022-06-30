@@ -21,7 +21,4 @@ class ExecutePypiResolver:
             with open(filename, "a") as myfile:
                 myfile.write(packageAndVersion)
 
-        if (len(filename)) > 0:
-            #print("The new " + filename + " has been created successfully")
-            time.sleep(20)
         return filename

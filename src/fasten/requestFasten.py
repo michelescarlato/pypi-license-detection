@@ -57,7 +57,6 @@ class RequestFasten:
                 print('Connection timeout: ConnectTimeout')
             except requests.exceptions.ConnectionError:
                 print('Connection timeout: ConnectError')
-                time.sleep(30)
 
         if path == "rcg":
             return metadata_JSON_File_Locations, cg_pkgs

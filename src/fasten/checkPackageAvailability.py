@@ -35,6 +35,5 @@ class CheckPackageAvailability:
                 print('Connection timeout: ConnectTimeout')
             except requests.exceptions.ConnectionError:
                 print('Connection timeout: ConnectError')
-                time.sleep(30)
 
         return json.dumps(known_pkgs), json.dumps(unknown_pkgs)

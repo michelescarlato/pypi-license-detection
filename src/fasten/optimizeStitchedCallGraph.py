@@ -1,39 +1,29 @@
 # Create Optimized Stitched Call Graph.
+import os
 import json
+
 
 class OptimizeStitchedCallGraph:
 
     @staticmethod
     def optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes):
-
-
         print("Optimize Stitched Call Graph:")
         print(stitched_call_graph)
-        oscg = {
 
-                "nodes":{}
-        }
+        with open(stitched_call_graph, "r") as scg_file:
+            scg = json.load(scg_file)
 
-        i = 0
+            oscg = {"nodes": {}}
 
-        for node in list_of_nodes:
+            i = 0
+            for node in list_of_nodes:
+                if node:
+                    node_number = {str(i): {}}
+                    oscg["nodes"].update(node_number)
+                    oscg["nodes"][str(i)].update(scg["nodes"][str(i)])
+                i = i + 1
 
-            if node:
-
-                node_number = {
-
-                        str(i):{}
-                }
-
-                oscg["nodes"].update(node_number)
-
-                with open(stitched_call_graph, "r") as scg_file:
-                    scg = json.load(scg_file)
-
-                oscg["nodes"][str(i)].update(scg["nodes"][str(i)])
-
-                with open(args.scg_path + "oscg.json", "w") as oscg_file:
-                    oscg_file.write(json.dumps(oscg))
-            i=i+1
-
-        print("Optimized Stitched Call Graph written in " + args.scg_path + "oscg.json")
+            oscg_file_path = os.path.join(args.scg_path, "oscg.json")
+            with open(oscg_file_path, "w") as oscg_file:
+                oscg_file.write(json.dumps(oscg))
+            print("Optimized Stitched Call Graph written in " + oscg_file_path)

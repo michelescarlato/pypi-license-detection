@@ -48,6 +48,5 @@ class RequestFastenKnownAndUnknownLists:
                 print('Connection timeout: ConnectTimeout')
             except requests.exceptions.ConnectionError:
                 print('Connection timeout: ConnectError')
-                time.sleep(30)
 
         return metadata_JSON_File_Locations, known_pkg_metadata, unknown_pkg_metadata, connectivity_issues

@@ -7,7 +7,6 @@ def deleteCallGraphsDir(CallGraphsDirLocal):
     if os.path.exists(CallGraphsDirLocal):
         shutil.rmtree(CallGraphsDirLocal)
         print("The directory " + CallGraphsDirLocal + " has been deleted successfully")
-        time.sleep(10)
     else:
         print("The directory " + CallGraphsDirLocal + " does not exist!")
 
@@ -38,23 +37,7 @@ def executeCallGraphGenerator(unknown_call_graphs, callGraphFastenPath):
 def executeSingleCallGraphGeneration(coord, packageName, packageVersion, directoryName, CallGraphPathLocal,callGraphFastenPath):
 
     generator = CallGraphGenerator(directoryName, coord)
-    # wait for the call graph to be generated
-    #print("Waiting for call graph generation at: ")
-    #print(CallGraphPathLocal)
-    timer = 1
-    global CallGraphPaths
-    CallGraphPaths = []
-    while not os.path.exists(CallGraphPathLocal):
-        time.sleep(1)
-        timer += 1
-        if timer > 60:
-            print("" + str(timer) + " seconds without call graph generation passed.")
-            # print the status
-            dict = generator.generate()
-            print(dict.get("Status"))
-            #print(dict)
-            #print(generator.generate())
-            break
+    generator.generate()
     if os.path.isfile(CallGraphPathLocal):
         print("Call graph generated at: "+CallGraphPathLocal)
         CallGraphPathLocalRenamed = CallGraphPathLocal.replace("cg.json", packageName+"-"+packageVersion+".json")
