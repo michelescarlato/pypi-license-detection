@@ -31,11 +31,11 @@ def generateInboundLicenses(licenses, LCVurl):
 
         PyPILicenseSPDX = licenses[i].get("PyPILicenseSPDX")
 
-        if len(PyPILicenseSPDX) > 0:
+        if PyPILicenseSPDX != None:
             InboundLicenses.append(PyPILicenseSPDX)
         else:
             GitHubLicenseSPDX = licenses[i].get("GitHubLicense")
-            if len(GitHubLicenseSPDX) > 0:
+            if GitHubLicenseSPDX != None:
                 InboundLicenses.append(GitHubLicenseSPDX)
     return InboundLicenses
 
@@ -61,7 +61,10 @@ def parseLCVAssessmentResponse(LCVAssessmentResponseList, licenses):
                     assessment.append(outputPackageInformationNotCompatibleInboundLicenseGitHub)
             assessment.append(outputNotCompatibleInboundLicense)
 
-        #status = LCVAssessmentResponse[i].get("status")
+
+    if len(assessment) == 0:
+        output = "Licensing issues at the package level have not been found"
+        assessment.append(output)
     return assessment
 
 #def provideReport(LicenseReport, licenses):
