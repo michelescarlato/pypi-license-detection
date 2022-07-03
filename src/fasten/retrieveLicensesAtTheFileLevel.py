@@ -14,7 +14,7 @@ class RetrieveLicensesAtTheFileLevel:
         unknown_files_metadata = {}
         files_connectivity_issues = {}
         file_licenses = {}
-        i = 0
+
 
         for package in pkgs:
             packageName = package
@@ -34,12 +34,15 @@ class RetrieveLicensesAtTheFileLevel:
                     # print(type(metadata_JSON))
                     # look for licenses
                     for l in metadata_JSON:
+                        i = 0
+                        print(l["path"])
+                        filePath = l["path"]
                         print(l["metadata"])
                         if l["metadata"] is not None:
                             if "licenses" in l["metadata"]:
                                 licensesFasten = l["metadata"]["licenses"]
                                 if len(licensesFasten) > 0:
-                                    print("License available for " + package + " from FASTEN server. ")
+                                    print("License available for file: " + filePath + " " + package + " from FASTEN server.")
                                     print(licensesFasten)
 
                                     for element in licensesFasten:
@@ -48,6 +51,7 @@ class RetrieveLicensesAtTheFileLevel:
                                             print("element[spdx_license_key]:")
                                             print(element["spdx_license_key"])
                                             print("PackageName:" + packageName)
+                                            print("File path:" + filePath)
                                             print("file index:" + str(i))
                                             if i == 0:
                                                 file_licenses[packageName][i] = {}
@@ -57,10 +61,10 @@ class RetrieveLicensesAtTheFileLevel:
                                                 file_licenses[packageName][i]["spdx_license_key"] = element[
                                                     "spdx_license_key"]
                                                 i += 1
+                                            # stores only 1 instance of the same license for the same path
                                             if i > 0:
                                                 if (file_licenses[packageName][i - 1]["path"] == l["path"]):
-                                                    if (file_licenses[packageName][i - 1]["spdx_license_key"] != element[
-                                                        "spdx_license_key"]):
+                                                    if (file_licenses[packageName][i - 1]["spdx_license_key"] != element["spdx_license_key"]):
                                                         file_licenses[packageName][i] = {}
                                                         file_licenses[packageName][i]["packageName"] = packageName
                                                         file_licenses[packageName][i]["packageVersion"] = packageVersion
