@@ -9,17 +9,16 @@ def retrieveGitHubUrl(jsonResponse, packageName):
     url = ""
     response = json.dumps(jsonResponse)
     data = json.loads(response)
-    #JSONKeysList = ['home_page']
-
     if packageName in data['info']['home_page']:
         if "https://github.com/" in data['info']['home_page']:
             url = data['info']['home_page']
             return url
-    if 'Homepage' in data['info']['project_urls']:
-        if packageName in data['info']['project_urls']['Homepage']:
-            if "https://github.com/" in data['info']['project_urls']['Homepage']:
-                url = data['info']['home_page']
-                return url
+    if data['info']['project_urls'] != None:
+        if 'Homepage' in data['info']['project_urls']:
+            if packageName in data['info']['project_urls']['Homepage']:
+                if "https://github.com/" in data['info']['project_urls']['Homepage']:
+                    url = data['info']['home_page']
+                    return url
     iterdict(data, packageName)
     return url
 
@@ -150,4 +149,4 @@ def retrieveLicenseInformationFromPyPI(packageName, packageVersion, LCVurl):
     except requests.exceptions.ConnectionError:
         print('Connection timeout: ConnectError')
         time.sleep(30)
-    return PyPILicense, PyPILicenseSPDX, jsonResponse
+    return PyPILicenseSPDX, PyPILicenseSPDX, jsonResponse
