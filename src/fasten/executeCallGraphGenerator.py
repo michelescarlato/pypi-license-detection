@@ -3,47 +3,47 @@ import time
 import os.path
 import shutil
 
-def deleteCallGraphsDir(CallGraphsDirLocal):
-    if os.path.exists(CallGraphsDirLocal):
-        shutil.rmtree(CallGraphsDirLocal)
-        print("The directory " + CallGraphsDirLocal + " has been deleted successfully")
+def deleteCallGraphsDir(cg_directory_local):
+    if os.path.exists(cg_directory_local):
+        shutil.rmtree(cg_directory_local)
+        print("The directory " + cg_directory_local + " has been deleted successfully")
     else:
-        print("The directory " + CallGraphsDirLocal + " does not exist!")
+        print("The directory " + cg_directory_local + " does not exist!")
 
-def executeCallGraphGenerator(unknown_call_graphs, callGraphFastenPath):
-    CallGraphsDirLocal = "cg_sources_dir"
+def executeCallGraphGenerator(unknown_call_graphs, fasten_data):
+    cg_directory_local = "cg_sources_dir"
 
-    isExist = os.path.exists(CallGraphsDirLocal)
+    isExist = os.path.exists(cg_directory_local)
     if isExist:
-        shutil.rmtree(CallGraphsDirLocal)
+        shutil.rmtree(cg_directory_local)
 
-    global CallGraphPaths
-    CallGraphPaths = []
+    global cg_paths
+    cg_paths = []
     for key in unknown_call_graphs:
         #print(key, unknown_call_graphs[key])
-        packageName = key
-        packageVersion = unknown_call_graphs[key]
+        pkg_name = key
+        pkg_version = unknown_call_graphs[key]
 
-        coord = { "product": ""+packageName+"",
-              "version": ""+packageVersion+"",
+        coord = { "product": ""+pkg_name+"",
+              "version": ""+pkg_version+"",
               "version_timestamp": "2000",
               "requires_dist": []}
 
-        CallGraphPathLocal = CallGraphsDirLocal + "/" + "callgraphs"+ "/" + packageName[0] + "/" + packageName + "/" + packageVersion + "/" + "cg.json"
-        executeSingleCallGraphGeneration(coord, packageName, packageVersion, CallGraphsDirLocal, CallGraphPathLocal, callGraphFastenPath)
-    return CallGraphPaths
+        cg_path_local = cg_directory_local + "/" + "callgraphs"+ "/" + pkg_name[0] + "/" + pkg_name + "/" + pkg_version + "/" + "cg.json"
+        executeSingleCallGraphGeneration(coord, pkg_name, pkg_version, cg_directory_local, cg_path_local, fasten_data)
+    return cg_paths
 
 
-def executeSingleCallGraphGeneration(coord, packageName, packageVersion, directoryName, CallGraphPathLocal,callGraphFastenPath):
+def executeSingleCallGraphGeneration(coord, pkg_name, pkg_version, directoryName, cg_path_local,fasten_data):
 
     generator = CallGraphGenerator(directoryName, coord)
     generator.generate()
-    if os.path.isfile(CallGraphPathLocal):
-        print("Call graph generated at: "+CallGraphPathLocal)
-        CallGraphPathLocalRenamed = CallGraphPathLocal.replace("cg.json", packageName+"-"+packageVersion+".json")
-        os.rename(CallGraphPathLocal, CallGraphPathLocalRenamed)
-        shutil.copy(CallGraphPathLocalRenamed, callGraphFastenPath )
-        CallGraphPaths.append(callGraphFastenPath+"/"+packageName+"-"+packageVersion+".json")
+    if os.path.isfile(cg_path_local):
+        print("Call graph generated at: "+cg_path_local)
+        cg_path_local_renamed = cg_path_local.replace("cg.json", pkg_name+"-"+pkg_version+".json")
+        os.rename(cg_path_local, cg_path_local_renamed)
+        shutil.copy(cg_path_local_renamed, fasten_data )
+        cg_paths.append(fasten_data+"/"+pkg_name+"-"+pkg_version+".json")
         pass
     else:
-        print("%s has not been generated!" % CallGraphPathLocal)
+        print("%s has not been generated!" % cg_path_local)
