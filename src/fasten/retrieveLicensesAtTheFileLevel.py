@@ -31,56 +31,37 @@ class RetrieveLicensesAtTheFileLevel:
                     with open(args.fasten_data + package + ".files.json", "w") as f:
                         f.write(json.dumps(metadata_JSON))  # save Call Graph or metadata in a file
 
-                    # print(type(metadata_JSON))
                     # look for licenses
-                    for l in metadata_JSON:
-                        i = 0
-                        print(l["path"])
-                        filePath = l["path"]
-                        print(l["metadata"])
-                        if l["metadata"] is not None:
-                            if "licenses" in l["metadata"]:
-                                licensesFasten = l["metadata"]["licenses"]
+                    for file in metadata_JSON:
+                        filePath = file["path"]
+                        file_licenses[packageName][filePath] = {}
+                        if file["metadata"] is not None:
+                            # counter for same licenses for the same file
+                            i = 0
+                            if "licenses" in file["metadata"]:
+                                licensesFasten = file["metadata"]["licenses"]
                                 if len(licensesFasten) > 0:
-                                    print("License available for file: " + filePath + " " + package + " from FASTEN server.")
-                                    print(licensesFasten)
-
-                                    for element in licensesFasten:
-                                        print(element)
-                                        if "spdx_license_key" in element:
-                                            print("element[spdx_license_key]:")
-                                            print(element["spdx_license_key"])
-                                            print("PackageName:" + packageName)
-                                            print("File path:" + filePath)
-                                            print("file index:" + str(i))
+                                    print("License available for file: " + filePath + " - " + package + " from FASTEN server.")
+                                    for license in licensesFasten:
+                                        if "spdx_license_key" in license:
                                             if i == 0:
-                                                file_licenses[packageName][i] = {}
-                                                file_licenses[packageName][i]["packageName"] = packageName
-                                                file_licenses[packageName][i]["packageVersion"] = packageVersion
-                                                file_licenses[packageName][i]["path"] = l["path"]
-                                                file_licenses[packageName][i]["spdx_license_key"] = element[
+                                                file_licenses[packageName][filePath] = {}
+                                                file_licenses[packageName][filePath]["packageName"] = packageName
+                                                file_licenses[packageName][filePath]["packageVersion"] = packageVersion
+                                                file_licenses[packageName][filePath]["path"] = file["path"]
+                                                file_licenses[packageName][filePath]["spdx_license_key_"+ str(i+1)+""] = license[
                                                     "spdx_license_key"]
                                                 i += 1
                                             # stores only 1 instance of the same license for the same path
                                             if i > 0:
-                                                if (file_licenses[packageName][i - 1]["path"] == l["path"]):
-                                                    if (file_licenses[packageName][i - 1]["spdx_license_key"] != element["spdx_license_key"]):
-                                                        file_licenses[packageName][i] = {}
-                                                        file_licenses[packageName][i]["packageName"] = packageName
-                                                        file_licenses[packageName][i]["packageVersion"] = packageVersion
-                                                        file_licenses[packageName][i]["path"] = l["path"]
-                                                        file_licenses[packageName][i]["spdx_license_key"] = element[
+                                                if (file_licenses[packageName][filePath]["path"] == file["path"]):
+                                                    if (file_licenses[packageName][filePath]["spdx_license_key_"+ str(i)+""] != license["spdx_license_key"]):
+
+                                                        file_licenses[packageName][filePath]["spdx_license_key_"+ str(i+1)+""] = license[
                                                             "spdx_license_key"]
                                                         i += 1
-                                                else:
-                                                    file_licenses[packageName][i] = {}
-                                                    file_licenses[packageName][i]["packageName"] = packageName
-                                                    file_licenses[packageName][i]["packageVersion"] = packageVersion
-                                                    file_licenses[packageName][i]["path"] = l["path"]
-                                                    file_licenses[packageName][i]["spdx_license_key"] = element[
-                                                        "spdx_license_key"]
-                                                    i += 1
-                                    known_files_metadata[package] = pkgs[package]
+
+                                known_files_metadata[package] = pkgs[package]
                         else:
                             print("License unavailable for " + package + " from FASTEN server. ")
 
@@ -89,7 +70,6 @@ class RetrieveLicensesAtTheFileLevel:
 
                             print(package + ":" + pkgs[package] + ": metadata received.")
                             known_files_metadata[package] = pkgs[package]
-
                 elif response.status_code == 404:
                     print(package + ":" + pkgs[package] + ": metadata not available!")
                     unknown_files_metadata[package] = pkgs[package]
