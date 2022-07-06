@@ -6,8 +6,6 @@ from gitHubAndPyPIParsingUtils import IsAnSPDX
 
 def licenseComplianceVerification(InboundLicenses, OutboundLicense, LCVurl):
     InboundLicensesString = ';'.join([str(item) for item in InboundLicenses])
-    print ("InboundLicensesString:")
-    print(InboundLicensesString)
     LCVComplianceAssessment = LCVurl + "LicensesInput?InboundLicenses=" + InboundLicensesString + "&OutboundLicense=" + OutboundLicense
     try:
         response = requests.get(url=LCVComplianceAssessment)  # get Call Graph for specified package
@@ -31,18 +29,18 @@ def generateInboundLicenses(licenses, LCVurl):
 
         PyPILicenseSPDX = licenses[i].get("PyPILicenseSPDX")
 
-        if PyPILicenseSPDX != None:
+        if PyPILicenseSPDX is not None:
             InboundLicenses.append(PyPILicenseSPDX)
         else:
             GitHubLicenseSPDX = licenses[i].get("GitHubLicense")
-            if GitHubLicenseSPDX != None:
+            if GitHubLicenseSPDX is not None:
                 InboundLicenses.append(GitHubLicenseSPDX)
     return InboundLicenses
 
 def parseLCVAssessmentResponse(LCVAssessmentResponseList, licenses):
-    #LCVAssessmentResponse = json.loads(LCVAssessmentResponseJSON)
+    # LCVAssessmentResponse = json.loads(LCVAssessmentResponseJSON)
     assessment = []
-    #print(licenses)
+    # print(licenses)
     for dict in LCVAssessmentResponseList:
         if (dict.get("status")) == "not compatible":
             InboundNotCompatibleLicense = (dict.get("inbound_SPDX"))
@@ -67,4 +65,4 @@ def parseLCVAssessmentResponse(LCVAssessmentResponseList, licenses):
         assessment.append(output)
     return assessment
 
-#def provideReport(LicenseReport, licenses):
+# def provideReport(LicenseReport, licenses):
