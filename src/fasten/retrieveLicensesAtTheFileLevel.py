@@ -19,7 +19,6 @@ class RetrieveLicensesAtTheFileLevel:
         for package in pkgs:
             packageName = package
             packageVersion = pkgs[package]
-            file_licenses[packageName] = {}
             URL = url + "packages/" + package + "/" + pkgs[package] + "/files"
             print(URL)
             try:
@@ -30,7 +29,9 @@ class RetrieveLicensesAtTheFileLevel:
                     metadata_JSON = response.json()  # save in JSON format
                     with open(args.fasten_data + package + ".files.json", "w") as f:
                         f.write(json.dumps(metadata_JSON))  # save Call Graph or metadata in a file
-
+                    # create a dictionary for the package only if files are listed from FASTEN
+                    if len(metadata_JSON) > 0:
+                        file_licenses[packageName] = {}
                     # look for licenses
                     for file in metadata_JSON:
                         filePath = file["path"]
@@ -42,24 +43,23 @@ class RetrieveLicensesAtTheFileLevel:
                                 licensesFasten = file["metadata"]["licenses"]
                                 if len(licensesFasten) > 0:
                                     print("License available for file: " + filePath + " - " + package + " from FASTEN server.")
+                                    file_licenses[packageName][filePath] = {}
+                                    file_licenses[packageName][filePath]["spdx_license_key"] = []
                                     for license in licensesFasten:
                                         if "spdx_license_key" in license:
+                                            licenseSPDX = license["spdx_license_key"]
+                                            # stores only 1 instance of the same license for the same path
+                                            if i > 0:
+                                                if file_licenses[packageName][filePath]["path"] == file["path"]:
+                                                    if file_licenses[packageName][filePath]["spdx_license_key"][i-1] != licenseSPDX:
+                                                        file_licenses[packageName][filePath]["spdx_license_key"].append(licenseSPDX)
+                                                        i += 1
                                             if i == 0:
-                                                file_licenses[packageName][filePath] = {}
                                                 file_licenses[packageName][filePath]["packageName"] = packageName
                                                 file_licenses[packageName][filePath]["packageVersion"] = packageVersion
                                                 file_licenses[packageName][filePath]["path"] = file["path"]
-                                                file_licenses[packageName][filePath]["spdx_license_key_"+ str(i+1)+""] = license[
-                                                    "spdx_license_key"]
+                                                file_licenses[packageName][filePath]["spdx_license_key"].append(licenseSPDX)
                                                 i += 1
-                                            # stores only 1 instance of the same license for the same path
-                                            if i > 0:
-                                                if (file_licenses[packageName][filePath]["path"] == file["path"]):
-                                                    if (file_licenses[packageName][filePath]["spdx_license_key_"+ str(i)+""] != license["spdx_license_key"]):
-
-                                                        file_licenses[packageName][filePath]["spdx_license_key_"+ str(i+1)+""] = license[
-                                                            "spdx_license_key"]
-                                                        i += 1
 
                                 known_files_metadata[package] = pkgs[package]
                         else:
@@ -85,4 +85,6 @@ class RetrieveLicensesAtTheFileLevel:
             except requests.exceptions.ConnectionError:
                 print('Connection timeout: ConnectError')
                 time.sleep(30)
+        with open('file_licenses_original.json', 'w') as convert_file:
+            json.dump(file_licenses, convert_file, indent=4)
         return metadata_JSON_File_Locations, known_files_metadata, unknown_files_metadata, files_connectivity_issues, file_licenses
