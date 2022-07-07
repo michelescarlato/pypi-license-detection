@@ -17,7 +17,7 @@ def executeCallGraphGenerator(unknown_pkgs, fasten_data):
         coord = { "product": ""+package+"",
               "version": ""+pkg_version+"",
               "version_timestamp": "2000",
-              "requires_dist": []}
+              "requires_dist": [] }
 
         cg_path_local = fasten_data + "callgraphs"+ "/" + package[0] + "/" + package + "/" + pkg_version + "/" + "cg.json"
         executeSingleCallGraphGeneration(coord, fasten_data, cg_path_local)
