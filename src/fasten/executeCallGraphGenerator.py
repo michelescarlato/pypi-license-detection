@@ -5,6 +5,7 @@ from pycg_producer.producer import CallGraphGenerator
 
 
 def executeCallGraphGenerator(unknown_pkgs, fasten_data):
+    """Create dictonary necessary for 'CallGraphGenerator'."""
 
     global cg_paths
     cg_paths = []
@@ -25,6 +26,7 @@ def executeCallGraphGenerator(unknown_pkgs, fasten_data):
 
 
 def executeSingleCallGraphGeneration(coord, pkg_name, pkg_version, directoryName, cg_path_local,fasten_data):
+    """Create Call Graph for a single package."""
 
     generator = CallGraphGenerator(directoryName, coord)
     generator.generate()
