@@ -154,33 +154,27 @@ def CompareLicensesAtThePackageLevelWithTheFileLevel(licenses_retrieved_data, li
         for j in licenses_retrieved_at_the_file_level:
             for k in licenses_retrieved_at_the_file_level[j]:
                 if "packageName" in licenses_retrieved_at_the_file_level[j][k]:
-                    #print("Hello world! line 153")
                     if licenses_retrieved[i]["packageName"] == licenses_retrieved_at_the_file_level[j][k]["packageName"]:
-
-                        #print("Hello world! line 156")
-
                         if "PyPILicenseSPDX" in licenses_retrieved[i]:
-                            if licenses_retrieved[i]["PyPILicenseSPDX"] != licenses_retrieved_at_the_file_level[j][k]["spdx_license_key_1"]:
-                                ReportLicensesPackageComparedWithFile[z] = {}
-                                ReportLicensesPackageComparedWithFile[z]["packageName"] = licenses_retrieved[i]["packageName"]
-                                ReportLicensesPackageComparedWithFile[z]["PyPILicenseSPDX"] = licenses_retrieved[i]["PyPILicenseSPDX"]
-                                ReportLicensesPackageComparedWithFile[z]["filePath"] = licenses_retrieved_at_the_file_level[j][k]["path"]
-                                # this is surely different
-                                ReportLicensesPackageComparedWithFile[z]["ScancodeLicense"] = \
-                                licenses_retrieved_at_the_file_level[j][k]["spdx_license_key_1"]
-                                ReportLicensesPackageComparedWithFile[z]["MessageReport"] = "Scancode detected a license which is not the one declared at the package level"
-                                z += 1
+                            for license in licenses_retrieved_at_the_file_level[j][k]["spdx_license_key"]:
+                                if licenses_retrieved[i]["PyPILicenseSPDX"] != license:
+                                    ReportLicensesPackageComparedWithFile[z] = {}
+                                    ReportLicensesPackageComparedWithFile[z]["packageName"] = licenses_retrieved[i]["packageName"]
+                                    ReportLicensesPackageComparedWithFile[z]["PyPILicenseSPDX"] = licenses_retrieved[i]["PyPILicenseSPDX"]
+                                    ReportLicensesPackageComparedWithFile[z]["filePath"] = licenses_retrieved_at_the_file_level[j][k]["path"]
+                                    ReportLicensesPackageComparedWithFile[z]["ScancodeLicense"] = license
+                                    ReportLicensesPackageComparedWithFile[z]["MessageReport"] = "Scancode detected a license which is not the one declared at the package level"
+                                    z += 1
                         if "GitHubLicenseSPDX" in licenses_retrieved[i]:
-                            if licenses_retrieved[i]["GitHubLicenseSPDX"] != licenses_retrieved_at_the_file_level[j][k]["spdx_license_key_1"]:
-                                ReportLicensesPackageComparedWithFile[z] = {}
-                                ReportLicensesPackageComparedWithFile[z]["packageName"] = licenses_retrieved[i]["packageName"]
-                                ReportLicensesPackageComparedWithFile[z]["PyPILicenseSPDX"] = licenses_retrieved[i]["PyPILicenseSPDX"]
-                                ReportLicensesPackageComparedWithFile[z]["filePath"] = licenses_retrieved_at_the_file_level[j][k]["path"]
-                                # this is surely different
-                                ReportLicensesPackageComparedWithFile[z]["ScancodeLicense"] = \
-                                licenses_retrieved_at_the_file_level[j][k]["spdx_license_key_1"]
-                                ReportLicensesPackageComparedWithFile[z]["MessageReport"] = "Scancode detected a license which is not the one declared at the package level"
-                                z += 1
+                            for license in licenses_retrieved_at_the_file_level[j][k]["spdx_license_key"]:
+                                if licenses_retrieved[i]["GitHubLicenseSPDX"] != license:
+                                    ReportLicensesPackageComparedWithFile[z] = {}
+                                    ReportLicensesPackageComparedWithFile[z]["packageName"] = licenses_retrieved[i]["packageName"]
+                                    ReportLicensesPackageComparedWithFile[z]["PyPILicenseSPDX"] = licenses_retrieved[i]["PyPILicenseSPDX"]
+                                    ReportLicensesPackageComparedWithFile[z]["filePath"] = licenses_retrieved_at_the_file_level[j][k]["path"]
+                                    ReportLicensesPackageComparedWithFile[z]["ScancodeLicense"] = license
+                                    ReportLicensesPackageComparedWithFile[z]["MessageReport"] = "Scancode detected a license which is not the one declared at the package level"
+                                    z += 1
     with open('ReportLicensesPackageComparedWithFile.json', 'w') as convert_file:
         json.dump(ReportLicensesPackageComparedWithFile, convert_file, indent=4)
 
