@@ -4,23 +4,23 @@ import shutil
 from pycg_producer.producer import CallGraphGenerator
 
 
-def executeCallGraphGenerator(unknown_call_graphs, fasten_data):
-    cg_directory_local = "cg_sources_dir"
+def executeCallGraphGenerator(unknown_pkgs, fasten_data):
 
     global cg_paths
     cg_paths = []
-    for key in unknown_call_graphs:
-        #print(key, unknown_call_graphs[key])
-        pkg_name = key
-        pkg_version = unknown_call_graphs[key]
 
-        coord = { "product": ""+pkg_name+"",
+    for package in unknown_pkgs:
+
+        pkg_version = unknown_pkgs[package]
+
+        coord = { "product": ""+package+"",
               "version": ""+pkg_version+"",
               "version_timestamp": "2000",
               "requires_dist": []}
 
-        cg_path_local = cg_directory_local + "/" + "callgraphs"+ "/" + pkg_name[0] + "/" + pkg_name + "/" + pkg_version + "/" + "cg.json"
-        executeSingleCallGraphGeneration(coord, pkg_name, pkg_version, cg_directory_local, cg_path_local, fasten_data)
+        cg_path_local = fasten_data + "/" + "callgraphs"+ "/" + package[0] + "/" + package + "/" + pkg_version + "/" + "cg.json"
+        executeSingleCallGraphGeneration(coord, package, pkg_version, fasten_data, cg_path_local, fasten_data)
+
     return cg_paths
 
 
