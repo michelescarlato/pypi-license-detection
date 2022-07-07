@@ -3,19 +3,9 @@ import time
 import os.path
 import shutil
 
-def deleteCallGraphsDir(cg_directory_local):
-    if os.path.exists(cg_directory_local):
-        shutil.rmtree(cg_directory_local)
-        print("The directory " + cg_directory_local + " has been deleted successfully")
-    else:
-        print("The directory " + cg_directory_local + " does not exist!")
 
 def executeCallGraphGenerator(unknown_call_graphs, fasten_data):
     cg_directory_local = "cg_sources_dir"
-
-    isExist = os.path.exists(cg_directory_local)
-    if isExist:
-        shutil.rmtree(cg_directory_local)
 
     global cg_paths
     cg_paths = []

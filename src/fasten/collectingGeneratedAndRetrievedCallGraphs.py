@@ -1,11 +1,10 @@
-from executeCallGraphGenerator import executeCallGraphGenerator, deleteCallGraphsDir
+from executeCallGraphGenerator import executeCallGraphGenerator
 from requestFastenKnownAndUnknownLists import RequestFastenKnownAndUnknownLists
 from os import listdir
 from os.path import isfile, join
 def collectingGeneratedAndRetrievedCallGraphs(args, all_pkgs, url):
 
     cg_directory_local = "cg_producing"
-    deleteCallGraphsDir(cg_directory_local)
     print("Call Graphs Retrieval:")
     received_cg_location, known_call_graphs, unknown_call_graphs, call_graphs_connectivity_issues = RequestFastenKnownAndUnknownLists.requestFastenKnownAndUnknownLists(args, all_pkgs, url, "rcg")
     unknown_call_graphs_and_connectivity_issues = {**unknown_call_graphs, **call_graphs_connectivity_issues}
