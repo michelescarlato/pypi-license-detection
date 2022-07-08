@@ -3,6 +3,12 @@ import time
 import os.path
 import shutil
 
+'''
+* SPDX-FileCopyrightText: 2022 Michele Scarlato <michele.scarlato@endocode.com>
+*
+* SPDX-License-Identifier: Apache-2.0
+'''
+
 def deleteCallGraphsDir(CallGraphsDirLocal):
     if os.path.exists(CallGraphsDirLocal):
         shutil.rmtree(CallGraphsDirLocal)
