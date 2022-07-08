@@ -1,8 +1,13 @@
 import json
 import time
 import requests
-from gitHubAndPyPIParsingUtils import IsAnSPDX, ConvertToSPDX
 
+
+'''
+* SPDX-FileCopyrightText: 2022 Michele Scarlato <michele.scarlato@endocode.com>
+*
+* SPDX-License-Identifier: Apache-2.0
+'''
 
 class RetrieveLicensesAtTheFileLevel:
     @staticmethod
@@ -20,7 +25,7 @@ class RetrieveLicensesAtTheFileLevel:
             packageName = package
             packageVersion = pkgs[package]
             URL = url + "packages/" + package + "/" + pkgs[package] + "/files"
-            print(URL)
+            #print(URL)
             try:
                 response = requests.get(url=URL)  # get Call Graph or metadata for specified package
 
@@ -42,7 +47,7 @@ class RetrieveLicensesAtTheFileLevel:
                             if "licenses" in file["metadata"]:
                                 licensesFasten = file["metadata"]["licenses"]
                                 if len(licensesFasten) > 0:
-                                    print("License available for file: " + filePath + " - " + package + " from FASTEN server.")
+                                    #print("License available for file: " + filePath + " - " + package + " from FASTEN server.")
                                     file_licenses[packageName][filePath] = {}
                                     file_licenses[packageName][filePath]["spdx_license_key"] = []
                                     for license in licensesFasten:
