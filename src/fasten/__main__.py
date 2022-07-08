@@ -14,6 +14,11 @@ from enrichCallGraph import EnrichCallGraph
 from stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
 from createDirectories import CreateDirectories
 from collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetrievedCallGraphs
+from licensesAnalysis import licensesAnalysis
+from retrieveLicenseInformation import retrieveLicenseInformation
+from licenseComplianceVerification import generateInboundLicenses, licenseComplianceVerification, parseLCVAssessmentResponse#, provideReport
+from licensesApplicationToTheStitchedCallGraph import licensesAtThePackageLevelApplicationToTheStitchedCallGraph, licensesAtTheFileLevelApplicationToTheStitchedCallGraph, LCVAssessmentAtTheFileLevel, LCVAssessmentAtTheFileLevelGenerateReport, CompareLicensesAtThePackageLevelWithTheFileLevel
+
 import os, shutil
 
 
@@ -28,9 +33,11 @@ def main():
     parser.add_argument("--requirements", type=str, help="Path to the requirements file") # /mnt/stuff/projects/work/pypi-plugin/requirements.txt
     parser.add_argument("--fasten_data", type=str, help="Path to the folder where the received FASTEN data will be stored")
     parser.add_argument("--scg_path", type=str, help="Path to the folder where the Stitched Call Graph will be stored")
+    parser.add_argument("--spdx_license", type=str, help="SPDX id of the license declared for this project")
     args = parser.parse_args()
 
     url = 'https://api.fasten-project.eu/api/pypi/' # URL to the FASTEN API
+    LCVurl = 'https://lima.ewi.tudelft.nl/lcv/'
     forge = "local" # Source the product was downloaded from
     max_iter = -1 # Maximum number of iterations through source code (from pycg).
     operation = "call-graph" # or key-error for key error detection on dictionaries (from pycg).
@@ -48,16 +55,13 @@ def main():
     DependenciesTree = ExecutePypiResolver.executePypiResolver(args.requirements)
     time.sleep(20)
     all_pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
+
     pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, url) # Check if packages are known by FASTEN
 
-    pkgs = ReadRequirementsFile.readFile(args.requirements) # Read requirements.txt
-    pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(pkgs, url) # Check if packages are known by FASTEN
 
     ################################ CALL GRAPHS - Michele - Retrieve and Generation in one function ##################
+    '''
     call_graphs = collectingGeneratedAndRetrievedCallGraphs(args, all_pkgs, url)
-    #print("call_graphs")
-    #print(call_graphs)
-
 
     #call_graphs, cg_pkgs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
     #call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
@@ -65,7 +69,9 @@ def main():
 
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
 
+
     stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, call_graphs)
+
     entry_points = FindEntrypoints.findEntrypoints(args, stitched_call_graph)
 
     adjList = CreateAdjacencyList
@@ -83,6 +89,10 @@ def main():
     for package in vul_pkgs:
         print("The package " + package + ":" + vul_pkgs[package] + " is vulnerable!")
         print("Vulnerabilities can be found in " + args.fasten_data + package + "." + "vulnerabilities.json")
+    '''
+
+    licensesAnalysis(args, all_pkgs, url, LCVurl)
+
 
 if __name__ == "__main__":
     main()
