@@ -1,14 +1,17 @@
-import json
 import time
 import requests
-from gitHubAndPyPIParsingUtils import IsAnSPDX
 
+'''
+* SPDX-FileCopyrightText: 2022 Michele Scarlato <michele.scarlato@endocode.com>
+*
+* SPDX-License-Identifier: Apache-2.0
+'''
 
 def licenseComplianceVerification(InboundLicenses, OutboundLicense, LCVurl):
     InboundLicensesString = ';'.join([str(item) for item in InboundLicenses])
     LCVComplianceAssessment = LCVurl + "LicensesInput?InboundLicenses=" + InboundLicensesString + "&OutboundLicense=" + OutboundLicense
     try:
-        response = requests.get(url=LCVComplianceAssessment)  # get Call Graph for specified package
+        response = requests.get(url=LCVComplianceAssessment)
         if response.status_code == 200:
             LCVComplianceAssessmentResponse = response.json()
 
@@ -21,7 +24,7 @@ def licenseComplianceVerification(InboundLicenses, OutboundLicense, LCVurl):
         time.sleep(30)
     return LCVComplianceAssessmentResponse
 
-def generateInboundLicenses(licenses, LCVurl):
+def generateInboundLicenses(licenses):
 
     InboundLicenses = []
 
@@ -39,10 +42,12 @@ def generateInboundLicenses(licenses, LCVurl):
 
 def parseLCVAssessmentResponse(LCVAssessmentResponseList, licenses):
     # LCVAssessmentResponse = json.loads(LCVAssessmentResponseJSON)
-    assessment = []
+    assessment = {}
+    j = 0 # assessment index
     # print(licenses)
     for dict in LCVAssessmentResponseList:
         if (dict.get("status")) == "not compatible":
+            assessment[j] = {}
             InboundNotCompatibleLicense = (dict.get("inbound_SPDX"))
             outputNotCompatibleInboundLicense = (dict.get("message"))
             for i in licenses:
@@ -51,13 +56,14 @@ def parseLCVAssessmentResponse(LCVAssessmentResponseList, licenses):
                 if licenses[i].get("PyPILicenseSPDX") == InboundNotCompatibleLicense:
                     outputPackageInformationNotCompatibleInboundLicensePyPI = "License " + InboundNotCompatibleLicense + \
                         ", declared in PyPI, found in " + packageName + " v. " + packageVersion + "."
-                    assessment.append(outputPackageInformationNotCompatibleInboundLicensePyPI)
+                    assessment[j]["packageInformation"] = outputPackageInformationNotCompatibleInboundLicensePyPI
                 if licenses[i].get("GitHubLicense") == InboundNotCompatibleLicense:
                     outputPackageInformationNotCompatibleInboundLicenseGitHub = "License " + InboundNotCompatibleLicense + \
                         " declared in GitHub found in " + packageName + " v. " + packageVersion + "."
                     "."
-                    assessment.append(outputPackageInformationNotCompatibleInboundLicenseGitHub)
-            assessment.append(outputNotCompatibleInboundLicense)
+                    assessment[j]["packageInformation"] = outputPackageInformationNotCompatibleInboundLicenseGitHub
+            assessment[j]["licenseViolation"] = outputNotCompatibleInboundLicense
+            j += 1
 
 
     if len(assessment) == 0:
