@@ -1,9 +1,13 @@
-# Send package name and version to FASTEN and receive a Call Graph or metadata information for it.
-
 import json
 import time
 import requests
 from gitHubAndPyPIParsingUtils import IsAnSPDX, ConvertToSPDX
+
+'''
+* SPDX-FileCopyrightText: 2022 Michele Scarlato <michele.scarlato@endocode.com>
+*
+* SPDX-License-Identifier: Apache-2.0
+'''
 
 class RequestFastenLicenseInformation:
 
