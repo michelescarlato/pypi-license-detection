@@ -3,6 +3,11 @@ import requests
 import time
 from urllib.parse import urlparse
 
+'''
+* SPDX-FileCopyrightText: 2022 Michele Scarlato <michele.scarlato@endocode.com>
+*
+* SPDX-License-Identifier: Apache-2.0
+'''
 
 def retrieveGitHubUrl(jsonResponse, packageName):
     global url
@@ -23,7 +28,6 @@ def retrieveGitHubUrl(jsonResponse, packageName):
     return url
 
 def iterdict (d,packageName):
-    #print(packageName)
     global url
     for k,v in d.items():
         if k != "description":
@@ -37,16 +41,13 @@ def iterdict (d,packageName):
 
 def RetrieveGitHubAPIurl(GitHubURL):
     parts = urlparse(GitHubURL)
-    #print(parts)
     directories = parts.path.strip('/').split('/')
-    #print(directories)
     owner = directories[0]
     repo = directories[1]
     GitHubAPIurl = "https://api.github.com/repos/" + owner + "/" + repo + "/license"
     return GitHubAPIurl
 
 def RetrieveLicenseFromGitHub(GitHubAPIurl, LCVurl):
-    #print(GitHubAPIurl)
     GitHubLicense = ""
     GitHubLicenseSPDX = ""
     try:
@@ -63,7 +64,6 @@ def RetrieveLicenseFromGitHub(GitHubAPIurl, LCVurl):
                 # check if the retrieved license is an SPDX id
                 IsSPDX = IsAnSPDX(GitHubLicense, LCVurl)
                 if IsSPDX == False:
-                    #print("converting to SPDX")
                     SPDXConversion = ConvertToSPDX(GitHubLicense, LCVurl)
                     IsSPDX = IsAnSPDX(SPDXConversion, LCVurl)
                     if IsSPDX == True:
@@ -77,21 +77,16 @@ def RetrieveLicenseFromGitHub(GitHubAPIurl, LCVurl):
     except requests.exceptions.ConnectionError:
         print('Connection timeout: ConnectError')
         time.sleep(30)
-    #if GitHubLicense != "":
+
     return GitHubLicense, GitHubLicenseSPDX
-    #else:
-     #   return
 
 def IsAnSPDX(License, LCVurl):
     LCVIsAnSPDXJsonResponse = None
     LCVIsAnSPDXurl = LCVurl + "IsAnSPDX?SPDXid=" + License
-    #print(LCVIsAnSPDXurl)
     try:
         response = requests.get(url=LCVIsAnSPDXurl)  # get Call Graph for specified package
         if response.status_code == 200:
             LCVIsAnSPDXJsonResponse = response.json()
-            #print("SPDX id is an SPDX? ")
-            #print(LCVIsAnSPDXJsonResponse)
     except requests.exceptions.ReadTimeout:
         print('Connection timeout: ReadTimeout')
     except requests.exceptions.ConnectTimeout:
@@ -107,8 +102,6 @@ def ConvertToSPDX(License, LCVurl):
         response = requests.get(url=LCVConvertToSPDXurl)  # get Call Graph for specified package
         if response.status_code == 200:
             LCVConvertToSPDXJsonResponse = response.json()
-            #print("SPDX id retrieved by LCV:")
-            #print(LCVConvertToSPDXJsonResponse)
     except requests.exceptions.ReadTimeout:
         print('Connection timeout: ReadTimeout')
     except requests.exceptions.ConnectTimeout:
@@ -120,16 +113,14 @@ def ConvertToSPDX(License, LCVurl):
 
 def retrieveLicenseInformationFromPyPI(packageName, packageVersion, LCVurl):
     print("Querying PyPI.org APIs for license information:")
-    #pkgs = json.loads(pkgs)
     URL = "https://pypi.org/" + "pypi/" + packageName + "/" + packageVersion + "/json"
     print(URL)
     PyPILicenseSPDX = ""
     try:
-        response = requests.get(url=URL)  # get Call Graph for specified package
+        response = requests.get(url=URL)
         if response.status_code == 200:
-            jsonResponse = response.json()  # save Call Graph as JSON format
+            jsonResponse = response.json()
             PyPILicense = (jsonResponse["info"]["license"])
-            # here a call to the LCV endpoint convertToSPDX endpoint should be performed
             if len(PyPILicense) > 0:
                 # check if the retrieved license is an SPDX id
                 IsSPDX = IsAnSPDX(PyPILicense, LCVurl)
