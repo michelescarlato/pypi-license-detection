@@ -19,10 +19,10 @@ def licensesAnalysis(args, all_pkgs, url, LCVurl):
     if len(LicenseReport) > 0:
         print("License violation found at the package level: " +str(len(LicenseReport)) + " ." )
         for i in LicenseReport:
+            print("\n")
             print("############# - violation number " + str(i + 1) + " #################")
             print(LicenseReport[i]["packageInformation"])
             print(LicenseReport[i]["licenseViolation"])
-            print("\n")
 
 
 
