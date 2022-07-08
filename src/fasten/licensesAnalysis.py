@@ -9,7 +9,7 @@ from licensesApplicationToTheStitchedCallGraph import licensesAtThePackageLevelA
 * SPDX-License-Identifier: Apache-2.0
 '''
 
-def licensesAnalysis(args, all_pkgs, url, LCVurl):
+def licensesAnalysis(args, all_pkgs, url, LCVurl, stitched_call_graph):
     licenses_retrieved_from_fasten, licenses_retrieved_locally, licenses_retrieved_at_the_file_level = retrieveLicenseInformation(args, all_pkgs, url, LCVurl)
     licenses_retrieved = {**licenses_retrieved_from_fasten, **licenses_retrieved_locally}
     InboundLicenses = generateInboundLicenses(licenses_retrieved)
@@ -25,8 +25,9 @@ def licensesAnalysis(args, all_pkgs, url, LCVurl):
             print(LicenseReport[i]["licenseViolation"])
 
 
-
+    #to be changed with the correct path
     stitched_call_graph = "pipup_long.json"
+
     callablesEnrichedWithLicenseInformation = licensesAtThePackageLevelApplicationToTheStitchedCallGraph(stitched_call_graph, licenses_retrieved)
 
     callablesEnrichedWithLicenseAtTheFileLevel = licensesAtTheFileLevelApplicationToTheStitchedCallGraph(licenses_retrieved_at_the_file_level, stitched_call_graph)
