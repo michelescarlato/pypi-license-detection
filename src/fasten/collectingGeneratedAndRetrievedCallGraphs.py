@@ -2,6 +2,13 @@ from executeCallGraphGenerator import executeCallGraphGenerator, deleteCallGraph
 from requestFastenKnownAndUnknownLists import RequestFastenKnownAndUnknownLists
 from os import listdir
 from os.path import isfile, join
+
+'''
+* SPDX-FileCopyrightText: 2022 Michele Scarlato <michele.scarlato@endocode.com>
+*
+* SPDX-License-Identifier: Apache-2.0
+'''
+
 def collectingGeneratedAndRetrievedCallGraphs(args, all_pkgs, url):
 
     CallGraphsDirLocal = "cg_producing"
