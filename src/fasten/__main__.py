@@ -91,7 +91,7 @@ def main():
         print("Vulnerabilities can be found in " + args.fasten_data + package + "." + "vulnerabilities.json")
     '''
 
-    licensesAnalysis(args, all_pkgs, url, LCVurl)
+    licensesAnalysis(args, all_pkgs, url, LCVurl, stitched_or_optimized_call_graph)
 
 
 if __name__ == "__main__":
