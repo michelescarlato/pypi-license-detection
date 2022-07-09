@@ -15,6 +15,7 @@ class RequestFasten:
             print(f"Receive {path} from FASTEN:")
 
         pkgs = json.loads(pkgs)
+        unknown_pkgs = { }
         metadata_JSON_File_Locations = [] # Call Graphs and metadata file location
         meta_pkgs = { }
 
@@ -40,10 +41,15 @@ class RequestFasten:
                         print(package + ":" + pkgs[package] + ": " + path + " received.")
 
 
-                elif response.status_code == 500:
+                elif response.status_code == 401:
                     print(package + ":" + pkgs[package] + ": " + path + " not available!")
+                    if path == "rcg":
+                        unknown_pkgs[package] = pkgs[package]
+
                 else:
                     print("Something went wrong for the package " + package + ":" + pkgs[package] + " on the server side!")
+                    if path == "rcg":
+                        unknown_pkgs[package] = pkgs[package]
 
             except requests.exceptions.ReadTimeout:
                 print('Connection timeout: ReadTimeout')
@@ -52,4 +58,4 @@ class RequestFasten:
             except requests.exceptions.ConnectionError:
                 print('Connection timeout: ConnectError')
 
-        return metadata_JSON_File_Locations, meta_pkgs
+        return metadata_JSON_File_Locations, meta_pkgs, unknown_pkgs

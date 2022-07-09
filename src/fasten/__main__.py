@@ -59,9 +59,9 @@ def main():
     #print(call_graphs)
 
 
-    #call_graphs, cg_pkgs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
+    #call_graphs, cg_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
     #call_graphs = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, call_graphs)
-    vulnerabilities, vul_pkgs = RequestFasten.requestFasten(args, pkgs, url, "vulnerabilities")
+    vulnerabilities, vul_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, pkgs, url, "vulnerabilities")
 
 #    pathsToCallGraphs = parser.parse_args(call_graphs)
 
@@ -78,7 +78,7 @@ def main():
 
 
     oscg = OptimizeStitchedCallGraph.optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes)
-    callables, callable_pkgs = RequestFasten.requestFasten(args, local_package, url, "callables?limit=1000000")
+    callables, callable_pkgs , unknown_pkgs = RequestFasten.requestFasten(args, local_package, url, "callables?limit=1000000")
     EnrichOSCG.enrichOSCG(args, oscg, callables)
 
 #    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
