@@ -51,10 +51,11 @@ def main():
     DependenciesTree = ExecutePypiResolver.executePypiResolver(args.requirements)
     all_pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
     pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, url) # Check if packages are known by FASTEN
+    call_graphs, cg_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, unknown_pkgs, url, "rcg")
 
 
     ################################ CALL GRAPHS - Michele - Retrieve and Generation in one function ##################
-    call_graphs = collectingGeneratedAndRetrievedCallGraphs(args, all_pkgs, url)
+    call_graphs = collectingGeneratedAndRetrievedCallGraphs(args, unknown_pkgs, url)
     #print("call_graphs")
     #print(call_graphs)
 
