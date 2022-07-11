@@ -76,8 +76,9 @@ def main():
 
     oscg = OptimizeStitchedCallGraph.optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes)
     callables, callable_pkgs , unknown_pkgs = RequestFasten.requestFasten(args, local_package, url, "callables?limit=1000000")
-    EnrichOSCG.enrichOSCG(args, oscg, callables)
 
+    if callables:
+        EnrichOSCG.enrichOSCG(args, oscg, callables)
 
     for package in vul_pkgs:
         print(f"The package {package}: {vul_pkgs[package]} is vulnerable!")
