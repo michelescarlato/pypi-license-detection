@@ -11,5 +11,5 @@ class CreateDirectories:
             isExist = os.path.exists(directory)
             if not isExist:
               os.makedirs(directory)
-              print("The directory '"+directory+"' was not existent and has been created!")
+              print(f"The directory '{directory}' was not existent and has been created!")
         return

@@ -21,11 +21,11 @@ class CheckPackageAvailability:
                 response = requests.get(url=URL)
 
                 if response.status_code == 200:
-                    print(package + ":" + pkgs[package] + " is available.")
+                    print(f"{package}:{pkgs[package]} is available.")
                     known_pkgs[package] = pkgs[package]
 
                 else:
-                    print(package + ":" + pkgs[package] + " is not available, saved for later.")
+                    print(f"{package}:{pkgs[package]} is not available, saved for later.")
                     unknown_pkgs[package] = pkgs[package]
 
             except requests.exceptions.ReadTimeout:

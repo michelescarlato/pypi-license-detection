@@ -84,8 +84,8 @@ def main():
 #    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
 
     for package in vul_pkgs:
-        print("The package " + package + ":" + vul_pkgs[package] + " is vulnerable!")
-        print("Vulnerabilities can be found in " + args.fasten_data + package + "." + "vulnerabilities.json")
+        print(f"The package {package}: {vul_pkgs[package]} is vulnerable!")
+        print(f"Vulnerabilities can be found in {args.fasten_data} {package}.vulnerabilities.json")
 
 if __name__ == "__main__":
     main()

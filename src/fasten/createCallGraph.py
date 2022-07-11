@@ -13,7 +13,7 @@ class CreateCallGraph:
         for file_path in Path(args.project_path).glob("**/*.py"):
             entry_point.append(str(file_path))
 
-        print("Creating Call Graph for " + args.product + "...")
+        print(f"Creating Call Graph for {args.product}...")
         cg = CallGraphGenerator(entry_point, args.pkg_name, max_iter, operation)
         print("Call Graph created.")
         print("Analyze Call Graph...")
@@ -28,6 +28,6 @@ class CreateCallGraph:
 
         call_graphs.append(args.fasten_data + args.pkg_name + ".json") # Append path to locally created Call Graph to list of paths
 
-        print("Call Graph written in file " + args.fasten_data + args.pkg_name + ".json")
+        print(f"Call Graph written in file {args.fasten_data}{args.pkg_name}.json")
 
         return call_graphs

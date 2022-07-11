@@ -5,8 +5,8 @@ from pycg_producer.producer import CallGraphGenerator
 def executeCallGraphGenerator(unknown_pkgs, fasten_data):
     """Create dictonary necessary for 'CallGraphGenerator'."""
 
-    global cg_paths
-    cg_paths = []
+    global call_graphs
+    call_graphs = []
 
     for package in unknown_pkgs:
 
@@ -17,20 +17,20 @@ def executeCallGraphGenerator(unknown_pkgs, fasten_data):
               "version_timestamp": "2000",
               "requires_dist": [] }
 
-        cg_path_local = fasten_data + "callgraphs"+ "/" + package[0] + "/" + package + "/" + pkg_version + "/" + "cg.json"
-        executeSingleCallGraphGeneration(coord, fasten_data, cg_path_local)
+        cg_path = fasten_data + "callgraphs"+ "/" + package[0] + "/" + package + "/" + pkg_version + "/" + "cg.json"
+        executeSingleCallGraphGeneration(fasten_data, coord, cg_path)
 
-    return cg_paths
+    return call_graphs
 
 
-def executeSingleCallGraphGeneration(coord, directoryName, cg_path_local):
+def executeSingleCallGraphGeneration(fasten_data, coord, cg_path):
     """Create Call Graph for a single package."""
 
-    generator = CallGraphGenerator(directoryName, coord)
+    generator = CallGraphGenerator(fasten_data, coord)
     generator.generate()
 
-    if os.path.isfile(cg_path_local):
-        print("Call graph generated at: "+cg_path_local)
-        cg_paths.append(cg_path_local)
+    if os.path.isfile(cg_path):
+        print(f"Call graph generated at: {cg_path}")
+        call_graphs.append(cg_path)
     else:
-        print("%s has not been generated!" % cg_path_local)
+        print(f"{cg_path} has not been generated!")

@@ -38,16 +38,16 @@ class RequestFasten:
 
                         metadata_JSON_File_Locations.append(args.fasten_data + package + "." + path + ".json") # append Call Graph or metadata file location to a list
 
-                        print(package + ":" + pkgs[package] + ": " + path + " received.")
+                        print(f"{package}: {pkgs[package]}: {path} received.")
 
 
                 elif response.status_code == 401:
-                    print(package + ":" + pkgs[package] + ": " + path + " not available!")
+                    print(f"{package}:{pkgs[package]}: {path} not available!")
                     if path == "rcg":
                         unknown_pkgs[package] = pkgs[package]
 
                 else:
-                    print("Something went wrong for the package " + package + ":" + pkgs[package] + " on the server side!")
+                    print(f"Something went wrong for the package {package}:{pkgs[package]} on the server side!")
                     if path == "rcg":
                         unknown_pkgs[package] = pkgs[package]
 
