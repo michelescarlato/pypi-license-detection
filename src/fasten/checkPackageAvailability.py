@@ -1,7 +1,6 @@
 # Check if a package with a specific version is known by FASTEN.
 
 import json
-import time
 import requests
 
 class CheckPackageAvailability:

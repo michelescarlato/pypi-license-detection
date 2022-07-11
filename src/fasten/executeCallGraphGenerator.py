@@ -1,6 +1,4 @@
-import time
 import os.path
-import shutil
 from pycg_producer.producer import CallGraphGenerator
 
 

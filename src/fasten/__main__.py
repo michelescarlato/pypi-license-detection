@@ -1,6 +1,5 @@
 import argparse
 import os, shutil
-import time
 import json
 from fasten.executePypiResolver import ExecutePypiResolver
 from fasten.readRequirementsFile import ReadRequirementsFile
