@@ -2,7 +2,7 @@ import os.path
 from pycg_producer.producer import CallGraphGenerator
 
 
-def executeCallGraphGenerator(unknown_pkgs, fasten_data):
+def executeCallGraphGenerator(args, unknown_pkgs):
     """Create dictonary necessary for 'CallGraphGenerator'."""
 
     global call_graphs
@@ -17,8 +17,12 @@ def executeCallGraphGenerator(unknown_pkgs, fasten_data):
               "version_timestamp": "2000",
               "requires_dist": [] }
 
-        cg_path = fasten_data + "callgraphs"+ "/" + package[0] + "/" + package + "/" + pkg_version + "/" + "cg.json"
-        executeSingleCallGraphGeneration(fasten_data, coord, cg_path)
+        cg_path = args.fasten_data + "callgraphs"+ "/" + package[0] + "/" + package + "/" + pkg_version + "/" + "cg.json"
+
+        if package == args.pkg_name:
+            executeSingleCallGraphGeneration(args.project_path, coord, cg_path)
+        else:
+            executeSingleCallGraphGeneration(args.fasten_data, coord, cg_path)
 
     return call_graphs
 

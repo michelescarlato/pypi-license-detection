@@ -53,7 +53,7 @@ def main():
     cg_location, cg_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, unknown_pkgs, url, "rcg")
 
 
-    cg_location = executeCallGraphGenerator(unknown_pkgs, args.fasten_data)
+    cg_location = executeCallGraphGenerator(args, unknown_pkgs)
     #print("cg_location")
     #print(cg_location)
 
