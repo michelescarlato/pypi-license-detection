@@ -20,12 +20,12 @@ def executeCallGraphGenerator(unknown_pkgs, fasten_data):
               "requires_dist": []}
 
         cg_path_local = fasten_data + "callgraphs"+ "/" + package[0] + "/" + package + "/" + pkg_version + "/" + "cg.json"
-        executeSingleCallGraphGeneration(coord, package, pkg_version, fasten_data, cg_path_local, fasten_data)
+        executeSingleCallGraphGeneration(coord, fasten_data, cg_path_local)
 
     return cg_paths
 
 
-def executeSingleCallGraphGeneration(coord, pkg_name, pkg_version, directoryName, cg_path_local,fasten_data):
+def executeSingleCallGraphGeneration(coord, directoryName, cg_path_local):
     """Create Call Graph for a single package."""
 
     generator = CallGraphGenerator(directoryName, coord)
