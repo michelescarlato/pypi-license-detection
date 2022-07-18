@@ -18,11 +18,8 @@ def executeCallGraphGenerator(args, unknown_pkgs):
               "requires_dist": [] }
 
         cg_path = args.fasten_data + "callgraphs"+ "/" + package[0] + "/" + package + "/" + pkg_version + "/" + "cg.json"
+        executeSingleCallGraphGeneration(args.fasten_data, coord, cg_path)
 
-        if package == args.pkg_name:
-            executeSingleCallGraphGeneration(args.project_path, coord, cg_path)
-        else:
-            executeSingleCallGraphGeneration(args.fasten_data, coord, cg_path)
 
     return call_graphs
 
