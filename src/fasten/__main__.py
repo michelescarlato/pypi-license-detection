@@ -10,7 +10,6 @@ from fasten.findEntrypoints import FindEntrypoints
 from fasten.createAdjacencyList import CreateAdjacencyList
 from fasten.depthFirstSearch import DepthFirstSearch
 from fasten.optimizeStitchedCallGraph import OptimizeStitchedCallGraph
-from fasten.stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
 from fasten.createDirectories import CreateDirectories
 from fasten.enrichOSCG import EnrichOSCG
 from fasten.collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetrievedCallGraphs
@@ -79,7 +78,6 @@ def main():
     callables, callable_pkgs , unknown_pkgs = RequestFasten.requestFasten(args, local_package, url, "callables?limit=1000000")
     EnrichOSCG.enrichOSCG(args, oscg, callables)
 
-#    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
 
     for package in vul_pkgs:
         print(f"The package {package}: {vul_pkgs[package]} is vulnerable!")
