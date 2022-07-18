@@ -5,7 +5,7 @@ from fasten.executePypiResolver import ExecutePypiResolver
 from fasten.readRequirementsFile import ReadRequirementsFile
 from fasten.checkPackageAvailability import CheckPackageAvailability
 from fasten.requestFasten import RequestFasten
-from fasten.collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetrievedCallGraphs
+from fasten.executeCallGraphGenerator import executeCallGraphGenerator
 from fasten.createCallGraph import CreateCallGraph
 from fasten.stitchCallGraphs import StitchCallGraphs
 from fasten.findEntrypoints import FindEntrypoints
@@ -50,8 +50,7 @@ def main():
     cg_location, cg_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, url, "rcg")
 
 
-    ################################ CALL GRAPHS - Michele - Retrieve and Generation in one function ##################
-    cg_location = collectingGeneratedAndRetrievedCallGraphs(args, unknown_pkgs, url)
+    cg_location = executeCallGraphGenerator(unknown_pkgs, args.fasten_data)
     #print("cg_location")
     #print(cg_location)
 
