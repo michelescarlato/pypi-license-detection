@@ -1,5 +1,6 @@
 import argparse
-import os, shutil
+import os
+import shutil
 from fasten.createDirectories import CreateDirectories
 from fasten.executePypiResolver import ExecutePypiResolver
 from fasten.readRequirementsFile import ReadRequirementsFile
