@@ -7,14 +7,13 @@ import requests
 class RequestFasten:
 
     @staticmethod
-    def requestFasten(args, pkgs, url, path):
+    def requestFasten(args, pkgs, unknown_pkgs, url, path):
 
         if path == "rcg":
             print("Receive Call Graphs from FASTEN:")
         else:
             print(f"Receive {path} from FASTEN:")
 
-        unknown_pkgs = { }
         metadata_JSON_File_Locations = [] # Call Graphs and metadata file location
         meta_pkgs = { }
 

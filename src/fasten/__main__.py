@@ -35,6 +35,7 @@ def main():
     local_package = {args.product: args.version}
     cg_location = [] # Location of Call Graphs.
     vul_location = [] # Location of vulnerabilities.
+    unknown_pkgs = { } # Storage for package not known by FASTEN.
 
     dirs_to_delete = [args.fasten_data, args.scg_path ]
     for dir in dirs_to_delete :
@@ -43,11 +44,13 @@ def main():
             print("removing: " + dir)
             shutil.rmtree(dir)
 
+    unknown_pkgs[args.pkg_name] = args.version
+
     CreateDirectories.DirectoryCheck(args.fasten_data, args.scg_path) # Create directories to store the Call Graphs and the Stitched Call Graph
     DependenciesTree = ExecutePypiResolver.executePypiResolver(args.requirements)
     all_pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
-    pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, url) # Check if packages are known by FASTEN
-    cg_location, cg_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, url, "rcg")
+    pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, unknown_pkgs, url) # Check if packages are known by FASTEN
+    cg_location, cg_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, unknown_pkgs, url, "rcg")
 
 
     cg_location = executeCallGraphGenerator(unknown_pkgs, args.fasten_data)
@@ -55,9 +58,9 @@ def main():
     #print(cg_location)
 
 
-    #cg_location, cg_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, pkgs, url, "rcg")
+    #cg_location, cg_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, pkgs, unknown_pkgs, url, "rcg")
     #cg_location = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, cg_location)
-    vul_location, vul_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, url, "vulnerabilities")
+    vul_location, vul_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, unknown_pkgs, url, "vulnerabilities")
 
 #    pathsToCallGraphs = parser.parse_args(cg_location)
 
@@ -74,7 +77,7 @@ def main():
 
 
     oscg = OptimizeStitchedCallGraph.optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes)
-    callables, callable_pkgs , unknown_pkgs = RequestFasten.requestFasten(args, local_package, url, "callables?limit=1000000")
+    callables, callable_pkgs , unknown_pkgs = RequestFasten.requestFasten(args, local_package, unknown_pkgs, url, "callables?limit=1000000")
 
     if callables:
         EnrichOSCG.enrichOSCG(args, oscg, callables)

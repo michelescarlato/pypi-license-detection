@@ -6,10 +6,9 @@ import requests
 class CheckPackageAvailability:
 
     @staticmethod
-    def checkPackageAvailability(pkgs, url):
+    def checkPackageAvailability(pkgs, unknown_pkgs, url):
 
         print("Check if packages from requirements.txt are available on FASTEN.")
-        unknown_pkgs = { } # Store packages which are not yet known by FASTEN (to wait for lazy ingestion).
         known_pkgs = { } # Store packages which are known by FASTEN.
 
         for package in pkgs:
