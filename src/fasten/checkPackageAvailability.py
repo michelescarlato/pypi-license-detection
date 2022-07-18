@@ -9,11 +9,10 @@ class CheckPackageAvailability:
     def checkPackageAvailability(pkgs, url):
 
         print("Check if packages from requirements.txt are available on FASTEN.")
-        pkgs = json.loads(pkgs)
         unknown_pkgs = { } # Store packages which are not yet known by FASTEN (to wait for lazy ingestion).
         known_pkgs = { } # Store packages which are known by FASTEN.
 
-        for package in list(pkgs):
+        for package in pkgs:
 
             URL = url + "packages/" + package + "/" + pkgs[package]
 
@@ -35,4 +34,4 @@ class CheckPackageAvailability:
             except requests.exceptions.ConnectionError:
                 print('Connection timeout: ConnectError')
 
-        return json.dumps(known_pkgs), json.dumps(unknown_pkgs)
+        return known_pkgs, unknown_pkgs

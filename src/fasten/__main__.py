@@ -1,6 +1,5 @@
 import argparse
 import os, shutil
-import json
 from fasten.executePypiResolver import ExecutePypiResolver
 from fasten.readRequirementsFile import ReadRequirementsFile
 from fasten.checkPackageAvailability import CheckPackageAvailability
@@ -35,7 +34,6 @@ def main():
     max_iter = -1 # Maximum number of iterations through source code (from pycg).
     operation = "call-graph" # or key-error for key error detection on dictionaries (from pycg).
     local_package = {args.product: args.version}
-    local_package = json.dumps(local_package)
     cg_location = [] # Location of Call Graphs.
     vul_location = [] # Location of vulnerabilities.
 

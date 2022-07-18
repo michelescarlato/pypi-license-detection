@@ -14,7 +14,6 @@ class RequestFasten:
         else:
             print(f"Receive {path} from FASTEN:")
 
-        pkgs = json.loads(pkgs)
         unknown_pkgs = { }
         metadata_JSON_File_Locations = [] # Call Graphs and metadata file location
         meta_pkgs = { }
