@@ -27,3 +27,4 @@ class OptimizeStitchedCallGraph:
             with open(oscg_file_path, "w") as oscg_file:
                 oscg_file.write(json.dumps(oscg))
             print("Optimized Stitched Call Graph written in " + oscg_file_path)
+        return oscg
