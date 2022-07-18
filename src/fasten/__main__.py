@@ -1,4 +1,5 @@
 import argparse
+import os, shutil
 import time
 import json
 from fasten.executePypiResolver import ExecutePypiResolver
@@ -13,9 +14,8 @@ from fasten.depthFirstSearch import DepthFirstSearch
 from fasten.optimizeStitchedCallGraph import OptimizeStitchedCallGraph
 from fasten.stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
 from fasten.createDirectories import CreateDirectories
-from fasten.collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetrievedCallGraphs
-import os, shutil
 from fasten.enrichOSCG import EnrichOSCG
+from fasten.collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetrievedCallGraphs
 
 
 def main():

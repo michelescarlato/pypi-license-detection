@@ -1,6 +1,6 @@
-from executeCallGraphGenerator import executeCallGraphGenerator
 from os import listdir
 from os.path import isfile, join
+from executeCallGraphGenerator import executeCallGraphGenerator
 
 def collectingGeneratedAndRetrievedCallGraphs(args, unknown_pkgs, url):
 

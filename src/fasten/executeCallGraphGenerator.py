@@ -1,7 +1,7 @@
-from pycg_producer.producer import CallGraphGenerator
 import time
 import os.path
 import shutil
+from pycg_producer.producer import CallGraphGenerator
 
 
 def executeCallGraphGenerator(unknown_call_graphs, fasten_data):
