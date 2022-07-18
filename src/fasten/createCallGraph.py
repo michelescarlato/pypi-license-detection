@@ -6,9 +6,12 @@ from pycg import formats
 class CreateCallGraph:
 
     @staticmethod
-    def createCallGraph(args, forge, max_iter, operation, call_graphs):
+    def createCallGraph(args, call_graphs):
 
         entry_point = [] # List of python files related to the current project
+        forge = "local" # Source the product was downloaded from
+        max_iter = -1 # Maximum number of iterations through source code (from pycg).
+        operation = "call-graph" # or key-error for key error detection on dictionaries (from pycg).
 
         for file_path in Path(args.project_path).glob("**/*.py"):
             entry_point.append(str(file_path))

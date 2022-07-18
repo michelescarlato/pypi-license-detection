@@ -30,9 +30,6 @@ def main():
     args = parser.parse_args()
 
     url = 'https://api.fasten-project.eu/api/pypi/' # URL to the FASTEN API
-    forge = "local" # Source the product was downloaded from
-    max_iter = -1 # Maximum number of iterations through source code (from pycg).
-    operation = "call-graph" # or key-error for key error detection on dictionaries (from pycg).
     local_package = {args.product: args.version}
     cg_location = [] # Location of Call Graphs.
     vul_location = [] # Location of vulnerabilities.
@@ -49,7 +46,7 @@ def main():
     CreateDirectories.DirectoryCheck(args.fasten_data, args.scg_path) # Create directories to store the Call Graphs and the Stitched Call Graph
     DependenciesTree = ExecutePypiResolver.executePypiResolver(args.requirements)
     all_pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
-    cg_location = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, cg_location)
+    cg_location = CreateCallGraph().createCallGraph(args, cg_location)
     pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, unknown_pkgs, url) # Check if packages are known by FASTEN
     cg_received, cg_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, unknown_pkgs, url, "rcg")
     cg_location += cg_received
