@@ -54,15 +54,10 @@ def main():
 
     cg_generated = executeCallGraphGenerator(args, unknown_pkgs)
     cg_location += cg_generated
-    #print("cg_location")
-    #print(cg_location)
 
 
-    #cg_location, cg_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, pkgs, unknown_pkgs, url, "rcg")
-    #cg_location = CreateCallGraph().createCallGraph(args, forge, max_iter, operation, cg_location)
     vul_location, vul_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, unknown_pkgs, url, "vulnerabilities")
 
-#    pathsToCallGraphs = parser.parse_args(cg_location)
 
     stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, cg_location)
     entry_points = FindEntrypoints.findEntrypoints(args, stitched_call_graph)

@@ -15,14 +15,7 @@ class CreateAdjacencyList:
 
         cls.nodesPair = scg["edges"]
         cls.edges = len(scg["edges"])
-#        print("Nodes pairs:")
-#        print(cls.nodesPair)
-#        print("Number of Edges:")
-#        print(cls.edges)
-#        print("Number of Nodes:")
         cls.nodes = cls.getNumberOfNodes() + 1
-#        print(cls.nodes)
-
         cls.graph = [None] * cls.nodes
         cls.addEdges()
         cls.print_agraph()
@@ -48,19 +41,13 @@ class CreateAdjacencyList:
 
         cls.adj = {}
 
-        for i in range(cls.nodes): # 0 -> 13
-#            print(str(i) + ":", end="")
+        for i in range(cls.nodes):
             temp = cls.graph[i]
             cls.adj[i] = []
 
             while temp:
                 cls.adj[i].append(int("{}".format(temp.node)))
-#                print(" {}".format(temp.node), end="")
                 temp = temp.next
-#            print("")
-
-#        print(cls.adj)
-#        print(cls.graph[0])
 
 
 #   Get number of nodes existent in the Stitched Call Graph.
@@ -92,7 +79,6 @@ class CreateAdjacencyList:
 #   Return adjacency list:
     @classmethod
     def getAdjacencyList(cls, node):
-#        print(cls.adj[node])
         return  cls.adj[node]
 
 

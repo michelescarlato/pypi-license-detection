@@ -10,9 +10,6 @@ class ExecutePypiResolver:
 
         if os.path.exists(filename):
             os.remove(filename)
-            #print("The previous "+filename+" has been deleted successfully")
-        #else:
-            # print("The file "+filename+" does not exist!")
 
         for i in package_list[1]:
 
