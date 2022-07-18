@@ -1,19 +1,20 @@
 import argparse
 import time
-from executePypiResolver import ExecutePypiResolver
-from readRequirementsFile import ReadRequirementsFile
-from checkPackageAvailability import CheckPackageAvailability
-from createCallGraph import CreateCallGraph
-from requestFasten import RequestFasten
-from stitchCallGraphs import StitchCallGraphs
-from findEntrypoints import FindEntrypoints
-from createAdjacencyList import CreateAdjacencyList
-from depthFirstSearch import DepthFirstSearch
-from optimizeStitchedCallGraph import OptimizeStitchedCallGraph
-from enrichCallGraph import EnrichCallGraph
-from stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
-from createDirectories import CreateDirectories
-from collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetrievedCallGraphs
+import json
+from fasten.executePypiResolver import ExecutePypiResolver
+from fasten.readRequirementsFile import ReadRequirementsFile
+from fasten.checkPackageAvailability import CheckPackageAvailability
+from fasten.createCallGraph import CreateCallGraph
+from fasten.requestFasten import RequestFasten
+from fasten.stitchCallGraphs import StitchCallGraphs
+from fasten.findEntrypoints import FindEntrypoints
+from fasten.createAdjacencyList import CreateAdjacencyList
+from fasten.depthFirstSearch import DepthFirstSearch
+from fasten.optimizeStitchedCallGraph import OptimizeStitchedCallGraph
+from fasten.enrichCallGraph import EnrichCallGraph
+from fasten.stitchedCallGraphAnalyzer import StitchedCallGraphAnalyzer
+from fasten.createDirectories import CreateDirectories
+from fasten.collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetrievedCallGraphs
 import os, shutil
 
 
@@ -34,6 +35,8 @@ def main():
     forge = "local" # Source the product was downloaded from
     max_iter = -1 # Maximum number of iterations through source code (from pycg).
     operation = "call-graph" # or key-error for key error detection on dictionaries (from pycg).
+    local_package = {args.product: args.version}
+    local_package = json.dumps(local_package)
     call_graphs = []
     vulnerabilities = []
 
@@ -75,6 +78,7 @@ def main():
 
 
     OptimizeStitchedCallGraph.optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes)
+    callables, callable_pkgs = RequestFasten.requestFasten(args, local_package, url, "callables")
 #    StitchedCallGraphAnalyzer.analyzeStitchedCallGraph(stitched_call_graph)
 
     for package in vul_pkgs:
