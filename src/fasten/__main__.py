@@ -1,18 +1,18 @@
 import argparse
 import os, shutil
+from fasten.createDirectories import CreateDirectories
 from fasten.executePypiResolver import ExecutePypiResolver
 from fasten.readRequirementsFile import ReadRequirementsFile
 from fasten.checkPackageAvailability import CheckPackageAvailability
-from fasten.createCallGraph import CreateCallGraph
 from fasten.requestFasten import RequestFasten
+from fasten.collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetrievedCallGraphs
+from fasten.createCallGraph import CreateCallGraph
 from fasten.stitchCallGraphs import StitchCallGraphs
 from fasten.findEntrypoints import FindEntrypoints
 from fasten.createAdjacencyList import CreateAdjacencyList
 from fasten.depthFirstSearch import DepthFirstSearch
 from fasten.optimizeStitchedCallGraph import OptimizeStitchedCallGraph
-from fasten.createDirectories import CreateDirectories
 from fasten.enrichOSCG import EnrichOSCG
-from fasten.collectingGeneratedAndRetrievedCallGraphs import collectingGeneratedAndRetrievedCallGraphs
 
 
 def main():
