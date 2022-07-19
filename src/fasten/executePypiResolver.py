@@ -24,3 +24,6 @@ class ExecutePypiResolver:
         #if (len(filename)) > 0:
         if os.path.isfile(filename):
             return filename
+        else:
+            filename = executePypiResolver(requirementsTxt)
+            return filename
