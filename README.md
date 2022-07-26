@@ -35,6 +35,13 @@ Therefore, it is recommended by the [official python documentation](https://docs
     ```
    to get instructions on how to use the plugin.
 
+   It is important, that the `requirements.txt` file of the package to be analyzed follows the format:
+   ```
+   package_name==version
+   package_name>=version
+   package_name>=version,<version
+   ```
+
 **Steps 4 to 9 explain how to use a local database running [docker-python-pipeline](https://github.com/fasten-project/fasten-docker-deployment).  
 These steps are optional as the pypi-plugin takes its information from the fasten server by default.**
 
