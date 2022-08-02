@@ -1,6 +1,11 @@
 import os.path
 from pycg_producer.producer import CallGraphGenerator
 
+'''
+* SPDX-FileCopyrightText: 2022 Michele Scarlato <michele.scarlato@endocode.com>
+*
+* SPDX-License-Identifier: Apache-2.0
+'''
 
 def executeCallGraphGenerator(args, unknown_pkgs):
     """Create dictonary necessary for 'CallGraphGenerator'."""

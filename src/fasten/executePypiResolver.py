@@ -1,6 +1,12 @@
 import os
 import pypiResolver
 
+'''
+* SPDX-FileCopyrightText: 2022 Michele Scarlato <michele.scarlato@endocode.com>
+*
+* SPDX-License-Identifier: Apache-2.0
+'''
+
 class ExecutePypiResolver:
 
     @staticmethod

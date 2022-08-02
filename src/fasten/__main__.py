@@ -14,6 +14,10 @@ from fasten.createAdjacencyList import CreateAdjacencyList
 from fasten.depthFirstSearch import DepthFirstSearch
 from fasten.optimizeStitchedCallGraph import OptimizeStitchedCallGraph
 from fasten.enrichOSCG import EnrichOSCG
+from fasten.licensesAnalysis import licensesAnalysis
+from fasten.retrieveLicenseInformation import retrieveLicenseInformation
+from fasten.licenseComplianceVerification import generateInboundLicenses, licenseComplianceVerification, parseLCVAssessmentResponse#, provideReport
+from fasten.licensesApplicationToTheStitchedCallGraph import licensesAtThePackageLevelApplicationToTheStitchedCallGraph, licensesAtTheFileLevelApplicationToTheStitchedCallGraph, LCVAssessmentAtTheFileLevel, LCVAssessmentAtTheFileLevelGenerateReport, CompareLicensesAtThePackageLevelWithTheFileLevel
 
 
 def main():
@@ -27,9 +31,11 @@ def main():
     parser.add_argument("--requirements", type=str, help="Path to the requirements file") # /mnt/stuff/projects/work/pypi-plugin/requirements.txt
     parser.add_argument("--fasten_data", type=str, help="Path to the folder where the received FASTEN data will be stored")
     parser.add_argument("--scg_path", type=str, help="Path to the folder where the Stitched Call Graph will be stored")
+    parser.add_argument("--spdx_license", type=str, help="SPDX id of the license declared for this project")
     args = parser.parse_args()
 
     url = 'https://api.fasten-project.eu/api/pypi/' # URL to the FASTEN API
+    LCVurl = 'https://lima.ewi.tudelft.nl/lcv/'
     local_package = {args.product: args.version}
     cg_location = [] # Location of Call Graphs.
     vul_location = [] # Location of vulnerabilities.
@@ -80,6 +86,8 @@ def main():
     for package in vul_pkgs:
         print(f"The package {package}: {vul_pkgs[package]} is vulnerable!")
         print(f"Vulnerabilities can be found in {args.fasten_data} {package}.vulnerabilities.json")
+
+    licensesAnalysis(args, all_pkgs, url, LCVurl, oscg)
 
 if __name__ == "__main__":
     main()
