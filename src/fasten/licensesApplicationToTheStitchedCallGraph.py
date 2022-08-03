@@ -8,11 +8,9 @@ import re
 * SPDX-License-Identifier: Apache-2.0
 '''
 
-def licensesAtThePackageLevelApplicationToTheStitchedCallGraph(stitched_call_graph, licenses_retrieved_at_the_package_level ):
+def licensesAtThePackageLevelApplicationToTheStitchedCallGraph(data, licenses_retrieved_at_the_package_level ):
 
     callablesEnrichedWithLicenseInformation = {}
-    f = open(stitched_call_graph)
-    data = json.load(f)
     LicensePackagesList = []
 
     # create a list of package names, used to loop over each callable
@@ -41,11 +39,8 @@ def licensesAtThePackageLevelApplicationToTheStitchedCallGraph(stitched_call_gra
                                 callablesEnrichedWithLicenseInformation[i]["GitHubLicenseSPDX_at_package_level"] = licenses_retrieved_at_the_package_level[j]["GitHubLicenseSPDX"]
     return callablesEnrichedWithLicenseInformation
 
-def licensesAtTheFileLevelApplicationToTheStitchedCallGraph(licenses_retrieved_at_the_file_level, stitched_call_graph):
+def licensesAtTheFileLevelApplicationToTheStitchedCallGraph(licenses_retrieved_at_the_file_level, data):
     callablesEnrichedWithLicenseAtFileLevel = {}
-    # loading the stitch call graph
-    f = open(stitched_call_graph)
-    data = json.load(f)
 
     # list of packages with licenses declared at the file level
     FileLicensePackagesList = []
