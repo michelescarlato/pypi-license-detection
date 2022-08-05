@@ -65,6 +65,7 @@ def parseLCVAssessmentResponse(LCVAssessmentResponseList, licenses):
 
 
     if len(assessment) == 0:
+        assessment[j] = {}
         output = "Licensing issues at the package level have not been found"
-        assessment.append(output)
+        assessment[j]["noLicensesIssues"] = output
     return assessment
