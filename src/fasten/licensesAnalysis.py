@@ -17,12 +17,16 @@ def licensesAnalysis(args, all_pkgs, url, LCVurl, stitched_call_graph):
     LCVAssessmentResponse = licenseComplianceVerification(InboundLicenses, OutboundLicense, LCVurl)
     LicenseReport = parseLCVAssessmentResponse(LCVAssessmentResponse, licenses_retrieved)
     if len(LicenseReport) > 0:
-        print("License violation found at the package level: " +str(len(LicenseReport)) + " ." )
+        #print("License violation found at the package level: " +str(len(LicenseReport)) + " ." )
         for i in LicenseReport:
-            print("\n")
-            print("############# - violation number " + str(i + 1) + " #################")
-            print(LicenseReport[i]["packageInformation"])
-            print(LicenseReport[i]["licenseViolation"])
+            if "noLicensesIssues" in LicenseReport[i]:
+                print(LicenseReport[i]["noLicensesIssues"])
+            else:
+                print("\n")
+                print("############# - violation number " + str(i + 1) + " #################")
+                print(LicenseReport)
+                print(LicenseReport[i]["packageInformation"])
+                print(LicenseReport[i]["licenseViolation"])
 
 
     callablesEnrichedWithLicenseInformation = licensesAtThePackageLevelApplicationToTheStitchedCallGraph(stitched_call_graph, licenses_retrieved)
