@@ -9,7 +9,7 @@ from licensesApplicationToTheStitchedCallGraph import licensesAtThePackageLevelA
 * SPDX-License-Identifier: Apache-2.0
 '''
 
-def licensesAnalysis(args, all_pkgs, url, LCVurl, stitched_call_graph):
+def licensesAnalysis(args, all_pkgs, url, LCVurl, oscg):
     licenses_retrieved_from_fasten, licenses_retrieved_locally, licenses_retrieved_at_the_file_level = retrieveLicenseInformation(args, all_pkgs, url, LCVurl)
     licenses_retrieved = {**licenses_retrieved_from_fasten, **licenses_retrieved_locally}
     InboundLicenses = generateInboundLicenses(licenses_retrieved)
@@ -29,9 +29,9 @@ def licensesAnalysis(args, all_pkgs, url, LCVurl, stitched_call_graph):
                 print(LicenseReport[i]["licenseViolation"])
 
 
-    callablesEnrichedWithLicenseInformation = licensesAtThePackageLevelApplicationToTheStitchedCallGraph(stitched_call_graph, licenses_retrieved)
+    callablesEnrichedWithLicenseInformation = licensesAtThePackageLevelApplicationToTheStitchedCallGraph(oscg, licenses_retrieved)
 
-    callablesEnrichedWithLicenseAtTheFileLevel = licensesAtTheFileLevelApplicationToTheStitchedCallGraph(licenses_retrieved_at_the_file_level, stitched_call_graph)
+    callablesEnrichedWithLicenseAtTheFileLevel = licensesAtTheFileLevelApplicationToTheStitchedCallGraph(licenses_retrieved_at_the_file_level, oscg)
 
     callablesWithLicenseViolationParsed = LCVAssessmentAtTheFileLevel(callablesEnrichedWithLicenseAtTheFileLevel, OutboundLicense, LCVurl)
 
