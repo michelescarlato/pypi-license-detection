@@ -10,9 +10,8 @@ import requests
 class SavePackageInformation:
 
     @staticmethod
-    def savePackageInformation(fasten_data, pkgs, url):
+    def savePackageInformation(fasten_data, pkgs, url, package_list):
 
-        package_list = [ ]
         keys = ['name', 'version', 'rcg_file', 'vulnerabilities', 'callables',
                 'licenses']
 
