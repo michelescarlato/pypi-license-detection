@@ -12,7 +12,7 @@ class SavePackageInformation:
     @staticmethod
     def savePackageInformation(fasten_data, pkgs, url, package_list):
 
-        keys = ['name', 'version', 'rcg_file', 'vulnerabilities', 'callables',
+        keys = ['name', 'version', 'cg_file', 'vulnerabilities', 'callables',
                 'licenses']
 
         for package in pkgs:
@@ -29,14 +29,14 @@ class SavePackageInformation:
             if rcg:
                 rcg_json = rcg.json() # save Call Graph in JSON format
 
-                rcg_file = fasten_data + package + ".json"
+                cg_file = fasten_data + package + ".json"
 
-                with open(rcg_file, "w") as f:
+                with open(cg_file, "w") as f:
                     f.write(json.dumps(rcg_json))
 
-                dct["rcg_file"] = rcg_file
+                dct["cg_file"] = cg_file
             else:
-                dct["rcg_file"] = None
+                dct["cg_file"] = None
 
             print("Request vulnerabilities")
             vulnerabilities = SavePackageInformation.requestFastenNew(package, pkgs[package], url_pkg, "vulnerabilities")
