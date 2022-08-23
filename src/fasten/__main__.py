@@ -1,7 +1,7 @@
 import argparse
 import os
 import shutil
-from fasten.createDirectories import CreateDirectories
+from fasten.createDirectory import CreateDirectory
 from fasten.executePypiResolver import ExecutePypiResolver
 from fasten.readRequirementsFile import ReadRequirementsFile
 from fasten.savePackageInformation import SavePackageInformation
@@ -52,7 +52,9 @@ def main():
             shutil.rmtree(dir)
 
 
-    CreateDirectories.DirectoryCheck(args.fasten_data, args.scg_path) # Create directories to store the Call Graphs and the Stitched Call Graph
+#   Create directories to store the Call Graphs and the Stitched Call Graph
+    CreateDirectory.createDirectory(args.fasten_data)
+    CreateDirectory.createDirectory(args.scg_path)
     DependenciesTree = ExecutePypiResolver.executePypiResolver(args.requirements)
     all_pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
     cg_file = CreateCallGraph().createCallGraph(args)
