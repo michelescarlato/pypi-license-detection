@@ -6,6 +6,7 @@
 
 import json
 import requests
+from createDirectory import CreateDirectory
 
 class SavePackageInformation:
 
@@ -29,7 +30,10 @@ class SavePackageInformation:
             if rcg:
                 rcg_json = rcg.json() # save Call Graph in JSON format
 
-                cg_file = fasten_data + package + ".json"
+#               Create directories to store the Call Graphs
+                directory = fasten_data + "callgraphs/" + package[0] + "/" + package + "/" + pkgs[package]
+                CreateDirectory.createDirectory(directory)
+                cg_file = directory + "/cg.json"
 
                 with open(cg_file, "w") as f:
                     f.write(json.dumps(rcg_json))
