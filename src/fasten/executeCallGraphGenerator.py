@@ -7,26 +7,20 @@ from pycg_producer.producer import CallGraphGenerator
 * SPDX-License-Identifier: Apache-2.0
 '''
 
-def executeCallGraphGenerator(args, unknown_pkgs):
+def executeCallGraphGenerator(args, package_list):
     """Create dictonary necessary for 'CallGraphGenerator'."""
 
-    global call_graphs
-    call_graphs = []
+    for pkg in package_list:
 
-    for package in unknown_pkgs:
+        if pkg["cg_file"] is None:
+            coord = { "product": ""+pkg["name"]+"",
+                      "version": ""+pkg["version"]+"",
+                      "version_timestamp": "2000",
+                      "requires_dist": [] }
+            cg_path = args.fasten_data + "callgraphs"+ "/" + pkg["name"][0] + "/" + pkg["name"] + "/" + pkg["version"] + "/cg.json"
+            pkg["cg_file"] = executeSingleCallGraphGeneration(args.fasten_data, coord, cg_path)
 
-        pkg_version = unknown_pkgs[package]
-
-        coord = { "product": ""+package+"",
-              "version": ""+pkg_version+"",
-              "version_timestamp": "2000",
-              "requires_dist": [] }
-
-        cg_path = args.fasten_data + "callgraphs"+ "/" + package[0] + "/" + package + "/" + pkg_version + "/" + "cg.json"
-        executeSingleCallGraphGeneration(args.fasten_data, coord, cg_path)
-
-
-    return call_graphs
+    return package_list
 
 
 def executeSingleCallGraphGeneration(fasten_data, coord, cg_path):
@@ -37,6 +31,7 @@ def executeSingleCallGraphGeneration(fasten_data, coord, cg_path):
 
     if os.path.isfile(cg_path):
         print(f"Call graph generated at: {cg_path}")
-        call_graphs.append(cg_path)
+        return cg_path
     else:
         print(f"{cg_path} has not been generated!")
+        return None

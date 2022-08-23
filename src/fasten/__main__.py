@@ -62,13 +62,13 @@ def main():
     package_list.append(local_package)
 
     package_list = SavePackageInformation.savePackageInformation(args.fasten_data, all_pkgs, url, package_list)
+    package_list = executeCallGraphGenerator(args, package_list)
 
 #    pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, unknown_pkgs, url) # Check if packages are known by FASTEN
 #    cg_received, cg_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, unknown_pkgs, url, "rcg")
 #    cg_location += cg_received
 #
 #
-#    cg_generated = executeCallGraphGenerator(args, unknown_pkgs)
 #    cg_location += cg_generated
 #
 #
