@@ -63,6 +63,7 @@ def main():
 
     package_list = SavePackageInformation.savePackageInformation(args.fasten_data, all_pkgs, url, package_list)
     package_list = executeCallGraphGenerator(args, package_list)
+    stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, package_list)
 
 #    pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, unknown_pkgs, url) # Check if packages are known by FASTEN
 #    cg_received, cg_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, unknown_pkgs, url, "rcg")
@@ -75,7 +76,6 @@ def main():
 #    vul_location, vul_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, unknown_pkgs, url, "vulnerabilities")
 #
 #
-#    stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, cg_location)
 #    entry_points = FindEntrypoints.findEntrypoints(args, stitched_call_graph)
 #
 #    adjList = CreateAdjacencyList
