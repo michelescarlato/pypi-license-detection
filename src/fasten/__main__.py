@@ -52,42 +52,42 @@ def main():
     CreateDirectories.DirectoryCheck(args.fasten_data, args.scg_path) # Create directories to store the Call Graphs and the Stitched Call Graph
     DependenciesTree = ExecutePypiResolver.executePypiResolver(args.requirements)
     all_pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
-    cg_location = CreateCallGraph().createCallGraph(args, cg_location)
-    pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, unknown_pkgs, url) # Check if packages are known by FASTEN
-    cg_received, cg_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, unknown_pkgs, url, "rcg")
-    cg_location += cg_received
-
-
-    cg_generated = executeCallGraphGenerator(args, unknown_pkgs)
-    cg_location += cg_generated
-
-
-    vul_location, vul_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, unknown_pkgs, url, "vulnerabilities")
-
-
-    stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, cg_location)
-    entry_points = FindEntrypoints.findEntrypoints(args, stitched_call_graph)
-
-    adjList = CreateAdjacencyList
-    adjList.createAdjacencyList(stitched_call_graph)
-    list_of_nodes = [False] * adjList.getNodes()
-
-    # Run a depth first search for each entry point to create a list of all called nodes.
-    for x in entry_points:
-        list_of_nodes = DepthFirstSearch.depthFirstSearch(adjList, int(x), list_of_nodes)
-
-
-    oscg = OptimizeStitchedCallGraph.optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes)
-    callables, callable_pkgs , unknown_pkgs = RequestFasten.requestFasten(args, local_package, unknown_pkgs, url, "callables?limit=1000000")
-
-    if callables:
-        EnrichOSCG.enrichOSCG(args, oscg, callables)
-
-    for package in vul_pkgs:
-        print(f"The package {package}: {vul_pkgs[package]} is vulnerable!")
-        print(f"Vulnerabilities can be found in {args.fasten_data} {package}.vulnerabilities.json")
-
-    licensesAnalysis(args, all_pkgs, url, LCVurl, oscg)
+#    cg_location = CreateCallGraph().createCallGraph(args, cg_location)
+#    pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, unknown_pkgs, url) # Check if packages are known by FASTEN
+#    cg_received, cg_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, unknown_pkgs, url, "rcg")
+#    cg_location += cg_received
+#
+#
+#    cg_generated = executeCallGraphGenerator(args, unknown_pkgs)
+#    cg_location += cg_generated
+#
+#
+#    vul_location, vul_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, unknown_pkgs, url, "vulnerabilities")
+#
+#
+#    stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, cg_location)
+#    entry_points = FindEntrypoints.findEntrypoints(args, stitched_call_graph)
+#
+#    adjList = CreateAdjacencyList
+#    adjList.createAdjacencyList(stitched_call_graph)
+#    list_of_nodes = [False] * adjList.getNodes()
+#
+#    # Run a depth first search for each entry point to create a list of all called nodes.
+#    for x in entry_points:
+#        list_of_nodes = DepthFirstSearch.depthFirstSearch(adjList, int(x), list_of_nodes)
+#
+#
+#    oscg = OptimizeStitchedCallGraph.optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes)
+#    callables, callable_pkgs , unknown_pkgs = RequestFasten.requestFasten(args, local_package, unknown_pkgs, url, "callables?limit=1000000")
+#
+#    if callables:
+#        EnrichOSCG.enrichOSCG(args, oscg, callables)
+#
+#    for package in vul_pkgs:
+#        print(f"The package {package}: {vul_pkgs[package]} is vulnerable!")
+#        print(f"Vulnerabilities can be found in {args.fasten_data} {package}.vulnerabilities.json")
+#
+#    licensesAnalysis(args, all_pkgs, url, LCVurl, oscg)
 
 if __name__ == "__main__":
     main()
