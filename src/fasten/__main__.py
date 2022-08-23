@@ -4,6 +4,7 @@ import shutil
 from fasten.createDirectories import CreateDirectories
 from fasten.executePypiResolver import ExecutePypiResolver
 from fasten.readRequirementsFile import ReadRequirementsFile
+from fasten.savePackageInformation import SavePackageInformation
 from fasten.checkPackageAvailability import CheckPackageAvailability
 from fasten.requestFasten import RequestFasten
 from fasten.executeCallGraphGenerator import executeCallGraphGenerator
@@ -36,7 +37,9 @@ def main():
 
     url = 'https://api.fasten-project.eu/api/pypi/' # URL to the FASTEN API
     LCVurl = 'https://lima.ewi.tudelft.nl/lcv/'
-    local_package = {args.product: args.version}
+    package_list = [ ] # Storage for package dictionaries.
+    local_package = {   "name": args.product,
+                        "version": args.version}
     cg_location = [] # Location of Call Graphs.
     vul_location = [] # Location of vulnerabilities.
     unknown_pkgs = { } # Storage for package not known by FASTEN.
@@ -52,7 +55,8 @@ def main():
     CreateDirectories.DirectoryCheck(args.fasten_data, args.scg_path) # Create directories to store the Call Graphs and the Stitched Call Graph
     DependenciesTree = ExecutePypiResolver.executePypiResolver(args.requirements)
     all_pkgs = ReadRequirementsFile.readFile(DependenciesTree) # Read requirements.txt
-#    cg_location = CreateCallGraph().createCallGraph(args, cg_location)
+    cg_location = CreateCallGraph().createCallGraph(args, cg_location)
+    package_list = SavePackageInformation.savePackageInformation(args.fasten_data, all_pkgs, url)
 #    pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, unknown_pkgs, url) # Check if packages are known by FASTEN
 #    cg_received, cg_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, unknown_pkgs, url, "rcg")
 #    cg_location += cg_received
