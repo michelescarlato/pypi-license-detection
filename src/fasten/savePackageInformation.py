@@ -11,46 +11,43 @@ from createDirectory import CreateDirectory
 class SavePackageInformation:
 
     @staticmethod
-    def savePackageInformation(fasten_data, pkgs, url, package_list):
+    def savePackageInformation(fasten_data, url, package_list):
 
         keys = ['name', 'version', 'cg_file', 'vulnerabilities', 'callables',
                 'licenses']
 
-        for package in pkgs:
+        for package in package_list:
 
-            dct =   {   "name": package,
-                        "version": pkgs[package]
-                    }
-
-            url_pkg = url + "packages/" + package + "/" + pkgs[package] + "/"
+            url_pkg = url + "packages/" + package["name"] + "/" + package["version"] + "/"
             print()
-            print(f"Start request for {package}:{pkgs[package]}...")
+            print(f"Start request for {package['name']}:{package['version']}...")
+
+
             print("Request Call Graph:")
-            rcg = SavePackageInformation.requestFastenNew(package, pkgs[package], url_pkg, "rcg")
+            rcg = SavePackageInformation.requestFastenNew(package['name'], package['version'], url_pkg, "rcg")
             if rcg:
                 rcg_json = rcg.json() # save Call Graph in JSON format
 
 #               Create directories to store the Call Graphs
-                directory = fasten_data + "callgraphs/" + package[0] + "/" + package + "/" + pkgs[package]
+                directory = fasten_data + "callgraphs/" + package['name'][0] + "/" + package['name'] + "/" + package['version']
                 CreateDirectory.createDirectory(directory)
                 cg_file = directory + "/cg.json"
 
                 with open(cg_file, "w") as f:
                     f.write(json.dumps(rcg_json))
 
-                dct["cg_file"] = cg_file
+                package["cg_file"] = cg_file
             else:
-                dct["cg_file"] = None
+                package["cg_file"] = None
 
             print("Request vulnerabilities")
-            vulnerabilities = SavePackageInformation.requestFastenNew(package, pkgs[package], url_pkg, "vulnerabilities")
-            dct["vulnerabilities"] = vulnerabilities
+            vulnerabilities = SavePackageInformation.requestFastenNew(package['name'], package['version'], url_pkg, "vulnerabilities")
+            package["vulnerabilities"] = vulnerabilities
+
 
             print("Request callables")
-            callables = SavePackageInformation.requestFastenNew(package, pkgs[package], url_pkg, "callables?limit=1000000")
-            dct["callables"] = callables
-
-            package_list.append(dct)
+            callables = SavePackageInformation.requestFastenNew(package['name'], package['version'], url_pkg, "callables?limit=1000000")
+            package["callables"] = callables
 
         return package_list
 

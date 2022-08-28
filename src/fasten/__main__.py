@@ -55,14 +55,13 @@ def main():
 #   Create directories to store the Call Graphs and the Stitched Call Graph
     CreateDirectory.createDirectory(args.fasten_data)
     CreateDirectory.createDirectory(args.scg_path)
-    dependencies_tree = ExecutePypiResolver.executePypiResolver(args.requirements)
-    all_pkgs = ReadRequirementsFile.readFile(dependencies_tree) # Read resolved requirements.txt
     cg_file = CreateCallGraph().createCallGraph(args)
     local_package["cg_file"] = cg_file
-    package_list.append(local_package)
+    package_list = ExecutePypiResolver.executePypiResolver(args.requirements, package_list)
 
-    package_list = SavePackageInformation.savePackageInformation(args.fasten_data, all_pkgs, url, package_list)
+    package_list = SavePackageInformation.savePackageInformation(args.fasten_data, url, package_list)
     package_list = executeCallGraphGenerator(args, package_list)
+    package_list.append(local_package)
     stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, package_list)
 
 #    pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, unknown_pkgs, url) # Check if packages are known by FASTEN

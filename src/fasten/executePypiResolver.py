@@ -1,4 +1,3 @@
-import os
 import pypiResolver
 
 '''
@@ -10,17 +9,20 @@ import pypiResolver
 class ExecutePypiResolver:
 
     @staticmethod
-    def executePypiResolver(requirementsTxt):
+    def executePypiResolver(requirementsTxt, package_list):
         filename = requirementsTxt+"_pypi_resolved.txt"
-        package_list = pypiResolver.run_pip(requirementsTxt, True)
+        resolved_packages = pypiResolver.run_pip(requirementsTxt, True)
 
-        if os.path.exists(filename):
-            os.remove(filename)
 
-        for i in package_list[1]:
+        print(resolved_packages[1])
+        for package in resolved_packages[1]:
 
-            packageAndVersion = i[0]+"=="+i[1]+"\n"
-            with open(filename, "a") as myfile:
-                myfile.write(packageAndVersion)
+            dct =   {   "name": package[0],
+                        "version": package[1],
+                        "cg_file": None,
+                        "vulnerabilities": None,
+                        "callables": None
+                    }
+            package_list.append(dct)
 
-        return filename
+        return package_list
