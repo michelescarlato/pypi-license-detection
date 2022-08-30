@@ -38,7 +38,8 @@ def main():
     local_package = {   "name": args.product,
                         "version": args.version,
                         "cg_file" : None,
-                        "callables" : None
+                        "callables" : None,
+                        "license" : args.spdx_license
                     }
 
     dirs_to_delete = [args.fasten_data, args.scg_path ]
@@ -79,7 +80,7 @@ def main():
 #        print(f"The package {package}: {vul_pkgs[package]} is vulnerable!")
 #        print(f"Vulnerabilities can be found in {args.fasten_data} {package}.vulnerabilities.json")
 #
-#    licensesAnalysis(args, all_pkgs, url, LCVurl, oscg)
+    licensesAnalysis(args, package_list, url, LCVurl, oscg)
 
 if __name__ == "__main__":
     main()

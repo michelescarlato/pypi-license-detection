@@ -9,8 +9,8 @@ from licensesApplicationToTheStitchedCallGraph import licensesAtThePackageLevelA
 * SPDX-License-Identifier: Apache-2.0
 '''
 
-def licensesAnalysis(args, all_pkgs, url, LCVurl, oscg):
-    licenses_retrieved_from_fasten, licenses_retrieved_locally, licenses_retrieved_at_the_file_level = retrieveLicenseInformation(args, all_pkgs, url, LCVurl)
+def licensesAnalysis(args, package_list, url, LCVurl, oscg):
+    licenses_retrieved_from_fasten, licenses_retrieved_locally, licenses_retrieved_at_the_file_level = retrieveLicenseInformation(args, package_list, url, LCVurl)
     licenses_retrieved = {**licenses_retrieved_from_fasten, **licenses_retrieved_locally}
     InboundLicenses = generateInboundLicenses(licenses_retrieved)
     OutboundLicense = args.spdx_license

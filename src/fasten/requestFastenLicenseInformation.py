@@ -11,7 +11,7 @@ from gitHubAndPyPIParsingUtils import IsAnSPDX, ConvertToSPDX
 class RequestFastenLicenseInformation:
 
     @staticmethod
-    def requestFastenLicenseInformation(args, pkgs, url, LCVurl):
+    def requestFastenLicenseInformation(args, package_list, url, LCVurl):
 
         print("Receive metadata from FASTEN:")
         metadata_JSON_File_Locations = [] # Call Graphs and metadata file location
@@ -21,25 +21,25 @@ class RequestFastenLicenseInformation:
         licenses = {}
         i = 0
 
-        for package in pkgs:
-            packageName = package
-            packageVersion = pkgs[package]
+        for package in package_list:
+            packageName = package["name"]
+            packageVersion = package["version"]
 
-            URL = url + "packages/" + package + "/" + pkgs[package] + "/metadata"
+            URL = url + "packages/" + package["name"] + "/" + package["version"] + "/metadata"
             try:
                 response = requests.get(url=URL) # get Call Graph or metadata for specified package
 
                 if response.status_code == 200:
 
                     metadata_JSON = response.json() # save in JSON format
-                    with open(args.fasten_data + package + ".metadata.json", "w") as f:
+                    with open(args.fasten_data + package["name"] + ".metadata.json", "w") as f:
                         f.write(json.dumps(metadata_JSON)) # save metadata in a file
 
                     #look for licenses
                     if "licenses" in metadata_JSON["metadata"]:
                         licensesFasten = metadata_JSON["metadata"]["licenses"]
                         if len(licensesFasten) > 0:
-                            print("License available for " + package + " from FASTEN server. ")
+                            print("License available for " + package["name"] + " from FASTEN server. ")
                             licenses[i] = {}
                             for licenseListElement in licensesFasten:
                                 if licenseListElement["source"] == "GITHUB":
@@ -91,26 +91,26 @@ class RequestFastenLicenseInformation:
                                         licenses[i]['packageVersion'] = packageVersion
                                         licenses[i]['PyPILicenseSPDX'] = License
                                         pass
-                                known_pkg_metadata[package] = pkgs[package]
+                                known_pkg_metadata[package["name"]] = package["version"]
                                 i += 1
                             i += 1
                         else:
-                            print("Empty licenses for " + package + " from FASTEN server. ")
+                            print("Empty licenses for " + package["name"] + " from FASTEN server. ")
                     else:
-                        print("License unavailable for " + package + " from FASTEN server. ")
+                        print("License unavailable for " + package["name"] + " from FASTEN server. ")
 
-                    metadata_JSON_File_Locations.append(args.fasten_data + package + ".metadata.json") # append Call Graph or metadata file location to a list
+                    metadata_JSON_File_Locations.append(args.fasten_data + package["name"] + ".metadata.json") # append Call Graph or metadata file location to a list
 
-                    print(package + ":" + pkgs[package] + ": metadata received.")
-                    known_pkg_metadata[package] = pkgs[package]
+                    print(package["name"] + ":" + package["version"] + ": metadata received.")
+                    known_pkg_metadata[package["name"]] = package["version"]
 
                 elif response.status_code == 404:
-                    print(package + ":" + pkgs[package] + ": metadata not available!")
-                    unknown_pkg_metadata[package] = pkgs[package]
+                    print(package["name"] + ":" + package["version"] + ": metadata not available!")
+                    unknown_pkg_metadata[package["name"]] = package["version"]
                 else:
-                    print("Querying " + package + ":" + pkgs[package] + ": metadata something went wrong.")
+                    print("Querying " + package["name"] + ":" + package["version"] + ": metadata something went wrong.")
                     print(response.status_code)
-                    connectivity_issues[package] = pkgs[package]
+                    connectivity_issues[package["name"]] = package["version"]
 
             except requests.exceptions.ReadTimeout:
                 print('Connection timeout: ReadTimeout')

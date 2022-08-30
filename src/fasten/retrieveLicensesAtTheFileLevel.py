@@ -10,7 +10,7 @@ import requests
 
 class RetrieveLicensesAtTheFileLevel:
     @staticmethod
-    def retrieveLicensesAtTheFileLevel(args, pkgs, url):
+    def retrieveLicensesAtTheFileLevel(args, package_list, url):
         print("Receive metadata from FASTEN:")
         metadata_JSON_File_Locations = []  # Call Graphs and metadata file location
         known_files_metadata = {}
@@ -19,17 +19,17 @@ class RetrieveLicensesAtTheFileLevel:
         file_licenses = {}
 
 
-        for package in pkgs:
-            packageName = package
-            packageVersion = pkgs[package]
-            URL = url + "packages/" + package + "/" + pkgs[package] + "/files"
+        for package in package_list:
+            packageName = package["name"]
+            packageVersion = package["version"]
+            URL = url + "packages/" + package["name"] + "/" + package["version"] + "/files"
             try:
                 response = requests.get(url=URL)  # get Call Graph or metadata for specified package
 
                 if response.status_code == 200:
 
                     metadata_JSON = response.json()  # save in JSON format
-                    with open(args.fasten_data + package + ".files.json", "w") as f:
+                    with open(args.fasten_data + package["name"] + ".files.json", "w") as f:
                         f.write(json.dumps(metadata_JSON))  # save Call Graph or metadata in a file
                     # create a dictionary for the package only if files are listed from FASTEN
                     if len(metadata_JSON) > 0:
@@ -63,22 +63,22 @@ class RetrieveLicensesAtTheFileLevel:
                                                 file_licenses[packageName][filePath]["spdx_license_key"].append(licenseSPDX)
                                                 i += 1
 
-                                known_files_metadata[package] = pkgs[package]
+                                known_files_metadata[package["name"]] = package["version"]
                         else:
-                            print("License unavailable for " + package + " from FASTEN server. ")
+                            print("License unavailable for " + package["name"] + " from FASTEN server. ")
 
                             metadata_JSON_File_Locations.append(
-                                args.fasten_data + package + ".metadata.json")  # append Call Graph or metadata file location to a list
+                                args.fasten_data + package["name"] + ".metadata.json")  # append Call Graph or metadata file location to a list
 
-                            print(package + ":" + pkgs[package] + ": metadata received.")
-                            known_files_metadata[package] = pkgs[package]
+                            print(package["name"] + ":" + package["version"] + ": metadata received.")
+                            known_files_metadata[package["name"]] = package["version"]
                 elif response.status_code == 404:
-                    print(package + ":" + pkgs[package] + ": metadata not available!")
-                    unknown_files_metadata[package] = pkgs[package]
+                    print(package["name"] + ":" + package["version"] + ": metadata not available!")
+                    unknown_files_metadata[package["name"]] = package["version"]
                 else:
-                    print("Querying " + package + ":" + pkgs[package] + ": metadata something went wrong.")
+                    print("Querying " + package["name"] + ":" + package["version"] + ": metadata something went wrong.")
                     print(response.status_code)
-                    files_connectivity_issues[package] = pkgs[package]
+                    files_connectivity_issues[package["name"]] = package["version"]
 
             except requests.exceptions.ReadTimeout:
                 print('Connection timeout: ReadTimeout')
