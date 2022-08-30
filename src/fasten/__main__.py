@@ -40,9 +40,6 @@ def main():
                         "cg_file" : None,
                         "callables" : None
                     }
-    cg_location = [] # Location of Call Graphs.
-    vul_location = [] # Location of vulnerabilities.
-    unknown_pkgs = { } # Storage for package not known by FASTEN.
 
     dirs_to_delete = [args.fasten_data, args.scg_path ]
     for dir in dirs_to_delete :
