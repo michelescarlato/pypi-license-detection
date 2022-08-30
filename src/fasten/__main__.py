@@ -39,7 +39,10 @@ def main():
     LCVurl = 'https://lima.ewi.tudelft.nl/lcv/'
     package_list = [ ] # Storage for package dictionaries.
     local_package = {   "name": args.product,
-                        "version": args.version}
+                        "version": args.version,
+                        "cg_file" : None,
+                        "callables" : None
+                    }
     cg_location = [] # Location of Call Graphs.
     vul_location = [] # Location of vulnerabilities.
     unknown_pkgs = { } # Storage for package not known by FASTEN.
@@ -75,22 +78,23 @@ def main():
 #    vul_location, vul_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, unknown_pkgs, url, "vulnerabilities")
 #
 #
-#    entry_points = FindEntrypoints.findEntrypoints(args, stitched_call_graph)
-#
-#    adjList = CreateAdjacencyList
-#    adjList.createAdjacencyList(stitched_call_graph)
-#    list_of_nodes = [False] * adjList.getNodes()
-#
-#    # Run a depth first search for each entry point to create a list of all called nodes.
-#    for x in entry_points:
-#        list_of_nodes = DepthFirstSearch.depthFirstSearch(adjList, int(x), list_of_nodes)
 #
 #
-#    oscg = OptimizeStitchedCallGraph.optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes)
 #    callables, callable_pkgs , unknown_pkgs = RequestFasten.requestFasten(args, local_package, unknown_pkgs, url, "callables?limit=1000000")
 #
-#    if callables:
-#        EnrichOSCG.enrichOSCG(args, oscg, callables)
+    entry_points = FindEntrypoints.findEntrypoints(args, stitched_call_graph)
+
+    adjList = CreateAdjacencyList
+    adjList.createAdjacencyList(stitched_call_graph)
+    list_of_nodes = [False] * adjList.getNodes()
+
+    # Run a depth first search for each entry point to create a list of all called nodes.
+    for x in entry_points:
+        list_of_nodes = DepthFirstSearch.depthFirstSearch(adjList, int(x), list_of_nodes)
+
+
+    oscg = OptimizeStitchedCallGraph.optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes)
+    EnrichOSCG.enrichOSCG(args, oscg, package_list)
 #
 #    for package in vul_pkgs:
 #        print(f"The package {package}: {vul_pkgs[package]} is vulnerable!")

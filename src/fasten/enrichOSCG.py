@@ -6,7 +6,7 @@ import json
 class EnrichOSCG:
 
     @staticmethod
-    def enrichOSCG(args, oscg, callables):
+    def enrichOSCG(args, oscg, package_list):
         """
         Enrich the Optimized Stitched Call Graph
         with metadata information from FASTEN.
@@ -14,16 +14,14 @@ class EnrichOSCG:
 
         print("Enrich Optimized Stitched Call Graph...")
 
-        with open(callables[0], "r") as callables_file:
-            callables = json.load(callables_file)
-
         for node in oscg["nodes"]:
             oscg_uri = "".join(re.findall(rf"(?<={args.version}).+",
                                oscg["nodes"][node]["URI"]))
-            for callable in callables:
-                if callable["fasten_uri"] == oscg_uri:
-                    if callable["metadata"]:
-                        oscg["nodes"][node]["metadata"] = callable["metadata"]
+            for pkg in package_list:
+                if pkg["callables"] is not None:
+                    if pkg["callables"][1]["fasten_uri"] == oscg_uri:
+                        if pkg["callables"][1]["metadata"]:
+                            oscg["nodes"][node]["metadata"] = pkg["callables"]["metadata"]
 
         with open(args.scg_path + "enrichedCallGraph.json", "w+") as ecg_file:
             ecg_file.write(json.dumps(oscg))

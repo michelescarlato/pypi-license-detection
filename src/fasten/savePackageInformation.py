@@ -40,6 +40,7 @@ class SavePackageInformation:
             else:
                 package["cg_file"] = None
 
+
             print("Request vulnerabilities")
             vulnerabilities = SavePackageInformation.requestFastenNew(package['name'], package['version'], url_pkg, "vulnerabilities")
             package["vulnerabilities"] = vulnerabilities
@@ -47,7 +48,12 @@ class SavePackageInformation:
 
             print("Request callables")
             callables = SavePackageInformation.requestFastenNew(package['name'], package['version'], url_pkg, "callables?limit=1000000")
-            package["callables"] = callables
+            if callables:
+                callables_json = callables.json()
+                if callables_json == []:
+                    package["callables"] = None
+                else:
+                    package["callables"] = callables_json
 
         return package_list
 
