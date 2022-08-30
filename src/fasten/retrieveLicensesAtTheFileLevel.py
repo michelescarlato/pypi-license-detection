@@ -1,5 +1,4 @@
 import json
-import time
 import requests
 
 
@@ -87,7 +86,6 @@ class RetrieveLicensesAtTheFileLevel:
                 print('Connection timeout: ConnectTimeout')
             except requests.exceptions.ConnectionError:
                 print('Connection timeout: ConnectError')
-                time.sleep(30)
         with open('file_licenses_original.json', 'w') as convert_file:
             json.dump(file_licenses, convert_file, indent=4)
         return metadata_JSON_File_Locations, known_files_metadata, unknown_files_metadata, files_connectivity_issues, file_licenses
