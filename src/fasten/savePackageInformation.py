@@ -67,7 +67,7 @@ class SavePackageInformation:
             if response.status_code == 200:
                 return response
 
-            if response.status_code == 404 or response.status_code == 400 or response.status_code == 201:
+            if response.status_code in (201, 400, 401):
                 if path == "callables?limit=1000000":
                     path = "callables"
                 print(f"{response.status_code}: {name}:{version}: {path} not available!")
