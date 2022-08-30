@@ -3,10 +3,7 @@ import os
 import shutil
 from fasten.createDirectory import CreateDirectory
 from fasten.executePypiResolver import ExecutePypiResolver
-from fasten.readRequirementsFile import ReadRequirementsFile
 from fasten.savePackageInformation import SavePackageInformation
-from fasten.checkPackageAvailability import CheckPackageAvailability
-from fasten.requestFasten import RequestFasten
 from fasten.executeCallGraphGenerator import executeCallGraphGenerator
 from fasten.createCallGraph import CreateCallGraph
 from fasten.stitchCallGraphs import StitchCallGraphs
@@ -67,21 +64,6 @@ def main():
     package_list.append(local_package)
     stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, package_list)
 
-#    pkgs, unknown_pkgs = CheckPackageAvailability.checkPackageAvailability(all_pkgs, unknown_pkgs, url) # Check if packages are known by FASTEN
-#    cg_received, cg_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, unknown_pkgs, url, "rcg")
-#    cg_location += cg_received
-#
-#
-#    cg_location += cg_generated
-#
-#
-#    vul_location, vul_pkgs, unknown_pkgs = RequestFasten.requestFasten(args, all_pkgs, unknown_pkgs, url, "vulnerabilities")
-#
-#
-#
-#
-#    callables, callable_pkgs , unknown_pkgs = RequestFasten.requestFasten(args, local_package, unknown_pkgs, url, "callables?limit=1000000")
-#
     entry_points = FindEntrypoints.findEntrypoints(args, stitched_call_graph)
 
     adjList = CreateAdjacencyList
