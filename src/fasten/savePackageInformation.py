@@ -7,6 +7,7 @@
 import json
 import requests
 from createDirectory import CreateDirectory
+from requestFasten import RequestFasten
 
 class SavePackageInformation:
 
@@ -24,7 +25,7 @@ class SavePackageInformation:
 
 
             print("Request Call Graph:")
-            rcg = SavePackageInformation.requestFastenNew(package['name'], package['version'], url_pkg, "rcg")
+            rcg = RequestFasten.requestFasten(package['name'], package['version'], url_pkg, "rcg")
             if rcg:
                 rcg_json = rcg.json() # save Call Graph in JSON format
 
@@ -42,12 +43,12 @@ class SavePackageInformation:
 
 
             print("Request vulnerabilities")
-            vulnerabilities = SavePackageInformation.requestFastenNew(package['name'], package['version'], url_pkg, "vulnerabilities")
+            vulnerabilities = RequestFasten.requestFasten(package['name'], package['version'], url_pkg, "vulnerabilities")
             package["vulnerabilities"] = vulnerabilities
 
 
             print("Request callables")
-            callables = SavePackageInformation.requestFastenNew(package['name'], package['version'], url_pkg, "callables?limit=1000000")
+            callables = RequestFasten.requestFasten(package['name'], package['version'], url_pkg, "callables?limit=1000000")
             if callables:
                 callables_json = callables.json()
                 if callables_json == []:
@@ -56,28 +57,3 @@ class SavePackageInformation:
                     package["callables"] = callables_json
 
         return package_list
-
-
-    @staticmethod
-    def requestFastenNew(name, version, url, path):
-
-        try:
-            response = requests.get(url=url + path)
-
-            if response.status_code == 200:
-                return response
-
-            if response.status_code in (201, 400, 401):
-                if path == "callables?limit=1000000":
-                    path = "callables"
-                print(f"{response.status_code}: {name}:{version}: {path} not available!")
-
-            else:
-                print(f"{response.status_code}: Something went wrong for the package {name}:{version} on the server side!")
-
-        except requests.exceptions.ReadTimeout:
-            print('Connection timeout: ReadTimeout')
-        except requests.exceptions.ConnectTimeout:
-            print('Connection timeout: ConnectTimeout')
-        except requests.exceptions.ConnectionError:
-            print('Connection timeout: ConnectError')
