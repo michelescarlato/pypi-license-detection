@@ -8,7 +8,6 @@ class OptimizeStitchedCallGraph:
     @staticmethod
     def optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes):
         print("Optimize Stitched Call Graph:")
-        print(stitched_call_graph)
 
         with open(stitched_call_graph, "r") as scg_file:
             scg = json.load(scg_file)
