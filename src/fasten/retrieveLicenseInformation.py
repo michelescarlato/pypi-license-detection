@@ -14,7 +14,7 @@ def retrieveLicenseInformation(args, package_list, url, LCVurl):
     unknown_pkgs_metadata, licenses_retrieved_from_fasten, index = AnalyzeFastenLicenseInformation.analyzeFastenLicenseInformation(args, package_list, url, LCVurl)
 
     # retrieve license information at the package level, querying PyPI and GitHub.
-    licenses_retrieved_locally = ReceiveLocallyLicensesInformation.receiveLocallyLicensesInformation(unknown_pkgs_metadata, LCVurl, index)
+    licenses_retrieved_locally = ReceiveLocallyLicensesInformation.receiveLocallyLicensesInformation(package_list, LCVurl, index)
 
 
     # request to fasten license information at the file level.
