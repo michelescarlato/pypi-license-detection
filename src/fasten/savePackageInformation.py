@@ -56,4 +56,15 @@ class SavePackageInformation:
                 else:
                     package["callables"] = callables_json
 
+            print("Request licenses")
+            metadata = RequestFasten.requestFasten(package['name'], package['version'], url_pkg, "metadata")
+            if metadata:
+                metadata_json = metadata.json()
+                if metadata_json == []:
+                    package["metadata"] = None
+                else:
+                    package["metadata"] = metadata_json
+            else:
+                package["metadata"] = None
+
         return package_list

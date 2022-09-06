@@ -40,6 +40,7 @@ def main():
                         "cg_file" : None,
                         "callables" : None,
                         "license" : args.spdx_license
+                        "metadata": None,
                     }
 
     dirs_to_delete = [args.fasten_data, args.scg_path ]
