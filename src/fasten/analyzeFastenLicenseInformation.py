@@ -8,10 +8,10 @@ from gitHubAndPyPIParsingUtils import IsAnSPDX, ConvertToSPDX
 * SPDX-License-Identifier: Apache-2.0
 '''
 
-class RequestFastenLicenseInformation:
+class AnalyzeFastenLicenseInformation:
 
     @staticmethod
-    def requestFastenLicenseInformation(args, package_list, url, LCVurl):
+    def analyzeFastenLicenseInformation(args, package_list, url, LCVurl):
 
         metadata_JSON_File_Locations = [] # Call Graphs and metadata file location
         known_pkg_metadata = {}
