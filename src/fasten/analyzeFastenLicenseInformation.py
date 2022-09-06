@@ -13,10 +13,7 @@ class AnalyzeFastenLicenseInformation:
     @staticmethod
     def analyzeFastenLicenseInformation(args, package_list, url, LCVurl):
 
-        metadata_JSON_File_Locations = [] # Call Graphs and metadata file location
-        known_pkg_metadata = {}
         unknown_pkg_metadata = {}
-        connectivity_issues = {}
         licenses = {}
         i = 0
 
@@ -87,13 +84,9 @@ class AnalyzeFastenLicenseInformation:
                                     licenses[i]['packageVersion'] = packageVersion
                                     licenses[i]['PyPILicenseSPDX'] = License
                                     pass
-                            known_pkg_metadata[package["name"]] = package["version"]
                             i += 1
                         i += 1
                     else:
                         print("Empty licenses for " + package["name"] + " from FASTEN server. ")
-                metadata_JSON_File_Locations.append(args.fasten_data + package["name"] + ".metadata.json") # append Call Graph or metadata file location to a list
 
-                known_pkg_metadata[package["name"]] = package["version"]
-
-        return metadata_JSON_File_Locations, known_pkg_metadata, unknown_pkg_metadata, connectivity_issues, licenses, i
+        return unknown_pkg_metadata, licenses, i
