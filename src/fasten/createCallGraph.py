@@ -30,6 +30,6 @@ class CreateCallGraph:
         with open(cg_file, "w+") as f:
             f.write(json.dumps(formatter.generate()))
 
-        print(f"Call Graph written in file {cg_file}")
+        print(f"Call Graph written in file {cg_file}.")
 
         return cg_file

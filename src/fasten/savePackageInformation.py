@@ -16,6 +16,7 @@ class SavePackageInformation:
         keys = ['name', 'version', 'cg_file', 'vulnerabilities', 'callables',
                 'licenses']
 
+        print("Request FASTEN for package information. This can take a while...")
         for package in package_list:
 
             url_pkg = url + "packages/" + package["name"] + "/" + package["version"] + "/"
