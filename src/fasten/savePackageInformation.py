@@ -19,11 +19,11 @@ class SavePackageInformation:
         for package in package_list:
 
             url_pkg = url + "packages/" + package["name"] + "/" + package["version"] + "/"
-            print()
-            print(f"Start request for {package['name']}:{package['version']}...")
+#            print()
+#            print(f"Start request for {package['name']}:{package['version']}...")
 
 
-            print("Request Call Graph:")
+#            print("Request Call Graph:")
             rcg = RequestFasten.requestFasten(package['name'], package['version'], url_pkg, "rcg")
             if rcg:
                 rcg_json = rcg.json() # save Call Graph in JSON format
@@ -50,7 +50,7 @@ class SavePackageInformation:
     @staticmethod
     def createDictEntry(package, path, url_pkg):
 
-        print(f"Request {path}")
+#        print(f"Request {path}")
         response = RequestFasten.requestFasten(package['name'], package['version'], url_pkg, path)
         if response:
             response_json = response.json()

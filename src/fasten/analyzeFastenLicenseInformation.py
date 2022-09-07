@@ -26,9 +26,6 @@ class AnalyzeFastenLicenseInformation:
                 #look for licenses
 #            if "licenses" in metadata_JSON["metadata"]:
             if package["metadata"] is not None:
-                print("HERE")
-                print(package["name"])
-                print(package["metadata"])
                 if "licenses" in package["metadata"]:
                     licensesFasten = package["metadata"]["licenses"]
                     if len(licensesFasten) > 0:
@@ -86,7 +83,7 @@ class AnalyzeFastenLicenseInformation:
                                     pass
                             i += 1
                         i += 1
-                    else:
-                        print("Empty licenses for " + package["name"] + " from FASTEN server. ")
+#                    else:
+#                        print("Empty licenses for " + package["name"] + " from FASTEN server. ")
 
         return unknown_pkg_metadata, licenses, i

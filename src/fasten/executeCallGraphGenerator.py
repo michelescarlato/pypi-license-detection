@@ -30,8 +30,8 @@ def executeSingleCallGraphGeneration(fasten_data, coord, cg_path):
     generator.generate()
 
     if os.path.isfile(cg_path):
-        print(f"Call graph generated at: {cg_path}")
+#        print(f"Call graph generated at: {cg_path}")
         return cg_path
     else:
-        print(f"{cg_path} has not been generated!")
+#        print(f"{cg_path} has not been generated!")
         return None

@@ -50,7 +50,6 @@ def main():
     for dir in dirs_to_delete :
         isExist = os.path.exists(dir)
         if isExist:
-            print("removing: " + dir)
             shutil.rmtree(dir)
 
 

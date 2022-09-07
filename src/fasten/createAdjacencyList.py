@@ -9,7 +9,7 @@ class CreateAdjacencyList:
     def createAdjacencyList(cls, stitched_call_graph):
 
 #       Read the list of calls from Stitched Call Graph.
-        print("Read the list of calls from the Stitched Call Graph...")
+#        print("Read the list of calls from the Stitched Call Graph...")
         with open(stitched_call_graph) as f:
             scg = json.loads(f.read())
 

@@ -14,7 +14,6 @@ class ExecutePypiResolver:
         resolved_packages = pypiResolver.run_pip(requirementsTxt, True)
 
         broken_list = ["Click","py","openstacksdk","Django","pyScss","python-neutronclient","Pygments","Pint","cryptography","django_openstack_auth","setuptools","pyinotify","rjsmin","tqdm","fonttools", "pycodestyle", "pyrsistent", "Dj", "Pt"]
-        print(resolved_packages[1])
         for package in resolved_packages[1]:
 
             dct =   {   "name": package[0],
