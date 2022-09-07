@@ -9,10 +9,15 @@ class RequestFasten:
     @staticmethod
     def requestFasten(name, version, url, path):
 
+        if path == "callables":
+            path_x = "callables?limit=1000000"
+        else:
+            path_x = path
+
         try:
             print("Open connection to:")
-            print(url+path)
-            response = requests.get(url=url + path)
+            print(url+path_x)
+            response = requests.get(url=url + path_x)
             print(response)
 
             if response.status_code == 200:
@@ -20,8 +25,6 @@ class RequestFasten:
                 return response
 
             if response.status_code in (201, 400, 401):
-                if path == "callables?limit=1000000":
-                    path = "callables"
                 print(f"{response.status_code}: {name}:{version}: {path} not available!")
 
             else:
