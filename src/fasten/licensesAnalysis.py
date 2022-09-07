@@ -12,28 +12,29 @@ from licensesApplicationToTheStitchedCallGraph import licensesAtThePackageLevelA
 def licensesAnalysis(args, package_list, url, LCVurl, oscg):
     licenses_retrieved_from_fasten, licenses_retrieved_locally, licenses_retrieved_at_the_file_level = retrieveLicenseInformation(args, package_list, url, LCVurl)
     licenses_retrieved = {**licenses_retrieved_from_fasten, **licenses_retrieved_locally}
-    InboundLicenses = generateInboundLicenses(licenses_retrieved)
-    OutboundLicense = args.spdx_license
-    LCVAssessmentResponse = licenseComplianceVerification(InboundLicenses, OutboundLicense, LCVurl)
-    LicenseReport = parseLCVAssessmentResponse(LCVAssessmentResponse, licenses_retrieved)
-    if len(LicenseReport) > 0:
-        #print("License violation found at the package level: " +str(len(LicenseReport)) + " ." )
-        for i in LicenseReport:
-            if "noLicensesIssues" in LicenseReport[i]:
-                print(LicenseReport[i]["noLicensesIssues"])
+    inbound_licenses = generateInboundLicenses(licenses_retrieved)
+    outbound_license = args.spdx_license
+    lcv_assessment_response = licenseComplianceVerification(inbound_licenses, outbound_license, LCVurl)
+    license_report = parseLCVAssessmentResponse(lcv_assessment_response, licenses_retrieved)
+
+    if len(license_report) > 0:
+        #print("License violation found at the package level: " +str(len(license_report)) + " ." )
+        for i in license_report:
+            if "noLicensesIssues" in license_report[i]:
+                print(license_report[i]["noLicensesIssues"])
             else:
                 print("\n")
                 print("############# - violation number " + str(i + 1) + " #################")
-                print(LicenseReport)
-                print(LicenseReport[i]["packageInformation"])
-                print(LicenseReport[i]["licenseViolation"])
+                print(license_report)
+                print(license_report[i]["packageInformation"])
+                print(license_report[i]["licenseViolation"])
 
 
     callablesEnrichedWithLicenseInformation = licensesAtThePackageLevelApplicationToTheStitchedCallGraph(oscg, licenses_retrieved)
 
     callablesEnrichedWithLicenseAtTheFileLevel = licensesAtTheFileLevelApplicationToTheStitchedCallGraph(licenses_retrieved_at_the_file_level, oscg)
 
-    callablesWithLicenseViolationParsed = LCVAssessmentAtTheFileLevel(callablesEnrichedWithLicenseAtTheFileLevel, OutboundLicense, LCVurl)
+    callablesWithLicenseViolationParsed = LCVAssessmentAtTheFileLevel(callablesEnrichedWithLicenseAtTheFileLevel, outbound_license, LCVurl)
 
     LCVAssessmentAtTheFileLevelReport = LCVAssessmentAtTheFileLevelGenerateReport(callablesWithLicenseViolationParsed)
 
