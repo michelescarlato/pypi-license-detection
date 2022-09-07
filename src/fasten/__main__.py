@@ -16,6 +16,7 @@ from fasten.licensesAnalysis import licensesAnalysis
 from fasten.retrieveLicenseInformation import retrieveLicenseInformation
 from fasten.licenseComplianceVerification import generateInboundLicenses, licenseComplianceVerification, parseLCVAssessmentResponse#, provideReport
 from fasten.licensesApplicationToTheStitchedCallGraph import licensesAtThePackageLevelApplicationToTheStitchedCallGraph, licensesAtTheFileLevelApplicationToTheStitchedCallGraph, LCVAssessmentAtTheFileLevel, LCVAssessmentAtTheFileLevelGenerateReport, CompareLicensesAtThePackageLevelWithTheFileLevel
+from fasten.vulnerabilityAnalysis import VulnerabilityAnalysis
 
 
 def main():
@@ -40,8 +41,10 @@ def main():
                         "cg_file": None,
                         "callables": None,
                         "metadata": None,
+                        "vulnerabilities": None,
                         "license": args.spdx_license
                     }
+    report = ""
 
     dirs_to_delete = [args.fasten_data, args.scg_path ]
     for dir in dirs_to_delete :
@@ -76,13 +79,12 @@ def main():
 
     oscg = OptimizeStitchedCallGraph.optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes)
     EnrichOSCG.enrichOSCG(args, oscg, package_list)
-#
-#    for package in vul_pkgs:
-#        print(f"The package {package}: {vul_pkgs[package]} is vulnerable!")
-#        print(f"Vulnerabilities can be found in {args.fasten_data} {package}.vulnerabilities.json")
-#
-    full_report = licensesAnalysis(args, package_list, url, LCVurl, oscg)
-    print(full_report)
+
+    report = VulnerabilityAnalysis.vulnerabilityAnalysis(package_list)
+
+    report += licensesAnalysis(args, package_list, url, LCVurl, oscg)
+
+    print(report)
 
 if __name__ == "__main__":
     main()
