@@ -81,7 +81,8 @@ def main():
 #        print(f"The package {package}: {vul_pkgs[package]} is vulnerable!")
 #        print(f"Vulnerabilities can be found in {args.fasten_data} {package}.vulnerabilities.json")
 #
-    licensesAnalysis(args, package_list, url, LCVurl, oscg)
+    full_report = licensesAnalysis(args, package_list, url, LCVurl, oscg)
+    print(full_report)
 
 if __name__ == "__main__":
     main()
