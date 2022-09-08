@@ -10,6 +10,8 @@ from licensesApplicationToTheStitchedCallGraph import licensesAtThePackageLevelA
 '''
 
 def licensesAnalysis(args, package_list, url, LCVurl, oscg):
+
+    print("Start license analysis...")
     licenses_retrieved_from_fasten, licenses_retrieved_locally, licenses_retrieved_at_the_file_level = retrieveLicenseInformation(args, package_list, url, LCVurl)
     licenses_retrieved = {**licenses_retrieved_from_fasten, **licenses_retrieved_locally}
     inbound_licenses = generateInboundLicenses(licenses_retrieved)
@@ -49,4 +51,5 @@ def licensesAnalysis(args, package_list, url, LCVurl, oscg):
     else:
         full_report += "\nThe report upon incompatible licenses between files and packages didn't show incompatibilities."
 
+    print("License analysis done.")
     return full_report
