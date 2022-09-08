@@ -11,7 +11,7 @@ import requests
 class RetrieveLicensesAtTheFileLevel:
     @staticmethod
     def retrieveLicensesAtTheFileLevel(args, package_list, url):
-        print("Receive metadata from FASTEN:")
+#        print("Receive metadata from FASTEN:")
         metadata_JSON_File_Locations = []  # Call Graphs and metadata file location
         known_files_metadata = {}
         unknown_files_metadata = {}
@@ -65,19 +65,19 @@ class RetrieveLicensesAtTheFileLevel:
 
                                 known_files_metadata[package["name"]] = package["version"]
                         else:
-                            print("License unavailable for " + package["name"] + " from FASTEN server. ")
+#                            print("License unavailable for " + package["name"] + " from FASTEN server. ")
 
                             metadata_JSON_File_Locations.append(
                                 args.fasten_data + package["name"] + ".metadata.json")  # append Call Graph or metadata file location to a list
 
-                            print(package["name"] + ":" + package["version"] + ": metadata received.")
+#                            print(package["name"] + ":" + package["version"] + ": metadata received.")
                             known_files_metadata[package["name"]] = package["version"]
                 elif response.status_code == 404:
-                    print(package["name"] + ":" + package["version"] + ": metadata not available!")
+#                    print(package["name"] + ":" + package["version"] + ": metadata not available!")
                     unknown_files_metadata[package["name"]] = package["version"]
                 else:
-                    print("Querying " + package["name"] + ":" + package["version"] + ": metadata something went wrong.")
-                    print(response.status_code)
+#                    print("Querying " + package["name"] + ":" + package["version"] + ": metadata something went wrong.")
+#                    print(response.status_code)
                     files_connectivity_issues[package["name"]] = package["version"]
 
             except requests.exceptions.ReadTimeout:

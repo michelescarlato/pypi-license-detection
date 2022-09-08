@@ -25,3 +25,5 @@ class EnrichOSCG:
 
         with open(args.scg_path + "enrichedCallGraph.json", "w+") as ecg_file:
             ecg_file.write(json.dumps(oscg))
+
+        print(f"Enriched Call Graph written in file {args.scg_path}enrichedCallGraph.json.")

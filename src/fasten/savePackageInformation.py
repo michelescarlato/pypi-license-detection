@@ -5,7 +5,6 @@
 #       Licenses              \metadata
 
 import json
-import requests
 from createDirectory import CreateDirectory
 from requestFasten import RequestFasten
 
@@ -17,14 +16,15 @@ class SavePackageInformation:
         keys = ['name', 'version', 'cg_file', 'vulnerabilities', 'callables',
                 'licenses']
 
+        print("Request FASTEN for package information. This can take a while...")
         for package in package_list:
 
             url_pkg = url + "packages/" + package["name"] + "/" + package["version"] + "/"
-            print()
-            print(f"Start request for {package['name']}:{package['version']}...")
+#            print()
+#            print(f"Start request for {package['name']}:{package['version']}...")
 
 
-            print("Request Call Graph:")
+#            print("Request Call Graph:")
             rcg = RequestFasten.requestFasten(package['name'], package['version'], url_pkg, "rcg")
             if rcg:
                 rcg_json = rcg.json() # save Call Graph in JSON format
@@ -41,30 +41,25 @@ class SavePackageInformation:
             else:
                 package["cg_file"] = None
 
-
-            print("Request vulnerabilities")
-            vulnerabilities = RequestFasten.requestFasten(package['name'], package['version'], url_pkg, "vulnerabilities")
-            package["vulnerabilities"] = vulnerabilities
-
-
-            print("Request callables")
-            callables = RequestFasten.requestFasten(package['name'], package['version'], url_pkg, "callables?limit=1000000")
-            if callables:
-                callables_json = callables.json()
-                if callables_json == []:
-                    package["callables"] = None
-                else:
-                    package["callables"] = callables_json
-
-            print("Request licenses")
-            metadata = RequestFasten.requestFasten(package['name'], package['version'], url_pkg, "metadata")
-            if metadata:
-                metadata_json = metadata.json()
-                if metadata_json == []:
-                    package["metadata"] = None
-                else:
-                    package["metadata"] = metadata_json
-            else:
-                package["metadata"] = None
+            package = SavePackageInformation.createDictEntry(package, "vulnerabilities", url_pkg)
+            package = SavePackageInformation.createDictEntry(package, "callables", url_pkg)
+            package = SavePackageInformation.createDictEntry(package, "metadata", url_pkg)
 
         return package_list
+
+
+    @staticmethod
+    def createDictEntry(package, path, url_pkg):
+
+#        print(f"Request {path}")
+        response = RequestFasten.requestFasten(package['name'], package['version'], url_pkg, path)
+        if response:
+            response_json = response.json()
+            if response_json == []:
+                package[path] = None
+            else:
+                package[path] = response_json
+        else:
+            package[path] = None
+
+        return package

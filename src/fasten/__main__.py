@@ -16,17 +16,18 @@ from fasten.licensesAnalysis import licensesAnalysis
 from fasten.retrieveLicenseInformation import retrieveLicenseInformation
 from fasten.licenseComplianceVerification import generateInboundLicenses, licenseComplianceVerification, parseLCVAssessmentResponse#, provideReport
 from fasten.licensesApplicationToTheStitchedCallGraph import licensesAtThePackageLevelApplicationToTheStitchedCallGraph, licensesAtTheFileLevelApplicationToTheStitchedCallGraph, LCVAssessmentAtTheFileLevel, LCVAssessmentAtTheFileLevelGenerateReport, CompareLicensesAtThePackageLevelWithTheFileLevel
+from fasten.vulnerabilityAnalysis import VulnerabilityAnalysis
 
 
 def main():
 
     parser = argparse.ArgumentParser(prog='PyPI-plugin')
-    parser.add_argument("--product", type=str, help="Package name") # pypiPlugin-test-online
-    parser.add_argument("--pkg_name", type=str, help="Package containing the code to be analyzed") # pypiPlugin-test-online
-    parser.add_argument("--project_path", type=str, help="Path to package to be analyzed") # /mnt/stuff/projects/work/pypi-plugin/src/fasten/
-    parser.add_argument("--timestamp", type=int, help="Timestamp of the package's version") # 42
-    parser.add_argument("--version", type=str, help="Version of the product") # 1.0
-    parser.add_argument("--requirements", type=str, help="Path to the requirements file") # /mnt/stuff/projects/work/pypi-plugin/requirements.txt
+    parser.add_argument("--product", type=str, help="Package name")
+    parser.add_argument("--pkg_name", type=str, help="Package containing the code to be analyzed")
+    parser.add_argument("--project_path", type=str, help="Path to package to be analyzed")
+    parser.add_argument("--timestamp", type=int, help="Timestamp of the package's version")
+    parser.add_argument("--version", type=str, help="Version of the product")
+    parser.add_argument("--requirements", type=str, help="Path to the requirements file")
     parser.add_argument("--fasten_data", type=str, help="Path to the folder where the received FASTEN data will be stored")
     parser.add_argument("--scg_path", type=str, help="Path to the folder where the Stitched Call Graph will be stored")
     parser.add_argument("--spdx_license", type=str, help="SPDX id of the license declared for this project")
@@ -37,17 +38,18 @@ def main():
     package_list = [ ] # Storage for package dictionaries.
     local_package = {   "name": args.product,
                         "version": args.version,
-                        "cg_file" : None,
-                        "callables" : None,
-                        "license" : args.spdx_license
+                        "cg_file": None,
+                        "callables": None,
                         "metadata": None,
+                        "vulnerabilities": None,
+                        "license": args.spdx_license
                     }
+    report = ""
 
     dirs_to_delete = [args.fasten_data, args.scg_path ]
     for dir in dirs_to_delete :
         isExist = os.path.exists(dir)
         if isExist:
-            print("removing: " + dir)
             shutil.rmtree(dir)
 
 
@@ -76,12 +78,12 @@ def main():
 
     oscg = OptimizeStitchedCallGraph.optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes)
     EnrichOSCG.enrichOSCG(args, oscg, package_list)
-#
-#    for package in vul_pkgs:
-#        print(f"The package {package}: {vul_pkgs[package]} is vulnerable!")
-#        print(f"Vulnerabilities can be found in {args.fasten_data} {package}.vulnerabilities.json")
-#
-    licensesAnalysis(args, package_list, url, LCVurl, oscg)
+
+    report = VulnerabilityAnalysis.vulnerabilityAnalysis(package_list)
+
+    report += licensesAnalysis(args, package_list, url, LCVurl, oscg)
+
+    print(report)
 
 if __name__ == "__main__":
     main()

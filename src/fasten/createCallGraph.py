@@ -18,18 +18,18 @@ class CreateCallGraph:
 
         print(f"Creating Call Graph for {args.product}...")
         cg = CallGraphGenerator(entry_point, args.pkg_name, max_iter, operation)
-        print("Call Graph created.")
-        print("Analyze Call Graph...")
+#        print("Call Graph created.")
+#        print("Analyze Call Graph...")
         cg.analyze()
-        print("Call Graph analyzed.")
-        print("Format Call Graph...")
+#        print("Call Graph analyzed.")
+#        print("Format Call Graph...")
         formatter = formats.Fasten(cg, args.pkg_name, args.product, forge, args.version, args.timestamp)
-        print("Call Graph formatted.")
+#        print("Call Graph formatted.")
 
         cg_file = args.fasten_data + args.pkg_name + ".json"
         with open(cg_file, "w+") as f:
             f.write(json.dumps(formatter.generate()))
 
-        print(f"Call Graph written in file {cg_file}")
+        print(f"Call Graph written in file {cg_file}.")
 
         return cg_file

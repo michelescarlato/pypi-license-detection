@@ -9,7 +9,7 @@ class StitchCallGraphs:
     @staticmethod
     def stitchCallGraphs(args, package_list):
 
-        print("Stitch Call Graphs")
+        print("Stitch Call Graphs...")
         call_graphs = [ ]
 
         for pkg in package_list:
@@ -22,6 +22,6 @@ class StitchCallGraphs:
         stitched_graph_file = os.path.join(args.scg_path, args.product + ".json")
         with open(stitched_graph_file, "w+") as f:
             f.write(output)
-        print(f"Saved Stitched Call Graph in: {stitched_graph_file}")
+        print(f"Stitched Call Graph written in file {stitched_graph_file}.")
 
         return stitched_graph_file

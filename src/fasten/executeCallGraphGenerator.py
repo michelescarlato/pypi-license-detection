@@ -10,6 +10,7 @@ from pycg_producer.producer import CallGraphGenerator
 def executeCallGraphGenerator(args, package_list):
     """Create dictonary necessary for 'CallGraphGenerator'."""
 
+    print("Create Call Graphs for packages not known by FASTEN using pycg...")
     for pkg in package_list:
 
         if pkg["cg_file"] is None:
@@ -30,8 +31,8 @@ def executeSingleCallGraphGeneration(fasten_data, coord, cg_path):
     generator.generate()
 
     if os.path.isfile(cg_path):
-        print(f"Call graph generated at: {cg_path}")
+#        print(f"Call graph generated at: {cg_path}")
         return cg_path
     else:
-        print(f"{cg_path} has not been generated!")
+#        print(f"{cg_path} has not been generated!")
         return None

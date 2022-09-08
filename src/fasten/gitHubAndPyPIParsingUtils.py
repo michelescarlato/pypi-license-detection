@@ -112,9 +112,9 @@ def ConvertToSPDX(License, LCVurl):
     return LCVConvertToSPDXJsonResponse
 
 def retrieveLicenseInformationFromPyPI(packageName, packageVersion, LCVurl):
-    print("Querying PyPI.org APIs for license information:")
+#    print("Querying PyPI.org APIs for license information:")
     URL = "https://pypi.org/" + "pypi/" + packageName + "/" + packageVersion + "/json"
-    print(URL)
+#    print(URL)
     PyPILicenseSPDX = ""
     try:
         response = requests.get(url=URL)
@@ -125,12 +125,12 @@ def retrieveLicenseInformationFromPyPI(packageName, packageVersion, LCVurl):
                 # check if the retrieved license is an SPDX id
                 IsSPDX = IsAnSPDX(PyPILicense, LCVurl)
                 if IsSPDX == False:
-                    print("converting " +PyPILicense + " to SPDX")
+#                    print("converting " +PyPILicense + " to SPDX")
                     SPDXConversion = ConvertToSPDX(PyPILicense, LCVurl)
                     IsSPDX = IsAnSPDX(SPDXConversion, LCVurl)
                     if IsSPDX == True:
                         PyPILicenseSPDX = SPDXConversion
-                        print(PyPILicense + " converted into " + SPDXConversion )
+#                        print(PyPILicense + " converted into " + SPDXConversion )
                 else:
                     PyPILicenseSPDX = PyPILicense
     except requests.exceptions.ReadTimeout:
