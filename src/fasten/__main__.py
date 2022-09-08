@@ -79,10 +79,9 @@ def main():
     oscg = OptimizeStitchedCallGraph.optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes)
     EnrichOSCG.enrichOSCG(args, oscg, package_list)
 
+#   Create report
     report = VulnerabilityAnalysis.vulnerabilityAnalysis(package_list)
-
     report += licensesAnalysis(args, package_list, url, LCVurl, oscg)
-
     print(report)
 
 if __name__ == "__main__":
