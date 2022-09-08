@@ -10,21 +10,23 @@ from licensesApplicationToTheStitchedCallGraph import licensesAtThePackageLevelA
 '''
 
 def licensesAnalysis(args, package_list, url, LCVurl, oscg):
+
+    print("Start license analysis...")
     licenses_retrieved_from_fasten, licenses_retrieved_locally, licenses_retrieved_at_the_file_level = retrieveLicenseInformation(args, package_list, url, LCVurl)
     licenses_retrieved = {**licenses_retrieved_from_fasten, **licenses_retrieved_locally}
     inbound_licenses = generateInboundLicenses(licenses_retrieved)
     outbound_license = args.spdx_license
     lcv_assessment_response = licenseComplianceVerification(inbound_licenses, outbound_license, LCVurl)
     license_report = parseLCVAssessmentResponse(lcv_assessment_response, licenses_retrieved)
-    full_report = ""
+    full_report = "Report about licenses:\n"
 
     if len(license_report) > 0:
         #print("License violation found at the package level: " +str(len(license_report)) + " ." )
         for i in license_report:
             if "noLicensesIssues" in license_report[i]:
-                full_report = license_report[i]["noLicensesIssues"]
+                full_report += license_report[i]["noLicensesIssues"]
             else:
-                full_report = "\n" + "############# - violation number " + str(i + 1) + " #################\n"  + str(license_report)  + "\n" + str(license_report[i]["packageInformation"]) + "\n" + str(license_report[i]["licenseViolation"]) + "\n"
+                full_report += "############# - violation number " + str(i + 1) + " #################\n" + "\n" + str(license_report[i]["packageInformation"]) + "\n" + str(license_report[i]["licenseViolation"]) + "\n"
 
 
     callablesEnrichedWithLicenseInformation = licensesAtThePackageLevelApplicationToTheStitchedCallGraph(oscg, licenses_retrieved)
@@ -49,4 +51,5 @@ def licensesAnalysis(args, package_list, url, LCVurl, oscg):
     else:
         full_report += "\nThe report upon incompatible licenses between files and packages didn't show incompatibilities."
 
+    print("License analysis done.")
     return full_report
