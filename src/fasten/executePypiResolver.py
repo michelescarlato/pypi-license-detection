@@ -10,7 +10,6 @@ class ExecutePypiResolver:
 
     @staticmethod
     def executePypiResolver(requirementsTxt, package_list):
-        filename = requirementsTxt+"_pypi_resolved.txt"
         print("Resolve dependencies...")
         resolved_packages = pypiResolver.run_pip(requirementsTxt, True)
 
