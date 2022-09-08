@@ -17,6 +17,7 @@ from fasten.retrieveLicenseInformation import retrieveLicenseInformation
 from fasten.licenseComplianceVerification import generateInboundLicenses, licenseComplianceVerification, parseLCVAssessmentResponse#, provideReport
 from fasten.licensesApplicationToTheStitchedCallGraph import licensesAtThePackageLevelApplicationToTheStitchedCallGraph, licensesAtTheFileLevelApplicationToTheStitchedCallGraph, LCVAssessmentAtTheFileLevel, LCVAssessmentAtTheFileLevelGenerateReport, CompareLicensesAtThePackageLevelWithTheFileLevel
 from fasten.vulnerabilityAnalysis import VulnerabilityAnalysis
+from fasten.reportToPDF import ReportToPDF
 
 
 def main():
@@ -83,6 +84,7 @@ def main():
     report = VulnerabilityAnalysis.vulnerabilityAnalysis(package_list)
     report += licensesAnalysis(args, package_list, url, LCVurl, oscg)
     print(report)
+    ReportToPDF.reportToPDF(report)
 
 if __name__ == "__main__":
     main()
