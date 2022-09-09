@@ -15,6 +15,7 @@ def executeCallGraphGenerator(args, package_list):
     for pkg in package_list:
 
         if pkg["cg_file"] is None:
+            print(f"Create Call Graph for {pkg['name']}.")
             coord = { "product": ""+pkg["name"]+"",
                       "version": ""+pkg["version"]+"",
                       "version_timestamp": "2000",
