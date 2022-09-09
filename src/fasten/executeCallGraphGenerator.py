@@ -11,6 +11,7 @@ def executeCallGraphGenerator(args, package_list):
     """Create dictonary necessary for 'CallGraphGenerator'."""
 
     print("Create Call Graphs for packages not known by FASTEN using pycg...")
+    cg_location_list = []
     for pkg in package_list:
 
         if pkg["cg_file"] is None:
@@ -20,8 +21,12 @@ def executeCallGraphGenerator(args, package_list):
                       "requires_dist": [] }
             cg_path = args.fasten_data + "callgraphs"+ "/" + pkg["name"][0] + "/" + pkg["name"] + "/" + pkg["version"] + "/cg.json"
             pkg["cg_file"] = executeSingleCallGraphGeneration(args.fasten_data, coord, cg_path)
+            if pkg["cg_file"] is not None:
+                cg_location_list.append(pkg["cg_file"])
+        else:
+            cg_location_list.append(pkg["cg_file"])
 
-    return package_list
+    return(package_list, cg_location_list)
 
 
 def executeSingleCallGraphGeneration(fasten_data, coord, cg_path):

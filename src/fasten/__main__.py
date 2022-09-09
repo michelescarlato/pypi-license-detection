@@ -62,9 +62,8 @@ def main():
     package_list = ExecutePypiResolver.executePypiResolver(args.requirements, package_list)
 
     package_list = SavePackageInformation.savePackageInformation(args.fasten_data, url, package_list)
-    package_list = executeCallGraphGenerator(args, package_list)
-    package_list.append(local_package)
-    stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, package_list)
+    package_list, cg_location_list = executeCallGraphGenerator(args, package_list)
+    stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, cg_location_list)
 
     entry_points = FindEntrypoints.findEntrypoints(args, stitched_call_graph)
 
