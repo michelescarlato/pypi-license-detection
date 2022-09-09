@@ -8,6 +8,7 @@ class StitchCallGraphs:
 
     @staticmethod
     def stitchCallGraphs(args, call_graphs):
+        """"Merge all Call Graphs to one single 'Stitched Call Graph'."""
 
         print("Stitch Call Graphs...")
 
