@@ -7,11 +7,10 @@ from pycg_producer.producer import CallGraphGenerator
 * SPDX-License-Identifier: Apache-2.0
 '''
 
-def executeCallGraphGenerator(args, package_list):
+def executeCallGraphGenerator(args, package_list, cg_location_list):
     """Create dictonary necessary for 'CallGraphGenerator'."""
 
     print("Create Call Graphs for packages not known by FASTEN using pycg...")
-    cg_location_list = []
     for pkg in package_list:
 
         if pkg["cg_file"] is None:

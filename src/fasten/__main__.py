@@ -37,6 +37,7 @@ def main():
     url = 'https://api.fasten-project.eu/api/pypi/' # URL to the FASTEN API
     LCVurl = 'https://lima.ewi.tudelft.nl/lcv/'
     package_list = [ ] # Storage for package dictionaries.
+    cg_location_list = [ ] # Storage for the location of the Call Graphs.
     local_package = {   "name": args.product,
                         "version": args.version,
                         "cg_file": None,
@@ -59,10 +60,11 @@ def main():
     CreateDirectory.createDirectory(args.scg_path)
     cg_file = CreateCallGraph().createCallGraph(args)
     local_package["cg_file"] = cg_file
+    cg_location_list.append(cg_file)
     package_list = ExecutePypiResolver.executePypiResolver(args.requirements, package_list)
 
     package_list = SavePackageInformation.savePackageInformation(args.fasten_data, url, package_list)
-    package_list, cg_location_list = executeCallGraphGenerator(args, package_list)
+    package_list, cg_location_list = executeCallGraphGenerator(args, package_list, cg_location_list)
     stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, cg_location_list)
 
     entry_points = FindEntrypoints.findEntrypoints(args, stitched_call_graph)
