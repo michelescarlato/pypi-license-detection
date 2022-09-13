@@ -3,3 +3,4 @@ pycg-stitch==0.0.9
 requests==2.27.1
 pkginfo==1.8.2
 pycg-producer==0.0.7
+fpdf==1.7.2
