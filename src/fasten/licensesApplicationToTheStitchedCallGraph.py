@@ -90,9 +90,6 @@ def LCVAssessmentAtTheFileLevel(callablesEnrichedWithLicenseAtTheFileLevel, Outb
                 callablesWithLicenseViolation[i] = LCVResponse[0]
                 callablesWithLicenseViolation[i]["URI"] = data[i]["URI"]
 
-    with open('callablesWithLicenseViolation.json', 'w') as convert_file:
-        json.dump(callablesWithLicenseViolation, convert_file, indent=4)
-
     callablesWithLicenseViolationParsed = {}
 
     for i in callablesWithLicenseViolation:
@@ -114,9 +111,6 @@ def LCVAssessmentAtTheFileLevelGenerateReport(callablesWithLicenseViolationParse
                 " " + str(callablesWithLicenseViolationParsed[i]["outbound_SPDX"]) + " declared as the outbound license .")
         LCVAssessmentAtTheFileLevelReport.append(output)
 
-    with open(r'LCVAssessmentAtTheFileLevelReport.txt', 'w') as fp:
-        for item in LCVAssessmentAtTheFileLevelReport:
-            fp.write("%s\n" % item)
     return LCVAssessmentAtTheFileLevelReport
 
 
