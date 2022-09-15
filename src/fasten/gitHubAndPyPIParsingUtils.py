@@ -1,4 +1,3 @@
-import json
 import time
 from urllib.parse import urlparse
 import requests
@@ -9,11 +8,9 @@ import requests
 * SPDX-License-Identifier: Apache-2.0
 '''
 
-def retrieveGitHubUrl(jsonResponse, packageName):
+def retrieveGitHubUrl(data, packageName):
     global url
     url = ""
-    response = json.dumps(jsonResponse)
-    data = json.loads(response)
     if data['info']['home_page'] is not None:
         if packageName in data['info']['home_page']:
             if "https://github.com/" in data['info']['home_page']:

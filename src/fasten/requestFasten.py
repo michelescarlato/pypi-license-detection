@@ -1,7 +1,5 @@
 # Send package name and version to FASTEN and receive a Call Graph or metadata information for it.
 
-import json
-import time
 import requests
 
 class RequestFasten:

@@ -1,5 +1,3 @@
-import json
-import requests
 from gitHubAndPyPIParsingUtils import IsAnSPDX, ConvertToSPDX
 
 '''
