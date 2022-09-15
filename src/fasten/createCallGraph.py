@@ -7,6 +7,10 @@ class CreateCallGraph:
 
     @staticmethod
     def createCallGraph(args):
+        """
+        Create Call Graphs locally for dependencies not known
+        by the FASTEN server using pycg.
+        """
 
         entry_point = [] # List of python files related to the current project
         forge = "local" # Source the product was downloaded from

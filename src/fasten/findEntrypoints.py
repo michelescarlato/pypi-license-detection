@@ -7,8 +7,10 @@ class FindEntrypoints:
 
     @staticmethod
     def findEntrypoints(args, stitched_call_graph):
-        """Find the entry points of a local project in the Stitched Call Graph of this project
-           and save them in a list called 'entry_points'."""
+        """
+        Find the entry points of a local project in the Stitched Call Graph of this project
+        and save them in a list called 'entry_points'.
+        """
 
 #        print("Find entrypoints in Stitched Call Graph for local project.")
         entry_points = [ ]

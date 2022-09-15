@@ -7,6 +7,7 @@ class OptimizeStitchedCallGraph:
 
     @staticmethod
     def optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes):
+        """Remove uncalled callables from the Stitched Call Graph."""
         print("Optimize Stitched Call Graph...")
 
         with open(stitched_call_graph, "r") as scg_file:
