@@ -26,11 +26,8 @@ class ExecutePypiResolver:
                         "vulnerabilities": None,
                         "callables": None
                     }
-            package_list.append(dct)
+            if package[0] not in broken_list:
+                package_list.append(dct)
 
-        for package in package_list:
-            for broken in broken_list:
-                if broken == package["name"]:
-                    package_list.remove(package)
         print("Dependencies resolved.")
         return package_list
