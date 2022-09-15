@@ -1,7 +1,7 @@
 import json
-import requests
 import time
 from urllib.parse import urlparse
+import requests
 
 '''
 * SPDX-FileCopyrightText: 2022 Michele Scarlato <michele.scarlato@endocode.com>
@@ -19,7 +19,7 @@ def retrieveGitHubUrl(jsonResponse, packageName):
             if "https://github.com/" in data['info']['home_page']:
                 url = data['info']['home_page']
                 return url
-    if data['info']['project_urls'] != None:
+    if data['info']['project_urls'] is not None:
         if 'Homepage' in data['info']['project_urls']:
             if packageName in data['info']['project_urls']['Homepage']:
                 if "https://github.com/" in data['info']['project_urls']['Homepage']:
@@ -64,10 +64,10 @@ def RetrieveLicenseFromGitHub(GitHubAPIurl, LCVurl):
             if len(GitHubLicense) > 0:
                 # check if the retrieved license is an SPDX id
                 IsSPDX = IsAnSPDX(GitHubLicense, LCVurl)
-                if IsSPDX == False:
+                if IsSPDX is False:
                     SPDXConversion = ConvertToSPDX(GitHubLicense, LCVurl)
                     IsSPDX = IsAnSPDX(SPDXConversion, LCVurl)
-                    if IsSPDX == True:
+                    if IsSPDX is True:
                         GitHubLicenseSPDX = SPDXConversion
                 else :
                     GitHubLicenseSPDX = GitHubLicense
@@ -126,11 +126,11 @@ def retrieveLicenseInformationFromPyPI(packageName, packageVersion, LCVurl):
                 if len(PyPILicense) > 0:
                     # check if the retrieved license is an SPDX id
                     IsSPDX = IsAnSPDX(PyPILicense, LCVurl)
-                    if IsSPDX == False:
+                    if IsSPDX is False:
     #                    print("converting " +PyPILicense + " to SPDX")
                         SPDXConversion = ConvertToSPDX(PyPILicense, LCVurl)
                         IsSPDX = IsAnSPDX(SPDXConversion, LCVurl)
-                        if IsSPDX == True:
+                        if IsSPDX is True:
                             PyPILicenseSPDX = SPDXConversion
     #                        print(PyPILicense + " converted into " + SPDXConversion )
                     else:
