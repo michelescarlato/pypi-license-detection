@@ -31,7 +31,7 @@ class SavePackageInformation:
 
 
 #            print("Request Call Graph:")
-            rcg = RequestFasten.requestFasten(package['name'], package['version'], url_pkg, "rcg")
+            rcg = RequestFasten.requestFasten(url_pkg, "rcg")
             if rcg:
                 rcg_json = rcg.json() # save Call Graph in JSON format
 
@@ -59,7 +59,7 @@ class SavePackageInformation:
         """Create dictionary to store information for each package."""
 
 #        print(f"Request {path}")
-        response = RequestFasten.requestFasten(package['name'], package['version'], url_pkg, path)
+        response = RequestFasten.requestFasten(url_pkg, path)
         if response:
             response_json = response.json()
             if response_json == []:
