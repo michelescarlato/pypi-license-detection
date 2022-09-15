@@ -76,13 +76,11 @@ These steps are optional as the pypi-plugin takes its information from the faste
     ```
     python3 __main__.py \
             --product fasten-pypi-plugin \
-            --pkg_name fasten-pypi-plugin \
             --project_path ./ \
             --timestamp 42 \
             --version 1.0 \
             --requirements ../../requirements.txt \
             --fasten_data callGraphs/ \
-            --scg_path callGraphs/
     ```
 
 1. The Call-Graphs can be found inside the `fasten-pypi-plugin/src/fasten/callGraphs`-folder.

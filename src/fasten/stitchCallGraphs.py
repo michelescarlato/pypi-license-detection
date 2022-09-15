@@ -15,7 +15,7 @@ class StitchCallGraphs:
         stitcher = Stitcher(call_graphs, False)
         stitcher.stitch()
         output = json.dumps(stitcher.output(), indent=2)
-        stitched_graph_file = os.path.join(args.scg_path, args.product + ".json")
+        stitched_graph_file = os.path.join(args.fasten_data, args.product + "-scg.json")
         with open(stitched_graph_file, "w+") as f:
             f.write(output)
         print(f"Stitched Call Graph written in file {stitched_graph_file}.")
