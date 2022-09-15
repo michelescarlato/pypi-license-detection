@@ -14,10 +14,11 @@ def retrieveGitHubUrl(jsonResponse, packageName):
     url = ""
     response = json.dumps(jsonResponse)
     data = json.loads(response)
-    if packageName in data['info']['home_page']:
-        if "https://github.com/" in data['info']['home_page']:
-            url = data['info']['home_page']
-            return url
+    if data['info']['home_page'] is not None:
+        if packageName in data['info']['home_page']:
+            if "https://github.com/" in data['info']['home_page']:
+                url = data['info']['home_page']
+                return url
     if data['info']['project_urls'] != None:
         if 'Homepage' in data['info']['project_urls']:
             if packageName in data['info']['project_urls']['Homepage']:
@@ -121,18 +122,19 @@ def retrieveLicenseInformationFromPyPI(packageName, packageVersion, LCVurl):
         if response.status_code == 200:
             jsonResponse = response.json()
             PyPILicense = (jsonResponse["info"]["license"])
-            if len(PyPILicense) > 0:
-                # check if the retrieved license is an SPDX id
-                IsSPDX = IsAnSPDX(PyPILicense, LCVurl)
-                if IsSPDX == False:
-#                    print("converting " +PyPILicense + " to SPDX")
-                    SPDXConversion = ConvertToSPDX(PyPILicense, LCVurl)
-                    IsSPDX = IsAnSPDX(SPDXConversion, LCVurl)
-                    if IsSPDX == True:
-                        PyPILicenseSPDX = SPDXConversion
-#                        print(PyPILicense + " converted into " + SPDXConversion )
-                else:
-                    PyPILicenseSPDX = PyPILicense
+            if PyPILicense is not None:
+                if len(PyPILicense) > 0:
+                    # check if the retrieved license is an SPDX id
+                    IsSPDX = IsAnSPDX(PyPILicense, LCVurl)
+                    if IsSPDX == False:
+    #                    print("converting " +PyPILicense + " to SPDX")
+                        SPDXConversion = ConvertToSPDX(PyPILicense, LCVurl)
+                        IsSPDX = IsAnSPDX(SPDXConversion, LCVurl)
+                        if IsSPDX == True:
+                            PyPILicenseSPDX = SPDXConversion
+    #                        print(PyPILicense + " converted into " + SPDXConversion )
+                    else:
+                        PyPILicenseSPDX = PyPILicense
     except requests.exceptions.ReadTimeout:
         print('Connection timeout: ReadTimeout')
     except requests.exceptions.ConnectTimeout:

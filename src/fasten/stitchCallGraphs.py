@@ -7,14 +7,10 @@ from stitcher.stitcher import Stitcher
 class StitchCallGraphs:
 
     @staticmethod
-    def stitchCallGraphs(args, package_list):
+    def stitchCallGraphs(args, call_graphs):
+        """"Merge all Call Graphs to one single 'Stitched Call Graph'."""
 
         print("Stitch Call Graphs...")
-        call_graphs = [ ]
-
-        for pkg in package_list:
-            if pkg["cg_file"] is not None:
-                call_graphs.append(pkg["cg_file"])
 
         stitcher = Stitcher(call_graphs, False)
         stitcher.stitch()

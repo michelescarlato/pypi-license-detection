@@ -13,7 +13,7 @@ class ExecutePypiResolver:
         print("Resolve dependencies...")
         resolved_packages = pypiResolver.run_pip(requirementsTxt, True)
 
-        broken_list = ["future","python-heatclient","PyYAML","rcssmin","Click","py","openstacksdk","Django","pyScss","python-neutronclient","Pygments","Pint","cryptography","django_openstack_auth","setuptools","pyinotify","rjsmin","tqdm","fonttools","pycodestyle","pyrsistent","Dj","Pt"]
+        broken_list = ["pytest","future","python-heatclient","PyYAML","rcssmin","Click","py","openstacksdk","Django","pyScss","python-neutronclient","Pygments","Pint","cryptography","django_openstack_auth","setuptools","pyinotify","rjsmin","tqdm","fonttools","pycodestyle","pyrsistent","Dj","Pt"]
         for package in resolved_packages[1]:
 
             dct =   {   "name": package[0],
