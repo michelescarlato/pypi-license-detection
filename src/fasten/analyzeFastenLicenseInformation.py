@@ -23,7 +23,7 @@ class AnalyzeFastenLicenseInformation:
             packageName = package["name"]
             packageVersion = package["version"]
 
-                #look for licenses
+            #look for licenses
 #            if "licenses" in metadata_JSON["metadata"]:
             if package["metadata"] is not None:
                 if "licenses" in package["metadata"]:

@@ -55,7 +55,7 @@ def main():
             shutil.rmtree(dir)
 
 
-#   Create directories to store the Call Graphs and the Stitched Call Graph
+    # Create directories to store the Call Graphs and the Stitched Call Graph
     CreateDirectory.createDirectory(args.fasten_data)
     CreateDirectory.createDirectory(args.scg_path)
     cg_file = CreateCallGraph().createCallGraph(args)
@@ -81,7 +81,7 @@ def main():
     oscg = OptimizeStitchedCallGraph.optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes)
     EnrichOSCG.enrichOSCG(args, oscg, package_list)
 
-#   Create report
+    # Create report
     report = VulnerabilityAnalysis.vulnerabilityAnalysis(package_list)
     report += licensesAnalysis(args, package_list, url, LCVurl, oscg)
     print(report)

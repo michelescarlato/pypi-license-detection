@@ -8,7 +8,7 @@ class CreateAdjacencyList:
     @classmethod
     def createAdjacencyList(cls, stitched_call_graph):
 
-#       Read the list of calls from Stitched Call Graph.
+        # Read the list of calls from Stitched Call Graph.
 #        print("Read the list of calls from the Stitched Call Graph...")
         with open(stitched_call_graph) as f:
             scg = json.loads(f.read())
@@ -21,7 +21,7 @@ class CreateAdjacencyList:
         cls.print_agraph()
 
 
-#   Add edges to adjacency list.
+    # Add edges to adjacency list.
     @classmethod
     def addEdges(cls):
 
@@ -35,7 +35,7 @@ class CreateAdjacencyList:
             cls.graph[pair[0]] = node
 
 
-#   Print adjacency list.
+    # Print adjacency list.
     @classmethod
     def print_agraph(cls):
 
@@ -50,7 +50,7 @@ class CreateAdjacencyList:
                 temp = temp.next
 
 
-#   Get number of nodes existent in the Stitched Call Graph.
+    # Get number of nodes existent in the Stitched Call Graph.
     @classmethod
     def getNumberOfNodes(cls):
 
@@ -64,19 +64,19 @@ class CreateAdjacencyList:
         return nodes
 
 
-#   Return number of nodes.
+    # Return number of nodes.
     @classmethod
     def getNodes(cls):
         return  cls.nodes
 
 
-#   Return number of edges.
+    # Return number of edges.
     @classmethod
     def getEdges(cls):
         return  cls.edges
 
 
-#   Return adjacency list:
+    # Return adjacency list:
     @classmethod
     def getAdjacencyList(cls, node):
         return  cls.adj[node]
