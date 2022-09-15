@@ -1,6 +1,7 @@
 # Enrich the Optimized Stitched Call Graph with metadata information from FASTEN.
 
 import re
+import os
 import json
 
 class EnrichOSCG:
@@ -23,7 +24,8 @@ class EnrichOSCG:
                         if pkg["callables"][1]["metadata"]:
                             oscg["nodes"][node]["metadata"] = pkg["callables"]["metadata"]
 
-        with open(args.scg_path + "enrichedCallGraph.json", "w+") as ecg_file:
+        ecg_file_path = os.path.join(args.fasten_data, "enriched_call_graph.json")
+        with open(ecg_file_path, "w+") as ecg_file:
             ecg_file.write(json.dumps(oscg))
 
-        print(f"Enriched Call Graph written in file {args.scg_path}enrichedCallGraph.json.")
+        print(f"Enriched Call Graph written in file {ecg_file_path}.")
