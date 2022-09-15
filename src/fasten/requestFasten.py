@@ -5,7 +5,7 @@ import requests
 class RequestFasten:
 
     @staticmethod
-    def requestFasten(name, version, url, path):
+    def requestFasten(url, path):
         """Request the FASTEN server for package information."""
 
         if path == "callables":
