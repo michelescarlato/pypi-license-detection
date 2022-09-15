@@ -29,7 +29,7 @@ class SavePackageInformation:
             if rcg:
                 rcg_json = rcg.json() # save Call Graph in JSON format
 
-#               Create directories to store the Call Graphs
+                # Create directories to store the Call Graphs
                 directory = fasten_data + "callgraphs/" + package['name'][0] + "/" + package['name'] + "/" + package['version']
                 CreateDirectory.createDirectory(directory)
                 cg_file = directory + "/cg.json"
