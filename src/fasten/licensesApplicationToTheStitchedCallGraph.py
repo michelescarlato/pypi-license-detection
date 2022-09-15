@@ -1,6 +1,5 @@
 import re
-import json
-from licenseComplianceVerification import parseLCVAssessmentResponse, licenseComplianceVerification
+from licenseComplianceVerification import licenseComplianceVerification
 
 '''
 * SPDX-FileCopyrightText: 2022 Michele Scarlato <michele.scarlato@endocode.com>
