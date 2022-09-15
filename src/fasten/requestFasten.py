@@ -6,6 +6,7 @@ class RequestFasten:
 
     @staticmethod
     def requestFasten(name, version, url, path):
+        """Request the FASTEN server for package information."""
 
         if path == "callables":
             path_x = "callables?limit=1000000"

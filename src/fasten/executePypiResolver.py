@@ -10,6 +10,10 @@ class ExecutePypiResolver:
 
     @staticmethod
     def executePypiResolver(requirementsTxt, package_list):
+        """
+        Use the 'requirements.txt' file of the local package to resolve
+        and download all the transitive dependencies of it.
+        """
         print("Resolve dependencies...")
         resolved_packages = pypiResolver.run_pip(requirementsTxt, True)
 

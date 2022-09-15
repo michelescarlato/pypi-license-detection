@@ -12,6 +12,12 @@ class SavePackageInformation:
 
     @staticmethod
     def savePackageInformation(fasten_data, url, package_list):
+        """
+        Loop through the list of all transitive dependencies of the local
+        package to request FASTEN for information about it.
+        Save the received Call Graphs in an extra file for each package and
+        store the file location in a new list.
+        """
 
         keys = ['name', 'version', 'cg_file', 'vulnerabilities', 'callables',
                 'licenses']
@@ -50,6 +56,7 @@ class SavePackageInformation:
 
     @staticmethod
     def createDictEntry(package, path, url_pkg):
+        """Create dictionary to store information for each package."""
 
 #        print(f"Request {path}")
         response = RequestFasten.requestFasten(package['name'], package['version'], url_pkg, path)

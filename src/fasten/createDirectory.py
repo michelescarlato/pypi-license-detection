@@ -5,6 +5,7 @@ class CreateDirectory:
     @staticmethod
     # Check whether the specified path exists or not
     def createDirectory(directory):
+        """Create directories."""
 
         isExist = os.path.exists(directory)
         if not isExist:
