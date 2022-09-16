@@ -29,7 +29,7 @@ def main():
     parser.add_argument("--project_path", type=str, help="Path to package to be analyzed")
     parser.add_argument("--requirements", type=str, help="Path to the requirements file")
     parser.add_argument("--fasten_data", type=str, help="Path to the folder where will store its received and created data")
-    parser.add_argument("--spdx_license", type=str, help="SPDX id of the license declared for this package")
+    parser.add_argument("--license", type=str, help="SPDX id of the license declared for this package")
     args = parser.parse_args()
 
     url = 'https://api.fasten-project.eu/api/pypi/' # URL to the FASTEN API
@@ -42,7 +42,7 @@ def main():
                         "callables": None,
                         "metadata": None,
                         "vulnerabilities": None,
-                        "license": args.spdx_license
+                        "license": args.license
                     }
     report = ""
 
