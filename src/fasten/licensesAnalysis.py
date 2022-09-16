@@ -14,7 +14,7 @@ def licensesAnalysis(args, package_list, url, LCVurl, oscg):
     licenses_retrieved_from_fasten, licenses_retrieved_locally, licenses_retrieved_at_the_file_level = retrieveLicenseInformation(args, package_list, url, LCVurl)
     licenses_retrieved = {**licenses_retrieved_from_fasten, **licenses_retrieved_locally}
     inbound_licenses = generateInboundLicenses(licenses_retrieved)
-    outbound_license = args.spdx_license
+    outbound_license = args.license
     lcv_assessment_response = licenseComplianceVerification(inbound_licenses, outbound_license, LCVurl)
     license_report = parseLCVAssessmentResponse(lcv_assessment_response, licenses_retrieved)
     full_report = "Report about licenses:\n"
