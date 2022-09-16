@@ -17,7 +17,11 @@ class ExecutePypiResolver:
         print("Resolve dependencies...")
         resolved_packages = pypiResolver.run_pip(requirementsTxt, True)
 
-        broken_list = ["pytest","future","python-heatclient","PyYAML","rcssmin","Click","py","openstacksdk","Django","pyScss","python-neutronclient","Pygments","Pint","cryptography","django_openstack_auth","setuptools","pyinotify","rjsmin","tqdm","fonttools","pycodestyle","pyrsistent","Dj","Pt"]
+        # Read in file which contains packages that troubles pycg.
+        broken_list = []
+        with open("../../broken_packages.txt", "r") as broken_file:
+            for package in broken_file:
+                broken_list.append(package.rstrip())
 
         for package in resolved_packages[1]:
 
@@ -27,6 +31,8 @@ class ExecutePypiResolver:
                         "vulnerabilities": None,
                         "callables": None
                     }
+
+            # Don't append broken package to package_list
             if package[0] not in broken_list:
                 package_list.append(dct)
 
