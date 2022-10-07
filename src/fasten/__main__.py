@@ -1,23 +1,20 @@
 import argparse
 import os
 import shutil
-from fasten.createDirectory import CreateDirectory
-from fasten.executePypiResolver import ExecutePypiResolver
-from fasten.savePackageInformation import SavePackageInformation
-from fasten.executeCallGraphGenerator import executeCallGraphGenerator
-from fasten.createCallGraph import CreateCallGraph
-from fasten.stitchCallGraphs import StitchCallGraphs
-from fasten.findEntrypoints import FindEntrypoints
-from fasten.createAdjacencyList import CreateAdjacencyList
-from fasten.depthFirstSearch import DepthFirstSearch
-from fasten.optimizeStitchedCallGraph import OptimizeStitchedCallGraph
-from fasten.enrichOSCG import EnrichOSCG
-from fasten.licensesAnalysis import licensesAnalysis
-from fasten.retrieveLicenseInformation import retrieveLicenseInformation
-from fasten.licenseComplianceVerification import generateInboundLicenses, licenseComplianceVerification, parseLCVAssessmentResponse#, provideReport
-from fasten.licensesApplicationToTheStitchedCallGraph import licensesAtThePackageLevelApplicationToTheStitchedCallGraph, licensesAtTheFileLevelApplicationToTheStitchedCallGraph, LCVAssessmentAtTheFileLevel, LCVAssessmentAtTheFileLevelGenerateReport, CompareLicensesAtThePackageLevelWithTheFileLevel
-from fasten.vulnerabilityAnalysis import VulnerabilityAnalysis
-from fasten.reportToPDF import ReportToPDF
+from createDirectory import CreateDirectory
+from executePypiResolver import ExecutePypiResolver
+from savePackageInformation import SavePackageInformation
+from executeCallGraphGenerator import executeCallGraphGenerator
+from createCallGraph import CreateCallGraph
+from stitchCallGraphs import StitchCallGraphs
+from findEntrypoints import FindEntrypoints
+from createAdjacencyList import CreateAdjacencyList
+from depthFirstSearch import DepthFirstSearch
+from optimizeStitchedCallGraph import OptimizeStitchedCallGraph
+from enrichOSCG import EnrichOSCG
+from licensesAnalysis import licensesAnalysis
+from vulnerabilityAnalysis import VulnerabilityAnalysis
+from reportToPDF import ReportToPDF
 
 
 def main():
@@ -64,6 +61,7 @@ def main():
     package_list = ExecutePypiResolver.executePypiResolver(args.requirements, package_list)
 
     package_list = SavePackageInformation.savePackageInformation(args.fasten_data, url, package_list)
+    '''
     package_list, cg_location_list = executeCallGraphGenerator(args, package_list, cg_location_list)
     stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, cg_location_list)
 
@@ -80,12 +78,12 @@ def main():
 
     oscg = OptimizeStitchedCallGraph.optimizeStitchedCallGraph(args, stitched_call_graph, list_of_nodes)
     EnrichOSCG.enrichOSCG(args, oscg, package_list)
-
+    '''
 #   Create report
-    report = VulnerabilityAnalysis.vulnerabilityAnalysis(package_list)
-    report += licensesAnalysis(args, package_list, url, LCVurl, oscg)
+    #report = VulnerabilityAnalysis.vulnerabilityAnalysis(package_list)
+    report = licensesAnalysis(args, package_list, url, LCVurl)#, oscg)
     print(report)
-    ReportToPDF.reportToPDF(report)
+    #ReportToPDF.reportToPDF(report)
 
 if __name__ == "__main__":
     main()
