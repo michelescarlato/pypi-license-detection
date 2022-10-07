@@ -1,7 +1,7 @@
 import json
 from retrieveLicenseInformation import retrieveLicenseInformation
 from retrieveLocallyLicensesInformation import ReceiveLocallyLicensesInformation
-from licenseComplianceVerification import generateInboundLicenses, licenseComplianceVerification, parseLCVAssessmentResponse, transitiveLicenseComplianceVerification, parseLCVTransitiveAssessmentResponse#, provideReport
+from licenseComplianceVerification import generateInboundLicenses, licenseComplianceVerification, parseLCVAssessmentResponse, transitiveLicenseComplianceVerification, parseLCVTransitiveAssessmentResponse, parseLicenseDeclared#, provideReport
 from licensesApplicationToTheStitchedCallGraph import licensesAtThePackageLevelApplicationToTheStitchedCallGraph, licensesAtTheFileLevelApplicationToTheStitchedCallGraph, LCVAssessmentAtTheFileLevel, LCVAssessmentAtTheFileLevelGenerateReport, CompareLicensesAtThePackageLevelWithTheFileLevel
 
 '''
@@ -21,7 +21,7 @@ def licensesAnalysis(args, package_list, url, LCVurl):#, oscg):
 
     licenses_retrieved = ReceiveLocallyLicensesInformation.receiveLocallyLicensesInformation(package_list,LCVurl, index)
     #licenses_retrieved = {**licenses_retrieved_from_fasten, **licenses_retrieved_locally}
-    print(licenses_retrieved)
+    #print(licenses_retrieved)
     inbound_licenses = generateInboundLicenses(licenses_retrieved)
     outbound_license = args.spdx_license
     lcv_assessment_response = licenseComplianceVerification(inbound_licenses, outbound_license, LCVurl)
@@ -31,6 +31,10 @@ def licensesAnalysis(args, package_list, url, LCVurl):#, oscg):
     print(transitive_license_report)
     #license_report = parseLCVTransitiveAssessmentResponse(lcv_transitive_assessment_response, licenses_retrieved)
     license_report = parseLCVAssessmentResponse(lcv_assessment_response, licenses_retrieved)
+
+    print(licenses_retrieved)
+    license_declared_report = parseLicenseDeclared(licenses_retrieved)
+
     full_report = "Report about licenses:\n"
 
     if len(license_report) > 0:
@@ -47,7 +51,13 @@ def licensesAnalysis(args, package_list, url, LCVurl):#, oscg):
                 full_report += transitive_license_report[i]["noLicensesIssues"]
             else:
                 full_report += "\n\n############# - License violation between dependencies number " + str(i + 1) + " #################\n" + "\n" + str(transitive_license_report[i]["packageInformation"]) + "\n" + str(transitive_license_report[i]["licenseViolation"]) + "\n"
+    full_report += "\n\n############# - Licenses considered for the compliance verification: ############# \n"
+    print(license_declared_report)
+    for i in license_declared_report:
+        if "License declared" in license_declared_report[i]:
+            full_report += license_declared_report[i]["License declared"]+"\n"
 
+            #print(license_declared_report[i].get("License declared"))
 
     '''
     # commented to perform only license detection at the package level, without querying FASTEN KB 
