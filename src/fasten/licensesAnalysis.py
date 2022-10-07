@@ -1,6 +1,6 @@
 import json
 from retrieveLicenseInformation import retrieveLicenseInformation
-from licenseComplianceVerification import generateInboundLicenses, licenseComplianceVerification, parseLCVAssessmentResponse#, provideReport
+from licenseComplianceVerification import generateInboundLicenses, licenseComplianceVerification, parseLCVAssessmentResponse, transitiveLicenseComplianceVerification, parseLCVTransitiveAssessmentResponse#, provideReport
 from licensesApplicationToTheStitchedCallGraph import licensesAtThePackageLevelApplicationToTheStitchedCallGraph, licensesAtTheFileLevelApplicationToTheStitchedCallGraph, LCVAssessmentAtTheFileLevel, LCVAssessmentAtTheFileLevelGenerateReport, CompareLicensesAtThePackageLevelWithTheFileLevel
 
 '''
@@ -9,14 +9,18 @@ from licensesApplicationToTheStitchedCallGraph import licensesAtThePackageLevelA
 * SPDX-License-Identifier: Apache-2.0
 '''
 
-def licensesAnalysis(args, package_list, url, LCVurl, oscg):
+def licensesAnalysis(args, package_list, url, LCVurl):#, oscg):
 
     print("Start license analysis...")
     licenses_retrieved_from_fasten, licenses_retrieved_locally, licenses_retrieved_at_the_file_level = retrieveLicenseInformation(args, package_list, url, LCVurl)
     licenses_retrieved = {**licenses_retrieved_from_fasten, **licenses_retrieved_locally}
+    print(licenses_retrieved)
     inbound_licenses = generateInboundLicenses(licenses_retrieved)
     outbound_license = args.spdx_license
     lcv_assessment_response = licenseComplianceVerification(inbound_licenses, outbound_license, LCVurl)
+    lcv_transitive_assessment_response = transitiveLicenseComplianceVerification(inbound_licenses, LCVurl)
+    transitive_license_report = parseLCVTransitiveAssessmentResponse(lcv_transitive_assessment_response, licenses_retrieved)
+    print(transitive_license_report)
     license_report = parseLCVAssessmentResponse(lcv_assessment_response, licenses_retrieved)
     full_report = "Report about licenses:\n"
 
@@ -28,9 +32,10 @@ def licensesAnalysis(args, package_list, url, LCVurl, oscg):
             else:
                 full_report += "############# - violation number " + str(i + 1) + " #################\n" + "\n" + str(license_report[i]["packageInformation"]) + "\n" + str(license_report[i]["licenseViolation"]) + "\n"
 
-
+    '''
     callablesEnrichedWithLicenseInformation = licensesAtThePackageLevelApplicationToTheStitchedCallGraph(oscg, licenses_retrieved)
-
+    
+    
     callablesEnrichedWithLicenseAtTheFileLevel = licensesAtTheFileLevelApplicationToTheStitchedCallGraph(licenses_retrieved_at_the_file_level, oscg)
 
     callablesWithLicenseViolationParsed = LCVAssessmentAtTheFileLevel(callablesEnrichedWithLicenseAtTheFileLevel, outbound_license, LCVurl)
@@ -53,3 +58,4 @@ def licensesAnalysis(args, package_list, url, LCVurl, oscg):
 
     print("License analysis done.")
     return full_report
+'''
