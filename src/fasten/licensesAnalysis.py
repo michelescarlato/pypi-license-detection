@@ -39,14 +39,14 @@ def licensesAnalysis(args, package_list, url, LCVurl):#, oscg):
             if "noLicensesIssues" in license_report[i]:
                 full_report += license_report[i]["noLicensesIssues"]
             else:
-                full_report += "############# - Direct dependency violation number " + str(i + 1) + " #################\n" + "\n" + str(license_report[i]["packageInformation"]) + "\n" + str(license_report[i]["licenseViolation"]) + "\n"
+                full_report += "############# - License violation against the declared Outbound license, number " + str(i + 1) + " #################\n" + "\n" + str(license_report[i]["packageInformation"]) + "\n" + str(license_report[i]["licenseViolation"]) + "\n"
     if len(transitive_license_report) > 0:
         #print("License violation found at the package level: " +str(len(license_report)) + " ." )
         for i in transitive_license_report:
             if "noLicensesIssues" in transitive_license_report[i]:
                 full_report += transitive_license_report[i]["noLicensesIssues"]
             else:
-                full_report += "\n\n############# - Transitive dependencies violation number " + str(i + 1) + " #################\n" + "\n" + str(transitive_license_report[i]["packageInformation"]) + "\n" + str(transitive_license_report[i]["licenseViolation"]) + "\n"
+                full_report += "\n\n############# - License violation between dependencies number " + str(i + 1) + " #################\n" + "\n" + str(transitive_license_report[i]["packageInformation"]) + "\n" + str(transitive_license_report[i]["licenseViolation"]) + "\n"
 
 
     '''
