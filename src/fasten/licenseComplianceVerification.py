@@ -81,9 +81,7 @@ def transitiveLicenseComplianceVerification(InboundLicenses, LCVurl):
             OutboundLicense = InboundLicenses[i]
             OutboundLicensesList.append(OutboundLicense)
             TransitiveInboundLicenses = InboundLicenses.copy()
-            print(TransitiveInboundLicenses)
             TransitiveInboundLicenses.remove(OutboundLicense)
-            print(TransitiveInboundLicenses)
             InboundLicensesString = ';'.join([str(item) for item in TransitiveInboundLicenses])
             LCVComplianceAssessment = LCVurl + "LicensesInput?InboundLicenses=" + InboundLicensesString + "&OutboundLicense=" + OutboundLicense
             try:
@@ -129,5 +127,12 @@ def parseLCVTransitiveAssessmentResponse(LCVAssessmentResponseList, licenses):
                         " declared in GitHub found in " + packageName + " v. " + packageVersion + "."
                     "."
                     transitiveAssessment[j]["packageInformation"] = outputPackageInformationNotCompatibleInboundLicenseGitHub
-            transitiveAssessment[j]["licenseViolation"] = outputNotCompatibleInboundLicense
+            transitiveAssessment[j]["licenseViolation"] = "[License violation at the package level between dependencies] "+outputNotCompatibleInboundLicense
             j += 1
+
+
+    if len(transitiveAssessment) == 0:
+        transitiveAssessment[j] = {}
+        output = "Licensing issues at the package level have not been found"
+        transitiveAssessment[j]["noLicensesIssues"] = output
+    return transitiveAssessment
