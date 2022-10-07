@@ -59,9 +59,9 @@ def main():
     local_package["cg_file"] = cg_file
     cg_location_list.append(cg_file)
     package_list = ExecutePypiResolver.executePypiResolver(args.requirements, package_list)
-
-    package_list = SavePackageInformation.savePackageInformation(args.fasten_data, url, package_list)
     '''
+    package_list = SavePackageInformation.savePackageInformation(args.fasten_data, url, package_list)
+    
     package_list, cg_location_list = executeCallGraphGenerator(args, package_list, cg_location_list)
     stitched_call_graph = StitchCallGraphs().stitchCallGraphs(args, cg_location_list)
 
@@ -83,7 +83,7 @@ def main():
     #report = VulnerabilityAnalysis.vulnerabilityAnalysis(package_list)
     report = licensesAnalysis(args, package_list, url, LCVurl)#, oscg)
     print(report)
-    #ReportToPDF.reportToPDF(report)
+    ReportToPDF.reportToPDF(report,args.product)
 
 if __name__ == "__main__":
     main()
