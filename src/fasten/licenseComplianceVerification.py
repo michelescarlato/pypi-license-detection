@@ -60,6 +60,7 @@ def parseLCVAssessmentResponse(LCVAssessmentResponseList, licenses):
                         " declared in GitHub found in " + packageName + " v. " + packageVersion + "."
                     "."
                     assessment[j]["packageInformation"] = outputPackageInformationNotCompatibleInboundLicenseGitHub
+
             assessment[j]["licenseViolation"] = outputNotCompatibleInboundLicense
             j += 1
 
@@ -136,3 +137,19 @@ def parseLCVTransitiveAssessmentResponse(LCVAssessmentResponseList, licenses):
         output = "Licensing issues at the package level have not been found"
         transitiveAssessment[j]["noLicensesIssues"] = output
     return transitiveAssessment
+
+
+def parseLicenseDeclared(licenses):
+    licenseDeclaredReport = {}
+    i = 0  # assessment index
+    for i in licenses:
+        licenseDeclaredReport[i] = {}
+        if licenses[i].get("PyPILicenseSPDX"):
+            licenseDeclaredReport[i]["License declared"] = licenses[i].get("packageName") +" v."+ licenses[i].get("packageVersion") \
+                                                           + " has been declared with " + licenses[i].get("PyPILicenseSPDX") +", on PyPI.org."
+        if licenses[i].get("GitHubLicense"):
+            licenseDeclaredReport[i]["License declared"] = licenses[i].get("packageName") +" v."+ licenses[i].get("packageVersion") \
+                                                           + " has been declared with " + licenses[i].get("GitHubLicense") +", on GitHub API."
+        i += 1
+
+    return licenseDeclaredReport
