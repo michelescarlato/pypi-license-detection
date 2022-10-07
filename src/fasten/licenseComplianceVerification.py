@@ -69,3 +69,65 @@ def parseLCVAssessmentResponse(LCVAssessmentResponseList, licenses):
         output = "Licensing issues at the package level have not been found"
         assessment[j]["noLicensesIssues"] = output
     return assessment
+
+def transitiveLicenseComplianceVerification(InboundLicenses, LCVurl):
+    LCVComplianceAssessmentResponse = []
+    length = len(InboundLicenses)
+    i = 0
+    # to prevent double computation against outbound licenses already assessed
+    OutboundLicensesList = []
+    while i < length:
+        if InboundLicenses[i] not in OutboundLicensesList:
+            OutboundLicense = InboundLicenses[i]
+            OutboundLicensesList.append(OutboundLicense)
+            TransitiveInboundLicenses = InboundLicenses.copy()
+            print(TransitiveInboundLicenses)
+            TransitiveInboundLicenses.remove(OutboundLicense)
+            print(TransitiveInboundLicenses)
+            InboundLicensesString = ';'.join([str(item) for item in TransitiveInboundLicenses])
+            LCVComplianceAssessment = LCVurl + "LicensesInput?InboundLicenses=" + InboundLicensesString + "&OutboundLicense=" + OutboundLicense
+            try:
+                response = requests.get(url=LCVComplianceAssessment)
+                if response.status_code == 200:
+                    ResponseLength = len(response.json())
+                    ResponseList = response.json()
+                    #print(ResponseList)
+                    j = 0
+                    while j < ResponseLength:
+                        #print(ResponseLength)
+                        #print(type(ResponseList[j]))
+                        #print(ResponseList[j])
+                        LCVComplianceAssessmentResponse.append(ResponseList[j])
+                        j += 1
+            except requests.exceptions.ReadTimeout:
+                print('Connection timeout: ReadTimeout')
+            except requests.exceptions.ConnectTimeout:
+                print('Connection timeout: ConnectTimeout')
+            except requests.exceptions.ConnectionError:
+                print('Connection timeout: ConnectError')
+                time.sleep(30)
+        i += 1
+    return LCVComplianceAssessmentResponse
+
+def parseLCVTransitiveAssessmentResponse(LCVAssessmentResponseList, licenses):
+    transitiveAssessment = {}
+    j = 0 #transitiveAssessment index
+    for dict in LCVAssessmentResponseList:
+        if (dict.get("status")) == "not compatible":
+            transitiveAssessment[j] = {}
+            InboundNotCompatibleLicense = (dict.get("inbound_SPDX"))
+            outputNotCompatibleInboundLicense = (dict.get("message"))
+            for i in licenses:
+                packageName = licenses[i].get("packageName")
+                packageVersion = licenses[i].get("packageVersion")
+                if licenses[i].get("PyPILicenseSPDX") == InboundNotCompatibleLicense:
+                    outputPackageInformationNotCompatibleInboundLicensePyPI = "License " + InboundNotCompatibleLicense + \
+                        ", declared in PyPI, found in " + packageName + " v. " + packageVersion + "."
+                    transitiveAssessment[j]["packageInformation"] = outputPackageInformationNotCompatibleInboundLicensePyPI
+                if licenses[i].get("GitHubLicense") == InboundNotCompatibleLicense:
+                    outputPackageInformationNotCompatibleInboundLicenseGitHub = "License " + InboundNotCompatibleLicense + \
+                        " declared in GitHub found in " + packageName + " v. " + packageVersion + "."
+                    "."
+                    transitiveAssessment[j]["packageInformation"] = outputPackageInformationNotCompatibleInboundLicenseGitHub
+            transitiveAssessment[j]["licenseViolation"] = outputNotCompatibleInboundLicense
+            j += 1
