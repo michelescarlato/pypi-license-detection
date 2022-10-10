@@ -15,5 +15,5 @@ class ReportToPDF:
         pdf.set_font("Arial", size = 10)
         pdf.multi_cell(200, 5, txt = report, align = 'C')
 
-        pdf.output("report.pdf")
-        print("Report written in file 'report.pdf'.")
+        pdf.output("report-"+packageName+".pdf")
+        print("Report written in file 'report-"+packageName+".pdf'.")
