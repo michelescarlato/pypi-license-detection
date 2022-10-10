@@ -10,8 +10,10 @@ import requests
 def licenseComplianceVerification(InboundLicenses, OutboundLicense, LCVurl):
     InboundLicensesString = ';'.join([str(item) for item in InboundLicenses])
     LCVComplianceAssessment = LCVurl + "LicensesInput?InboundLicenses=" + InboundLicensesString + "&OutboundLicense=" + OutboundLicense
+    print(LCVComplianceAssessment)
     try:
         response = requests.get(url=LCVComplianceAssessment)
+        print(response)
         if response.status_code == 200:
             LCVComplianceAssessmentResponse = response.json()
 
@@ -38,6 +40,10 @@ def generateInboundLicenses(licenses):
             GitHubLicenseSPDX = licenses[i].get("GitHubLicense")
             if GitHubLicenseSPDX is not None:
                 InboundLicenses.append(GitHubLicenseSPDX)
+
+    # removing duplicates from the list
+    InboundLicenses = list( dict.fromkeys(InboundLicenses) )
+    print(InboundLicenses)
     return InboundLicenses
 
 def parseLCVAssessmentResponse(LCVAssessmentResponseList, licenses):
