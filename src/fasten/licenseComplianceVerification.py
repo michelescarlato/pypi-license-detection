@@ -153,9 +153,10 @@ def parseLicenseDeclared(licenses):
         if licenses[i].get("PyPILicenseSPDX"):
             licenseDeclaredReport[i]["License declared"] = licenses[i].get("packageName") +" v."+ licenses[i].get("packageVersion") \
                                                            + " has been declared with " + licenses[i].get("PyPILicenseSPDX") +", on PyPI.org."
-        if licenses[i].get("GitHubLicense"):
-            licenseDeclaredReport[i]["License declared"] = licenses[i].get("packageName") +" v."+ licenses[i].get("packageVersion") \
-                                                           + " has been declared with " + licenses[i].get("GitHubLicense") +", on GitHub API."
+        else:
+            if licenses[i].get("GitHubLicense"):
+                licenseDeclaredReport[i]["License declared"] = licenses[i].get("packageName") +" v."+ licenses[i].get("packageVersion") \
+                                                               + " has been declared with " + licenses[i].get("GitHubLicense") +", on GitHub API."
         i += 1
 
     return licenseDeclaredReport
