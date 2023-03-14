@@ -10,10 +10,10 @@ import requests
 def licenseComplianceVerification(InboundLicenses, OutboundLicense, LCVurl):
     InboundLicensesString = ';'.join([str(item) for item in InboundLicenses])
     LCVComplianceAssessment = LCVurl + "LicensesInput?InboundLicenses=" + InboundLicensesString + "&OutboundLicense=" + OutboundLicense
-    print(LCVComplianceAssessment)
+    #print(LCVComplianceAssessment)
     try:
         response = requests.get(url=LCVComplianceAssessment)
-        print(response)
+        #print(response)
         if response.status_code == 200:
             LCVComplianceAssessmentResponse = response.json()
 
@@ -43,7 +43,7 @@ def generateInboundLicenses(licenses):
 
     # removing duplicates from the list
     InboundLicenses = list( dict.fromkeys(InboundLicenses) )
-    print(InboundLicenses)
+    #print(InboundLicenses)
     return InboundLicenses
 
 def parseLCVAssessmentResponse(LCVAssessmentResponseList, licenses):
@@ -78,7 +78,7 @@ def parseLCVAssessmentResponse(LCVAssessmentResponseList, licenses):
     return assessment
 
 def transitiveLicenseComplianceVerification(InboundLicenses, LCVurl):
-    LCVComplianceAssessmentResponse = []
+    LCVComplianceAssessmentResponse = {}
     length = len(InboundLicenses)
     i = 0
     # to prevent double computation against outbound licenses already assessed
@@ -94,6 +94,7 @@ def transitiveLicenseComplianceVerification(InboundLicenses, LCVurl):
             try:
                 response = requests.get(url=LCVComplianceAssessment)
                 if response.status_code == 200:
+                    LCVComplianceAssessmentResponse[OutboundLicense] = []
                     ResponseLength = len(response.json())
                     ResponseList = response.json()
                     #print(ResponseList)
@@ -102,7 +103,9 @@ def transitiveLicenseComplianceVerification(InboundLicenses, LCVurl):
                         #print(ResponseLength)
                         #print(type(ResponseList[j]))
                         #print(ResponseList[j])
-                        LCVComplianceAssessmentResponse.append(ResponseList[j])
+                        ResponseListElement = ResponseList[j]
+                        LCVComplianceAssessmentResponse[OutboundLicense].append(ResponseListElement)
+                        #print(LCVComplianceAssessmentResponse[OutboundLicense])
                         j += 1
             except requests.exceptions.ReadTimeout:
                 print('Connection timeout: ReadTimeout')
@@ -115,33 +118,21 @@ def transitiveLicenseComplianceVerification(InboundLicenses, LCVurl):
     return LCVComplianceAssessmentResponse
 
 def parseLCVTransitiveAssessmentResponse(LCVAssessmentResponseList, licenses):
-    transitiveAssessment = {}
+    transitiveAssessment = []
     j = 0 #transitiveAssessment index
-    for dict in LCVAssessmentResponseList:
-        if (dict.get("status")) == "not compatible":
-            transitiveAssessment[j] = {}
-            InboundNotCompatibleLicense = (dict.get("inbound_SPDX"))
-            outputNotCompatibleInboundLicense = (dict.get("message"))
-            for i in licenses:
-                packageName = licenses[i].get("packageName")
-                packageVersion = licenses[i].get("packageVersion")
-                if licenses[i].get("PyPILicenseSPDX") == InboundNotCompatibleLicense:
-                    outputPackageInformationNotCompatibleInboundLicensePyPI = "License " + InboundNotCompatibleLicense + \
-                        ", declared in PyPI, found in " + packageName + " v. " + packageVersion + "."
-                    transitiveAssessment[j]["packageInformation"] = outputPackageInformationNotCompatibleInboundLicensePyPI
-                if licenses[i].get("GitHubLicense") == InboundNotCompatibleLicense:
-                    outputPackageInformationNotCompatibleInboundLicenseGitHub = "License " + InboundNotCompatibleLicense + \
-                        " declared in GitHub found in " + packageName + " v. " + packageVersion + "."
-                    "."
-                    transitiveAssessment[j]["packageInformation"] = outputPackageInformationNotCompatibleInboundLicenseGitHub
-            transitiveAssessment[j]["licenseViolation"] = "[License violation at the package level between dependencies] "+outputNotCompatibleInboundLicense
-            j += 1
+    for item in LCVAssessmentResponseList:
+        notCompatibleIndex = 0
+        #print("item")
+        #print(LCVAssessmentResponseList[item])
+        for i in LCVAssessmentResponseList[item]:
+            #print(i)
+            if i["status"] == "not compatible" or i["status"] == "unknown" :
+                notCompatibleIndex += 1
+        if notCompatibleIndex == 0:
+            output = item + " could be a good outbound license."
+            transitiveAssessment.append(output)
 
 
-    if len(transitiveAssessment) == 0:
-        transitiveAssessment[j] = {}
-        output = "Licensing issues at the package level have not been found"
-        transitiveAssessment[j]["noLicensesIssues"] = output
     return transitiveAssessment
 
 
