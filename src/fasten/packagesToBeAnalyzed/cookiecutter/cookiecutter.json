@@ -1,0 +1,23 @@
+{
+    "package_name": "packagename",
+    "module_name": "{{ cookiecutter.package_name|lower()|replace(' ', '_') }}",
+    "short_description": "{{ cookiecutter.package_name|replace('-', ' ')|replace('_', ' ') }}",
+    "author_name": "Astropy Developers",
+    "author_email": "",
+    "license": ["BSD 3-Clause", "GNU GPL v3+", "Apache Software Licence 2.0", "BSD 2-Clause", "Other"],
+    "project_url": "http://docs.astropy.org/projects/package-template/",
+    "use_compiled_extensions": "y",
+    "include_example_code": "y",
+    "edit_on_github_extension": "False",
+    "github_project": "astropy/astropy",
+    "use_gh_actions": "y",
+    "use_read_the_docs": "y",
+    "sphinx_theme": "astropy-bootstrap",
+    "_parent_project": "astropy",
+    "required_dependencies": "astropy",
+    "optional_dependencies": "",
+    "minimum_python_version": ["3.7", "3.8", "3.9", "3.10"],
+    "_copy_without_render": [
+        ".github"
+    ]
+}
