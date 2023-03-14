@@ -84,12 +84,10 @@ def RetrieveLicenseFromGitHub(GitHubAPIurl, LCVurl):
 def IsAnSPDX(License, LCVurl):
     LCVIsAnSPDXJsonResponse = None
     LCVIsAnSPDXurl = LCVurl + "IsAnSPDX?SPDXid=" + License + ""
-    print(LCVIsAnSPDXurl)
     try:
         response = requests.get(url=LCVIsAnSPDXurl)  # get Call Graph for specified package
         if response.status_code == 200:
             LCVIsAnSPDXJsonResponse = response.json()
-            print(LCVIsAnSPDXJsonResponse)
         if response.status_code == 414:
             LCVIsAnSPDXJsonResponse = False
     except requests.exceptions.ReadTimeout:
@@ -103,7 +101,6 @@ def IsAnSPDX(License, LCVurl):
 
 def ConvertToSPDX(License, LCVurl):
     LCVConvertToSPDXurl = LCVurl + "ConvertToSPDX?VerboseLicense=" + License
-    print(LCVConvertToSPDXurl)
     try:
         response = requests.get(url=LCVConvertToSPDXurl)  # get Call Graph for specified package
         if response.status_code == 200:
@@ -122,7 +119,6 @@ def ConvertToSPDX(License, LCVurl):
 def retrieveLicenseInformationFromPyPI(packageName, packageVersion, LCVurl):
 #    print("Querying PyPI.org APIs for license information:")
     URL = "https://pypi.org/" + "pypi/" + packageName + "/" + packageVersion + "/json"
-#    print(URL)
     PyPILicenseSPDX = ""
     try:
         response = requests.get(url=URL)
