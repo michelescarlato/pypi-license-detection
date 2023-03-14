@@ -55,9 +55,9 @@ def main():
 #   Create directories to store the Call Graphs and the Stitched Call Graph
     CreateDirectory.createDirectory(args.fasten_data)
     CreateDirectory.createDirectory(args.scg_path)
-    cg_file = CreateCallGraph().createCallGraph(args)
-    local_package["cg_file"] = cg_file
-    cg_location_list.append(cg_file)
+    #cg_file = CreateCallGraph().createCallGraph(args)
+    #local_package["cg_file"] = cg_file
+    #cg_location_list.append(cg_file)
     package_list = ExecutePypiResolver.executePypiResolver(args.requirements, package_list)
     '''
     package_list = SavePackageInformation.savePackageInformation(args.fasten_data, url, package_list)
